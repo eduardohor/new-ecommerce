@@ -436,7 +436,7 @@
       </div>
       <div class="modal-footer border-0 justify-content-center">
 
-        Já possui uma conta ? <a href="#">Entrar</a>
+        Já possui uma conta ? <a href="{{ route('login') }}">Entrar</a>
       </div>
     </div>
   </div>

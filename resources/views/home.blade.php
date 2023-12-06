@@ -1,4 +1,4 @@
-@extends('layouts/layout')
+@extends('layouts/store')
 @section('title', 'Início')
 @section('content')
 
