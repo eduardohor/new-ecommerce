@@ -43,7 +43,7 @@
                     Lembrar de mim
                   </label>
                 </div>
-                <div> Esqueceu sua senha? <a href="../pages/forgot-password.html">Redefinir</a></div>
+                <div> Esqueceu sua senha? <a href="{{ route('forgot-password') }}">Redefinir</a></div>
               </div>
               <!-- btn -->
               <div class="col-12 d-grid"> <button type="submit" class="btn btn-primary">Entrar</button>

@@ -16,4 +16,9 @@ class LoginController extends Controller
     {
         return view('login.login');
     }
+
+    public function forgotPassword()
+    {
+        return view('login.forgot-password');
+    }
 }

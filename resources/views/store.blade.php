@@ -500,8 +500,8 @@
             <!-- Banner Design -->
             <!-- Banner Content -->
             <div class="position-absolute p-5 py-8">
-              <h3 class="mb-0">Fresh Fruits </h3>
-              <p>Get Upto 25% Off</p>
+              <h3 class="mb-0">Frutas frescas </h3>
+              <p>Ganhe até 25% de desconto</p>
               <a href="#" class="btn btn-dark">Comprar Agora<i class="feather-icon icon-arrow-right ms-1"></i></a>
             </div>
             <!-- Banner Content -->
@@ -610,8 +610,8 @@
                   </div>
                   <!-- price -->
                   <div class="d-flex justify-content-between align-items-center mt-3">
-                    <div><span class="text-dark">$18</span> <span
-                        class="text-decoration-line-through text-muted">$24</span>
+                    <div><span class="text-dark">R$18</span> <span
+                        class="text-decoration-line-through text-muted">R$24</span>
                     </div>
                     <!-- btn -->
                     <div><a href="#!" class="btn btn-primary btn-sm">
@@ -664,7 +664,7 @@
                   </div>
                   <!-- price -->
                   <div class="d-flex justify-content-between align-items-center mt-3">
-                    <div><span class="text-dark">$24</span>
+                    <div><span class="text-dark">R$24</span>
                     </div>
                     <!-- btn -->
                     <div><a href="#!" class="btn btn-primary btn-sm">
@@ -712,8 +712,8 @@
                   </div>
                   <!-- price -->
                   <div class="d-flex justify-content-between align-items-center mt-3">
-                    <div><span class="text-dark">$32</span> <span
-                        class="text-decoration-line-through text-muted">$35</span>
+                    <div><span class="text-dark">R$32</span> <span
+                        class="text-decoration-line-through text-muted">R$35</span>
                     </div>
                     <!-- btn -->
                     <div><a href="#!" class="btn btn-primary btn-sm">
@@ -765,8 +765,8 @@
                   </div>
                   <!-- price -->
                   <div class="d-flex justify-content-between align-items-center mt-3">
-                    <div><span class="text-dark">$3</span> <span
-                        class="text-decoration-line-through text-muted">$5</span>
+                    <div><span class="text-dark">R$3</span> <span
+                        class="text-decoration-line-through text-muted">R$5</span>
                     </div>
                     <!-- btn -->
                     <div><a href="#!" class="btn btn-primary btn-sm">
@@ -813,8 +813,8 @@
                       <i class="bi bi-star-half"></i></small> <span class="text-muted small">4.5 (39)</span>
                   </div>
                   <div class="d-flex justify-content-between mt-4">
-                    <div><span class="text-dark">$13</span> <span
-                        class="text-decoration-line-through text-muted">$18</span>
+                    <div><span class="text-dark">R$13</span> <span
+                        class="text-decoration-line-through text-muted">R$18</span>
                     </div>
                     <!-- btn -->
                     <div><a href="#!" class="btn btn-primary btn-sm">
@@ -868,8 +868,8 @@
                   </div>
                   <!-- price -->
                   <div class="d-flex justify-content-between align-items-center mt-3">
-                    <div><span class="text-dark">$18</span> <span
-                        class="text-decoration-line-through text-muted">$24</span>
+                    <div><span class="text-dark">R$18</span> <span
+                        class="text-decoration-line-through text-muted">R$24</span>
                     </div>
                     <!-- btn -->
                     <div><a href="#!" class="btn btn-primary btn-sm">
@@ -918,7 +918,7 @@
                   </div>
                   <!-- price -->
                   <div class="d-flex justify-content-between align-items-center mt-3">
-                    <div><span class="text-dark">$24</span>
+                    <div><span class="text-dark">R$24</span>
                     </div>
                     <!-- btn -->
                     <div><a href="#!" class="btn btn-primary btn-sm">
@@ -966,8 +966,8 @@
                   </div>
                   <!-- price -->
                   <div class="d-flex justify-content-between align-items-center mt-3">
-                    <div><span class="text-dark">$32</span> <span
-                        class="text-decoration-line-through text-muted">$35</span>
+                    <div><span class="text-dark">R$32</span> <span
+                        class="text-decoration-line-through text-muted">R$35</span>
                     </div>
                     <!-- btn -->
                     <div><a href="#!" class="btn btn-primary btn-sm">
@@ -1015,8 +1015,8 @@
                   </div>
                   <!-- price -->
                   <div class="d-flex justify-content-between align-items-center mt-3">
-                    <div><span class="text-dark">$3</span> <span
-                        class="text-decoration-line-through text-muted">$5</span>
+                    <div><span class="text-dark">R$3</span> <span
+                        class="text-decoration-line-through text-muted">R$5</span>
                     </div>
                     <!-- btn -->
                     <div><a href="#!" class="btn btn-primary btn-sm">
@@ -1064,8 +1064,8 @@
                       <i class="bi bi-star"></i></small> <span class="text-muted small">3.5 (89)</span>
                   </div>
                   <div class="d-flex justify-content-between mt-4">
-                    <div><span class="text-dark">$13</span> <span
-                        class="text-decoration-line-through text-muted">$18</span>
+                    <div><span class="text-dark">R$13</span> <span
+                        class="text-decoration-line-through text-muted">R$18</span>
                     </div>
                     <!-- btn -->
                     <div><a href="#!" class="btn btn-primary btn-sm">
@@ -1245,7 +1245,7 @@
                 ><a href="#" class="ms-2">(30 reviews)</a>
               </div>
               <div class="fs-4">
-                <span class="fw-bold text-dark">$32</span>
+                <span class="fw-bold text-dark">R$32</span>
                 <span class="text-decoration-line-through text-muted">$35</span
                 ><span
                   ><small class="fs-6 ms-2 text-danger">26% Off</small></span

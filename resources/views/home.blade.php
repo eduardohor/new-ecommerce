@@ -17,11 +17,10 @@
           <div
             style="background: url({{ asset('images/slider/slide-1.jpg') }})no-repeat; background-size: cover; border-radius: .5rem; background-position: center;">
             <div class="ps-lg-12 py-lg-16 col-xxl-5 col-md-7 py-14 px-8 text-xs-center">
-              <span class="badge text-bg-warning">Opening Sale Discount 50%</span>
+              <span class="badge text-bg-warning">Desconto de Abertura 50%</span>
 
-              <h2 class="text-dark display-5 fw-bold mt-4">SuperMarket For Fresh Grocery </h2>
-              <p class="lead">Introduced a new model for online grocery shopping
-                and convenient home delivery.</p>
+              <h2 class="text-dark display-5 fw-bold mt-4">Supermercado para Produtos Frescos</h2>
+              <p class="lead">ntroduzido um novo modelo para compras de supermercado online e entrega conveniente em casa.</p>
               <a href="#!" class="btn btn-dark mt-3">Comprar Agora <i class="feather-icon icon-arrow-right ms-1"></i></a>
             </div>
 
@@ -29,10 +28,10 @@
           <div class=" "
             style="background: url({{ asset('images/slider/slider-2.jpg') }})no-repeat; background-size: cover; border-radius: .5rem; background-position: center;">
             <div class="ps-lg-12 py-lg-16 col-xxl-5 col-md-7 py-14 px-8 text-xs-center">
-              <span class="badge text-bg-warning">Free Shipping - orders over $100</span>
-              <h2 class="text-dark display-5 fw-bold mt-4">Free Shipping on <br> orders over <span
-                  class="text-primary">$100</span></h2>
-              <p class="lead">Free Shipping to First-Time Customers Only, After promotions and discounts are applied.
+              <span class="badge text-bg-warning">Frete Grátis - pedidos acima de R$100</span>
+              <h2 class="text-dark display-5 fw-bold mt-4">Frete Grátis em <br> pedidos acima de <span
+                  class="text-primary">R$100</span></h2>
+              <p class="lead">Frete Grátis somente para Clientes de Primeira Viagem, após aplicação de promoções e descontos.
               </p>
               <a href="#!" class="btn btn-dark mt-3">Comprar Agora <i class="feather-icon icon-arrow-right ms-1"></i></a>
             </div>
@@ -60,7 +59,7 @@
                 <div class="card-body text-center py-8">
                   <img src="{{ asset('images/category/category-dairy-bread-eggs.jpg') }}" alt="Grocery Ecommerce Template"
                     class="mb-3 img-fluid">
-                  <div class="text-truncate">Dairy, Bread & Eggs</div>
+                  <div class="text-truncate">Latcínios, Pão e Ovos</div>
                 </div>
               </div>
             </a></div>
@@ -69,7 +68,7 @@
                 <div class="card-body text-center py-8">
                   <img src="{{ asset('images/category/category-snack-munchies.jpg') }}" alt="Grocery Ecommerce Template"
                     class="mb-3">
-                  <div class="text-truncate">Snack & Munchies</div>
+                  <div class="text-truncate">Lanches e Petiscos</div>
                 </div>
               </div>
             </a></div>
@@ -78,7 +77,7 @@
                 <div class="card-body text-center py-8">
                   <img src="{{ asset('images/category/category-bakery-biscuits.jpg') }}" alt="Grocery Ecommerce Template"
                     class="mb-3">
-                  <div class="text-truncate">Bakery & Biscuits</div>
+                  <div class="text-truncate">Padaria e Biscoitos</div>
                 </div>
               </div>
             </a></div>
@@ -145,12 +144,7 @@
                 </div>
               </div>
             </a></div>
-
-
-
-
         </div>
-
 
       </div>
     </section>
@@ -163,9 +157,9 @@
               <div class="py-10 px-8 rounded"
                 style="background:url({{ asset('images/banner/grocery-banner.png') }})no-repeat; background-size: cover; background-position: center;">
                 <div>
-                  <h3 class="fw-bold mb-1">Fruits & Vegetables
+                  <h3 class="fw-bold mb-1">Frutas e Vegetais
                   </h3>
-                  <p class="mb-4">Get Upto <span class="fw-bold">30%</span> Off</p>
+                  <p class="mb-4">Ganhe até <span class="fw-bold">30%</span> de desconto</p>
                   <a href="#!" class="btn btn-dark">Comprar Agora</a>
                 </div>
               </div>
@@ -179,10 +173,8 @@
               <div class="py-10 px-8 rounded"
                 style="background:url({{ asset('images/banner/grocery-banner-2.jp') }}g)no-repeat; background-size: cover; background-position: center;">
                 <div>
-                  <h3 class="fw-bold mb-1">Freshly Baked
-                    Buns
-                  </h3>
-                  <p class="mb-4">Get Upto <span class="fw-bold">25%</span> Off</p>
+                  <h3 class="fw-bold mb-1">Pãezinhos Frescos Assados</h3>
+                  <p class="mb-4">Ganhe até <span class="fw-bold">25%</span> de desconto</p>
                   <a href="#!" class="btn btn-dark">Comprar Agora</a>
                 </div>
               </div>
@@ -238,8 +230,8 @@
                     <i class="bi bi-star-half"></i></small> <span class="text-muted small">4.5(149)</span>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div><span class="text-dark">$18</span> <span
-                      class="text-decoration-line-through text-muted">$24</span>
+                  <div><span class="text-dark">R$18</span> <span
+                      class="text-decoration-line-through text-muted">R$24</span>
                   </div>
                   <div><a href="#!" class="btn btn-primary btn-sm">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -271,8 +263,7 @@
                   </div>
 
                 </div>
-                <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Bakery &
-                      Biscuits</small></a></div>
+                <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Padaria e Biscoitos</small></a></div>
                 <h2 class="fs-6"><a href="./pages/shop-single.html"
                     class="text-inherit text-decoration-none">NutriChoice Digestive </a></h2>
                 <div class="text-warning">
@@ -284,7 +275,7 @@
                     <i class="bi bi-star-half"></i></small> <span class="text-muted small">4.5 (25)</span>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div><span class="text-dark">$24</span>
+                  <div><span class="text-dark">R$24</span>
                   </div>
                   <div><a href="#!" class="btn btn-primary btn-sm">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -312,8 +303,7 @@
                         class="bi bi-arrow-left-right"></i></a>
                   </div>
                 </div>
-                <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Bakery &
-                      Biscuits</small></a></div>
+                <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Padaria e Biscoitos</small></a></div>
                 <h2 class="fs-6"><a href="./pages/shop-single.html" class="text-inherit text-decoration-none">Cadbury 5
                     Star Chocolate</a></h2>
                 <div class="text-warning">
@@ -325,8 +315,8 @@
                     <i class="bi bi-star-fill"></i></small> <span class="text-muted small">5 (469)</span>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div><span class="text-dark">$32</span> <span
-                      class="text-decoration-line-through text-muted">$35</span>
+                  <div><span class="text-dark">R$32</span> <span
+                      class="text-decoration-line-through text-muted">R$35</span>
                   </div>
                   <div><a href="#!" class="btn btn-primary btn-sm">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -370,7 +360,7 @@
                     <i class="bi bi-star"></i></small> <span class="text-muted small">3.5 (456)</span>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div><span class="text-dark">$3</span> <span class="text-decoration-line-through text-muted">$5</span>
+                  <div><span class="text-dark">R$3</span> <span class="text-decoration-line-through text-muted">R$5</span>
                   </div>
                   <div><a href="#!" class="btn btn-primary btn-sm">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -411,8 +401,8 @@
                     <i class="bi bi-star-half"></i></small> <span class="text-muted small">4.5 (39)</span>
                 </div>
                 <div class="d-flex justify-content-between mt-4">
-                  <div><span class="text-dark">$13</span> <span
-                      class="text-decoration-line-through text-muted">$18</span>
+                  <div><span class="text-dark">R$13</span> <span
+                      class="text-decoration-line-through text-muted">R$18</span>
                   </div>
                   <div><a href="#!" class="btn btn-primary btn-sm">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -457,8 +447,8 @@
                     <i class="bi bi-star-half"></i></small> <span class="text-muted small">4.5 (189)</span>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div><span class="text-dark">$18</span> <span
-                      class="text-decoration-line-through text-muted">$24</span>
+                  <div><span class="text-dark">R$18</span> <span
+                      class="text-decoration-line-through text-muted">R$24</span>
                   </div>
                   <div><a href="#!" class="btn btn-primary btn-sm">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -499,7 +489,7 @@
                     <i class="bi bi-star-fill"></i></small> <span class="text-muted small">5 (345)</span>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div><span class="text-dark">$24</span>
+                  <div><span class="text-dark">R$24</span>
                   </div>
                   <div><a href="#!" class="btn btn-primary btn-sm">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -541,8 +531,8 @@
                     <i class="bi bi-star-half"></i></small> <span class="text-muted small">4 (90)</span>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div><span class="text-dark">$32</span> <span
-                      class="text-decoration-line-through text-muted">$35</span>
+                  <div><span class="text-dark">R$32</span> <span
+                      class="text-decoration-line-through text-muted">R$35</span>
                   </div>
                   <div><a href="#!" class="btn btn-primary btn-sm">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -583,7 +573,7 @@
                     <i class="bi bi-star-half"></i></small> <span class="text-muted small">4.5 (67)</span>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div><span class="text-dark">$3</span> <span class="text-decoration-line-through text-muted">$5</span>
+                  <div><span class="text-dark">R$3</span> <span class="text-decoration-line-through text-muted">R$5</span>
                   </div>
                   <div><a href="#!" class="btn btn-primary btn-sm">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -624,8 +614,8 @@
                     <i class="bi bi-star"></i></small> <span class="text-muted small">3.5 (89)</span>
                 </div>
                 <div class="d-flex justify-content-between mt-4">
-                  <div><span class="text-dark">$13</span> <span
-                      class="text-decoration-line-through text-muted">$18</span>
+                  <div><span class="text-dark">R$13</span> <span
+                      class="text-decoration-line-through text-muted">R$18</span>
                   </div>
                   <div><a href="#!" class="btn btn-primary btn-sm">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -655,10 +645,10 @@
             <div class=" pt-8 px-6 px-xl-8 rounded"
               style="background:url({{ asset('images/banner/banner-deal.jpg') }})no-repeat; background-size: cover; height: 470px;">
               <div>
-                <h3 class="fw-bold text-white">100% Organic
-                  Coffee Beans.
+                <h3 class="fw-bold text-white">100% Orgânico
+                  Grãos de Café.
                 </h3>
-                <p class="text-white">Get the best deal before close.</p>
+                <p class="text-white">Obtenha a melhor oferta antes do encerramento.</p>
                 <a href="#!" class="btn btn-primary">Comprar Agora <i class="feather-icon icon-arrow-right ms-1"></i></a>
               </div>
             </div>
@@ -685,8 +675,8 @@
                     Ground Coffee</a></h2>
 
                 <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div><span class="text-dark">$13</span> <span
-                      class="text-decoration-line-through text-muted">$18</span>
+                  <div><span class="text-dark">R$13</span> <span
+                      class="text-decoration-line-through text-muted">R$18</span>
                   </div>
                   <div>
                     <small class="text-warning"> <i class="bi bi-star-fill"></i>
@@ -731,8 +721,8 @@
                 <h2 class="fs-6"><a href="./pages/shop-single.html" class="text-inherit text-decoration-none">Crushed
                     Tomatoes</a></h2>
                 <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div><span class="text-dark">$13</span> <span
-                      class="text-decoration-line-through text-muted">$18</span>
+                  <div><span class="text-dark">R$13</span> <span
+                      class="text-decoration-line-through text-muted">R$18</span>
                   </div>
                   <div>
                     <small class="text-warning"> <i class="bi bi-star-fill"></i>
@@ -777,8 +767,8 @@
                 <h2 class="fs-6"><a href="./pages/shop-single.html" class="text-inherit text-decoration-none">Golden
                     Pineapple</a></h2>
                 <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div><span class="text-dark">$13</span> <span
-                      class="text-decoration-line-through text-muted">$18</span>
+                  <div><span class="text-dark">R$13</span> <span
+                      class="text-decoration-line-through text-muted">R$18</span>
                   </div>
                   <div>
                     <small class="text-warning"> <i class="bi bi-star-fill"></i>
@@ -967,7 +957,7 @@
           </div>
           <div class="col-lg-6">
             <div class="ps-lg-8 mt-6 mt-lg-0">
-              <a href="#!" class="mb-4 d-block">Bakery Biscuits</a>
+              <a href="#!" class="mb-4 d-block">Padaria e Biscoitos</a>
               <h2 class="mb-1 h1">Napolitanke Ljesnjak</h2>
               <div class="mb-4">
                 <small class="text-warning">
@@ -979,8 +969,8 @@
                 ><a href="#" class="ms-2">(30 reviews)</a>
               </div>
               <div class="fs-4">
-                <span class="fw-bold text-dark">$32</span>
-                <span class="text-decoration-line-through text-muted">$35</span
+                <span class="fw-bold text-dark">R$32</span>
+                <span class="text-decoration-line-through text-muted">R$35</span
                 ><span
                   ><small class="fs-6 ms-2 text-danger">26% Off</small></span
                 >
