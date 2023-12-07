@@ -6,6 +6,7 @@ use App\Http\Controllers\Front\StoreController;
 use App\Http\Controllers\Front\LoginController;
 use App\Http\Controllers\Front\OrderController;
 use App\Http\Controllers\Front\ProductController;
+use App\Http\Controllers\Front\SettingsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [StoreController::class, 'home'])->name('home');
@@ -24,3 +25,4 @@ Route::get('/carrinho', [CartController::class, 'index'])->name('cart.index');
 Route::get('/finalizar-compra', [CheckoutController::class, 'index'])->name('checkout.index');
 
 Route::get('/pedidos', [OrderController::class, 'index'])->name('order.index');
+Route::get('/configuracoes', [SettingsController::class, 'index'])->name('settings.index');

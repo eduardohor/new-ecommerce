@@ -53,13 +53,13 @@
             <ul class="nav flex-column nav-pills nav-pills-dark">
               <!-- nav item -->
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="account-orders.html"><i
-                    class="feather-icon icon-shopping-bag me-2"></i>Seus Pedidos</a>
+                <a class="nav-link {{ request()->routeIs('order.index') ? 'active' : '' }}" href="{{ route('order.index') }}">
+                  <i class="feather-icon icon-shopping-bag me-2"></i>Seus Pedidos</a>
               </li>
               <!-- nav item -->
               <li class="nav-item">
-                <a class="nav-link" href="account-settings.html"><i
-                    class="feather-icon icon-settings me-2"></i>Configurações</a>
+                <a class="nav-link {{ request()->routeIs('settings.index') ? 'active' : '' }}" href="{{ route('settings.index') }}">
+                  <i class="feather-icon icon-settings me-2"></i>Configurações</a>
               </li>
               <!-- nav item -->
               <li class="nav-item">
@@ -109,12 +109,12 @@
       <ul class="nav flex-column nav-pills nav-pills-dark">
           <!-- nav item -->
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="account-orders.html"><i
+          <a class="nav-link active" aria-current="page" href="{{ route('order.index') }}"><i
               class="feather-icon icon-shopping-bag me-2"></i>Seus Pedidos</a>
         </li>
           <!-- nav item -->
         <li class="nav-item">
-          <a class="nav-link " href="account-settings.html"><i class="feather-icon icon-settings me-2"></i>Configurações</a>
+          <a class="nav-link " href="{{ route('settings.index') }}"><i class="feather-icon icon-settings me-2"></i>Configurações</a>
         </li>
           <!-- nav item -->
         <li class="nav-item">
