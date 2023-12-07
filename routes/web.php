@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Front\AddressController;
 use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\CheckoutController;
 use App\Http\Controllers\Front\StoreController;
@@ -26,3 +27,4 @@ Route::get('/finalizar-compra', [CheckoutController::class, 'index'])->name('che
 
 Route::get('/pedidos', [OrderController::class, 'index'])->name('order.index');
 Route::get('/configuracoes', [SettingsController::class, 'index'])->name('settings.index');
+Route::get('/enderecos', [AddressController::class, 'index'])->name('address.index');

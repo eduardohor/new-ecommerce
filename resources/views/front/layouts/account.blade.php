@@ -63,8 +63,8 @@
               </li>
               <!-- nav item -->
               <li class="nav-item">
-                <a class="nav-link" href="account-address.html"><i
-                    class="feather-icon icon-map-pin me-2"></i>Endereço</a>
+                <a class="nav-link {{ request()->routeIs('address.index') ? 'active' : '' }}" href="{{ route('address.index') }}">
+                  <i class="feather-icon icon-map-pin me-2"></i>Endereço</a>
               </li>
               <!-- nav item -->
               <li class="nav-item">
