@@ -1,4 +1,4 @@
-@extends('layouts/login')
+@extends('front/layouts/login')
 @section('Cadastrar')
 @section('content')
 

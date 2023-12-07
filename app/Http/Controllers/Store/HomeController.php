@@ -9,11 +9,11 @@ class HomeController extends Controller
 {
     public function home()
     {
-        return view('home');
+        return view('front.home');
     }
 
     public function store()
     {
-        return view('store');
+        return view('front.store');
     }
 }

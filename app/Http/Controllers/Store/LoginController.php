@@ -9,16 +9,16 @@ class LoginController extends Controller
 {
     public function register()
     {
-        return view('login.register');
+        return view('front.login.register');
     }
 
     public function login()
     {
-        return view('login.login');
+        return view('front.login.login');
     }
 
     public function forgotPassword()
     {
-        return view('login.forgot-password');
+        return view('front.login.forgot-password');
     }
 }
