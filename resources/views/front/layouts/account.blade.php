@@ -73,8 +73,8 @@
               </li>
               <!-- nav item -->
               <li class="nav-item">
-                <a class="nav-link" href="account-notification.html"><i
-                    class="feather-icon icon-bell me-2"></i>Notificação</a>
+                <a class="nav-link {{ request()->routeIs('notification.index') ? 'active' : '' }}" href="{{ route('notification.index') }}">
+                  <i class="feather-icon icon-bell me-2"></i>Notificação</a>
               </li>
               <!-- nav item -->
               <li class="nav-item">
