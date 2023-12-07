@@ -68,8 +68,8 @@
               </li>
               <!-- nav item -->
               <li class="nav-item">
-                <a class="nav-link" href="account-payment-method.html"><i
-                    class="feather-icon icon-credit-card me-2"></i>Forma de Pagamento</a>
+                <a class="nav-link {{ request()->routeIs('payment.index') ? 'active' : '' }}" href="{{ route('payment.index') }}">
+                  <i class="feather-icon icon-credit-card me-2"></i>Forma de Pagamento</a>
               </li>
               <!-- nav item -->
               <li class="nav-item">

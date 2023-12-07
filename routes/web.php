@@ -6,6 +6,7 @@ use App\Http\Controllers\Front\CheckoutController;
 use App\Http\Controllers\Front\StoreController;
 use App\Http\Controllers\Front\LoginController;
 use App\Http\Controllers\Front\OrderController;
+use App\Http\Controllers\Front\PaymentController;
 use App\Http\Controllers\Front\ProductController;
 use App\Http\Controllers\Front\SettingsController;
 use Illuminate\Support\Facades\Route;
@@ -28,3 +29,4 @@ Route::get('/finalizar-compra', [CheckoutController::class, 'index'])->name('che
 Route::get('/pedidos', [OrderController::class, 'index'])->name('order.index');
 Route::get('/configuracoes', [SettingsController::class, 'index'])->name('settings.index');
 Route::get('/enderecos', [AddressController::class, 'index'])->name('address.index');
+Route::get('/pagamentos', [PaymentController::class, 'index'])->name('payment.index');
