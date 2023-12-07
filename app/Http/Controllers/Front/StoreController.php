@@ -21,4 +21,9 @@ class StoreController extends Controller
     {
         return view('front.store.wishlist');
     }
+
+    public function pageNotFound()
+    {
+        return view('front.store.404-error');
+    }
 }

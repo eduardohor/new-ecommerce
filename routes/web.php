@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [StoreController::class, 'home'])->name('home');
 Route::get('/loja', [StoreController::class, 'store'])->name('store');
 Route::get('/lista-de-desejos', [StoreController::class, 'wishlist'])->name('wishlist');
+Route::get('/pagina-nao-encontrada', [StoreController::class, 'pageNotFound'])->name('page-not-found');
 
 Route::get('/cadastrar', [LoginController::class, 'register'])->name('register');
 Route::get('/entrar', [LoginController::class, 'login'])->name('login');
