@@ -21,7 +21,7 @@ Route::get('/cadastrar', [LoginController::class, 'register'])->name('register')
 Route::get('/entrar', [LoginController::class, 'login'])->name('login');
 Route::get('/esqueceu-sua-senha', [LoginController::class, 'forgotPassword'])->name('forgot-password');
 
-Route::get('/produto', [ProductController::class, 'index'])->name('product.index');
+Route::get('/produto', [ProductController::class, 'index'])->name('product');
 
 Route::get('/carrinho', [CartController::class, 'index'])->name('cart.index');
 
