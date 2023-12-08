@@ -41,7 +41,7 @@
                       </svg>
                       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
                         1
-                        <span class="visually-hidden">mensagens não lidas</span>
+                        <span class="visually-hidden">Mensagens não lidas</span>
                       </span>
                     </a>
                   </div>
@@ -93,7 +93,7 @@
             <div class="list-inline">
               <div class="list-inline-item me-5">
 
-                <a href="./pages/shop-wishlist.html" class="text-muted position-relative">
+                <a href="{{ route('wishlist') }}" class="text-muted position-relative">
 
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -147,7 +147,7 @@
 
         <div class="offcanvas offcanvas-start" tabindex="-1" id="navbar-default" aria-labelledby="navbar-defaultLabel">
           <div class="offcanvas-header pb-1">
-            <a href="./index.html"><img src="{{ asset('images/logo/freshcart-logo.svg') }}" alt="eCommerce HTML Template"></a>
+            <a href="{{ route('home') }}"><img src="{{ asset('images/logo/freshcart-logo.svg') }}" alt="eCommerce HTML Template"></a>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">

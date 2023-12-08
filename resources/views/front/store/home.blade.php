@@ -54,7 +54,7 @@
         </div>
         <div class="category-slider ">
 
-          <div class="item"> <a href="../pages/shop-grid.html" class="text-decoration-none text-inherit">
+          <div class="item"> <a href="{{ route('store') }}" class="text-decoration-none text-inherit">
               <div class="card card-product mb-lg-4">
                 <div class="card-body text-center py-8">
                   <img src="{{ asset('images/category/category-dairy-bread-eggs.jpg') }}" alt="Grocery Ecommerce Template"
@@ -63,7 +63,7 @@
                 </div>
               </div>
             </a></div>
-          <div class="item"> <a href="../pages/shop-grid.html" class="text-decoration-none text-inherit">
+          <div class="item"> <a href="{{ route('store') }}" class="text-decoration-none text-inherit">
               <div class="card card-product mb-lg-4">
                 <div class="card-body text-center py-8">
                   <img src="{{ asset('images/category/category-snack-munchies.jpg') }}" alt="Grocery Ecommerce Template"
@@ -72,7 +72,7 @@
                 </div>
               </div>
             </a></div>
-          <div class="item"> <a href="../pages/shop-grid.html" class="text-decoration-none text-inherit">
+          <div class="item"> <a href="{{ route('store') }}" class="text-decoration-none text-inherit">
               <div class="card card-product mb-lg-4">
                 <div class="card-body text-center py-8">
                   <img src="{{ asset('images/category/category-bakery-biscuits.jpg') }}" alt="Grocery Ecommerce Template"
@@ -81,7 +81,7 @@
                 </div>
               </div>
             </a></div>
-          <div class="item"> <a href="../pages/shop-grid.html" class="text-decoration-none text-inherit">
+          <div class="item"> <a href="{{ route('store') }}" class="text-decoration-none text-inherit">
               <div class="card card-product mb-lg-4">
                 <div class="card-body text-center py-8">
                   <img src="{{ asset('images/category/category-instant-food.jpg') }}" alt="Grocery Ecommerce Template"
@@ -90,7 +90,7 @@
                 </div>
               </div>
             </a></div>
-          <div class="item"> <a href="../pages/shop-grid.html" class="text-decoration-none text-inherit">
+          <div class="item"> <a href="{{ route('store') }}" class="text-decoration-none text-inherit">
               <div class="card card-product mb-lg-4">
                 <div class="card-body text-center py-8">
                   <img src="{{ asset('images/category/category-tea-coffee-drinks.jpg') }}" alt="Grocery Ecommerce Template"
@@ -99,7 +99,7 @@
                 </div>
               </div>
             </a></div>
-          <div class="item"><a href="../pages/shop-grid.html" class="text-decoration-none text-inherit">
+          <div class="item"><a href="{{ route('store') }}" class="text-decoration-none text-inherit">
               <div class="card card-product mb-lg-4">
                 <div class="card-body text-center py-8">
                   <img src="{{ asset('images/category/category-atta-rice-dal.jpg') }}" alt="Grocery Ecommerce Template"
@@ -109,7 +109,7 @@
               </div>
             </a></div>
 
-          <div class="item"> <a href="../pages/shop-grid.html" class="text-decoration-none text-inherit">
+          <div class="item"> <a href="{{ route('store') }}" class="text-decoration-none text-inherit">
               <div class="card card-product mb-lg-4">
                 <div class="card-body text-center py-8">
                   <img src="{{ asset('images/category/category-baby-care.jpg') }}" alt="Grocery Ecommerce Template"
@@ -118,7 +118,7 @@
                 </div>
               </div>
             </a></div>
-          <div class="item"> <a href="../pages/shop-grid.html" class="text-decoration-none text-inherit">
+          <div class="item"> <a href="{{ route('store') }}" class="text-decoration-none text-inherit">
               <div class="card card-product mb-lg-4">
                 <div class="card-body text-center py-8">
                   <img src="{{ asset('images/category/category-chicken-meat-fish.jpg') }}" alt="Grocery Ecommerce Template"
@@ -127,7 +127,7 @@
                 </div>
               </div>
             </a></div>
-          <div class="item"> <a href="../pages/shop-grid.html" class="text-decoration-none text-inherit">
+          <div class="item"> <a href="{{ route('store') }}" class="text-decoration-none text-inherit">
               <div class="card card-product mb-lg-4">
                 <div class="card-body text-center py-8">
                   <img src="{{ asset('images/category/category-cleaning-essentials.jpg') }}" alt="Grocery Ecommerce Template"
@@ -136,7 +136,7 @@
                 </div>
               </div>
             </a></div>
-          <div class="item"> <a href="../pages/shop-grid.html" class="text-decoration-none text-inherit">
+          <div class="item"> <a href="{{ route('store') }}" class="text-decoration-none text-inherit">
               <div class="card card-product mb-lg-4">
                 <div class="card-body text-center py-8">
                   <img src="{{ asset('images/category/category-pet-care.jpg') }}" alt="Grocery Ecommerce Template" class="mb-3">
@@ -219,7 +219,7 @@
                 </div>
                 <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Snack &
                       Munchies</small></a></div>
-                <h2 class="fs-6"><a href="./pages/shop-single.html" class="text-inherit text-decoration-none">Haldiram's
+                <h2 class="fs-6"><a href="{{ route('product.index') }}" class="text-inherit text-decoration-none">Haldiram's
                     Sev Bhujia</a></h2>
                 <div>
 
@@ -251,7 +251,7 @@
                   <div class=" position-absolute top-0 start-0">
                     <span class="badge bg-success">14%</span>
                   </div>
-                  <a href="./pages/shop-single.html"><img src="{{ asset('') }}images/products/product-img-2.jpg"
+                  <a href="{{ route('product.index') }}"><img src="{{ asset('') }}images/products/product-img-2.jpg"
                       alt="Grocery Ecommerce Template" class="mb-3 img-fluid"></a>
                   <div class="card-product-action">
                     <a href="#!" class="btn-action" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i
@@ -264,7 +264,7 @@
 
                 </div>
                 <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Padaria e Biscoitos</small></a></div>
-                <h2 class="fs-6"><a href="./pages/shop-single.html"
+                <h2 class="fs-6"><a href="{{ route('product.index') }}"
                     class="text-inherit text-decoration-none">NutriChoice Digestive </a></h2>
                 <div class="text-warning">
 
@@ -291,7 +291,7 @@
           <div class="col">
             <div class="card card-product">
               <div class="card-body">
-                <div class="text-center position-relative"> <a href="./pages/shop-single.html"><img
+                <div class="text-center position-relative"> <a href="{{ route('product.index') }}"><img
                       src="{{ asset('') }}images/products/product-img-3.jpg" alt="Grocery Ecommerce Template"
                       class="mb-3 img-fluid"></a>
                   <div class="card-product-action">
@@ -304,7 +304,7 @@
                   </div>
                 </div>
                 <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Padaria e Biscoitos</small></a></div>
-                <h2 class="fs-6"><a href="./pages/shop-single.html" class="text-inherit text-decoration-none">Cadbury 5
+                <h2 class="fs-6"><a href="{{ route('product.index') }}" class="text-inherit text-decoration-none">Cadbury 5
                     Star Chocolate</a></h2>
                 <div class="text-warning">
 
@@ -332,7 +332,7 @@
           <div class="col">
             <div class="card card-product">
               <div class="card-body">
-                <div class="text-center position-relative"> <a href="./pages/shop-single.html"><img
+                <div class="text-center position-relative"> <a href="{{ route('product.index') }}"><img
                       src="{{ asset('') }}images/products/product-img-4.jpg" alt="Grocery Ecommerce Template"
                       class="mb-3 img-fluid"></a>
                   <div class="card-product-action">
@@ -349,7 +349,7 @@
                 </div>
                 <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Snack &
                       Munchies</small></a></div>
-                <h2 class="fs-6"><a href="./pages/shop-single.html" class="text-inherit text-decoration-none">Onion
+                <h2 class="fs-6"><a href="{{ route('product.index') }}" class="text-inherit text-decoration-none">Onion
                     Flavour Potato</a></h2>
                 <div class="text-warning">
 
@@ -376,7 +376,7 @@
           <div class="col">
             <div class="card card-product">
               <div class="card-body">
-                <div class="text-center position-relative"> <a href="./pages/shop-single.html"><img
+                <div class="text-center position-relative"> <a href="{{ route('product.index') }}"><img
                       src="{{ asset('') }}images/products/product-img-5.jpg" alt="Grocery Ecommerce Template"
                       class="mb-3 img-fluid"></a>
                   <div class="card-product-action">
@@ -390,7 +390,7 @@
                 </div>
                 <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Instant
                       Food</small></a></div>
-                <h2 class="fs-6"><a href="./pages/shop-single.html" class="text-inherit text-decoration-none">Salted
+                <h2 class="fs-6"><a href="{{ route('product.index') }}" class="text-inherit text-decoration-none">Salted
                     Instant Popcorn </a></h2>
                 <div class="text-warning">
 
@@ -436,7 +436,7 @@
                 </div>
                 <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Dairy, Bread &
                       Eggs</small></a></div>
-                <h2 class="fs-6"><a href="./pages/shop-single.html" class="text-inherit text-decoration-none">Blueberry
+                <h2 class="fs-6"><a href="{{ route('product.index') }}" class="text-inherit text-decoration-none">Blueberry
                     Greek Yogurt</a></h2>
                 <div>
 
@@ -464,7 +464,7 @@
           <div class="col">
             <div class="card card-product">
               <div class="card-body">
-                <div class="text-center position-relative"> <a href="./pages/shop-single.html"><img
+                <div class="text-center position-relative"> <a href="{{ route('product.index') }}"><img
                       src="{{ asset('') }}images/products/product-img-7.jpg" alt="Grocery Ecommerce Template"
                       class="mb-3 img-fluid"></a>
                   <div class="card-product-action">
@@ -478,7 +478,7 @@
                 </div>
                 <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Dairy, Bread &
                       Eggs</small></a></div>
-                <h2 class="fs-6"><a href="./pages/shop-single.html" class="text-inherit text-decoration-none">Britannia
+                <h2 class="fs-6"><a href="{{ route('product.index') }}" class="text-inherit text-decoration-none">Britannia
                     Cheese Slices</a></h2>
                 <div class="text-warning">
 
@@ -505,7 +505,7 @@
           <div class="col">
             <div class="card card-product">
               <div class="card-body">
-                <div class="text-center position-relative"> <a href="./pages/shop-single.html"><img
+                <div class="text-center position-relative"> <a href="{{ route('product.index') }}"><img
                       src="{{ asset('') }}images/products/product-img-8.jpg" alt="Grocery Ecommerce Template"
                       class="mb-3 img-fluid"></a>
                   <div class="card-product-action">
@@ -519,7 +519,7 @@
                 </div>
                 <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Instant
                       Food</small></a></div>
-                <h2 class="fs-6"><a href="./pages/shop-single.html" class="text-inherit text-decoration-none">Kellogg's
+                <h2 class="fs-6"><a href="{{ route('product.index') }}" class="text-inherit text-decoration-none">Kellogg's
                     Original Cereals</a>
                 </h2>
                 <div class="text-warning">
@@ -548,7 +548,7 @@
           <div class="col">
             <div class="card card-product">
               <div class="card-body">
-                <div class="text-center position-relative"> <a href="./pages/shop-single.html"><img
+                <div class="text-center position-relative"> <a href="{{ route('product.index') }}"><img
                       src="{{ asset('') }}images/products/product-img-9.jpg" alt="Grocery Ecommerce Template"
                       class="mb-3 img-fluid"></a>
                   <div class="card-product-action">
@@ -562,7 +562,7 @@
                 </div>
                 <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Snack &
                       Munchies</small></a></div>
-                <h2 class="fs-6"><a href="./pages/shop-single.html" class="text-inherit text-decoration-none">Slurrp
+                <h2 class="fs-6"><a href="{{ route('product.index') }}" class="text-inherit text-decoration-none">Slurrp
                     Millet Chocolate </a></h2>
                 <div class="text-warning">
 
@@ -589,7 +589,7 @@
           <div class="col">
             <div class="card card-product">
               <div class="card-body">
-                <div class="text-center position-relative"> <a href="./pages/shop-single.html"><img
+                <div class="text-center position-relative"> <a href="{{ route('product.index') }}"><img
                       src="{{ asset('') }}images/products/product-img-10.jpg" alt="Grocery Ecommerce Template"
                       class="mb-3 img-fluid"></a>
                   <div class="card-product-action">
@@ -603,7 +603,7 @@
                 </div>
                 <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Dairy, Bread &
                       Eggs</small></a></div>
-                <h2 class="fs-6"><a href="./pages/shop-single.html" class="text-inherit text-decoration-none">Amul
+                <h2 class="fs-6"><a href="{{ route('product.index') }}" class="text-inherit text-decoration-none">Amul
                     Butter - 500 g</a></h2>
                 <div class="text-warning">
 
@@ -656,7 +656,7 @@
           <div class="col">
             <div class="card card-product">
               <div class="card-body">
-                <div class="text-center  position-relative "> <a href="./pages/shop-single.html"><img
+                <div class="text-center  position-relative "> <a href="{{ route('product.index') }}"><img
                       src="{{ asset('') }}images/products/product-img-11.jpg" alt="Grocery Ecommerce Template"
                       class="mb-3 img-fluid"></a>
 
@@ -671,7 +671,7 @@
                 </div>
                 <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Tea, Coffee &
                       Drinks</small></a></div>
-                <h2 class="fs-6"><a href="./pages/shop-single.html" class="text-inherit text-decoration-none">Roast
+                <h2 class="fs-6"><a href="{{ route('product.index') }}" class="text-inherit text-decoration-none">Roast
                     Ground Coffee</a></h2>
 
                 <div class="d-flex justify-content-between align-items-center mt-3">
@@ -704,7 +704,7 @@
           <div class="col">
             <div class="card card-product">
               <div class="card-body">
-                <div class="text-center  position-relative "> <a href="./pages/shop-single.html"><img
+                <div class="text-center  position-relative "> <a href="{{ route('product.index') }}"><img
                       src="{{ asset('') }}images/products/product-img-12.jpg" alt="Grocery Ecommerce Template"
                       class="mb-3 img-fluid"></a>
                   <div class="card-product-action">
@@ -718,7 +718,7 @@
                 </div>
                 <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Fruits &
                       Vegetables</small></a></div>
-                <h2 class="fs-6"><a href="./pages/shop-single.html" class="text-inherit text-decoration-none">Crushed
+                <h2 class="fs-6"><a href="{{ route('product.index') }}" class="text-inherit text-decoration-none">Crushed
                     Tomatoes</a></h2>
                 <div class="d-flex justify-content-between align-items-center mt-3">
                   <div><span class="text-dark">R$13</span> <span
@@ -750,7 +750,7 @@
           <div class="col">
             <div class="card card-product">
               <div class="card-body">
-                <div class="text-center  position-relative "> <a href="./pages/shop-single.html"><img
+                <div class="text-center  position-relative "> <a href="{{ route('product.index') }}"><img
                       src="{{ asset('') }}images/products/product-img-13.jpg" alt="Grocery Ecommerce Template"
                       class="mb-3 img-fluid"></a>
                   <div class="card-product-action">
@@ -764,7 +764,7 @@
                 </div>
                 <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Fruits &
                       Vegetables</small></a></div>
-                <h2 class="fs-6"><a href="./pages/shop-single.html" class="text-inherit text-decoration-none">Golden
+                <h2 class="fs-6"><a href="{{ route('product.index') }}" class="text-inherit text-decoration-none">Golden
                     Pineapple</a></h2>
                 <div class="d-flex justify-content-between align-items-center mt-3">
                   <div><span class="text-dark">R$13</span> <span
@@ -966,13 +966,13 @@
                   <i class="bi bi-star-fill"></i>
                   <i class="bi bi-star-fill"></i>
                   <i class="bi bi-star-half"></i></small
-                ><a href="#" class="ms-2">(30 reviews)</a>
+                ><a href="#" class="ms-2">(30 avaliações)</a>
               </div>
               <div class="fs-4">
                 <span class="fw-bold text-dark">R$32</span>
                 <span class="text-decoration-line-through text-muted">R$35</span
                 ><span
-                  ><small class="fs-6 ms-2 text-danger">26% Off</small></span
+                  ><small class="fs-6 ms-2 text-danger">26% de desconto</small></span
                 >
               </div>
               <hr class="my-6">
@@ -1004,8 +1004,7 @@
                   <!-- button -->
                   <!-- btn -->
                   <button type="button" class="btn btn-primary">
-                    <i class="feather-icon icon-shopping-bag me-2"></i>Add to
-                    cart
+                    <i class="feather-icon icon-shopping-bag me-2"></i>Adicionar
                   </button>
                 </div>
                 <div class="col-md-4 col-5">
@@ -1033,23 +1032,23 @@
                 <table class="table table-borderless">
                   <tbody>
                     <tr>
-                      <td>Product Code:</td>
+                      <td>Código do Produto:</td>
                       <td>FBB00255</td>
                     </tr>
                     <tr>
-                      <td>Availability:</td>
-                      <td>In Stock</td>
+                      <td>Disponibilidade:</td>
+                      <td>Em Estoque</td>
                     </tr>
                     <tr>
-                      <td>Type:</td>
-                      <td>Fruits</td>
+                      <td>Tipo:</td>
+                      <td>Frutas</td>
                     </tr>
                     <tr>
-                      <td>Shipping:</td>
+                      <td>Envia:</td>
                       <td>
                         <small
-                          >01 day shipping.<span class="text-muted"
-                            >( Free pickup today)</span
+                          >01  dia de envio.<span class="text-muted"
+                            >(Retirada gratuita hoje)</span
                           ></small
                         >
                       </td>

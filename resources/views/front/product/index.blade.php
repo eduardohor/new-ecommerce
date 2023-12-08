@@ -114,7 +114,7 @@
             <div class="fs-4">
               <!-- price --><span class="fw-bold text-dark">R$32</span> <span
                 class="text-decoration-line-through text-muted">R$35</span><span><small class="fs-6 ms-2 text-danger">26%
-                  Off</small></span>
+                  de desconto</small></span>
             </div>
             <!-- hr -->
             <hr class="my-6">
