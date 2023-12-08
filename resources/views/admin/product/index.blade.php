@@ -20,7 +20,7 @@
           </div>
           <!-- button -->
           <div>
-            <a href="add-product.html" class="btn btn-primary">Adicionar Produto</a>
+            <a href="{{ route('product.create') }}" class="btn btn-primary">Adicionar Produto</a>
           </div>
         </div>
       </div>
