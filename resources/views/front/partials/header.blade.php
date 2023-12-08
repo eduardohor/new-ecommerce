@@ -361,7 +361,7 @@
                   </ul>
                 </li> --}}
                 <li class="nav-item w-100 w-lg-auto">
-                  <a class="nav-link" href="./dashboard/index.html">
+                  <a class="nav-link" href="{{ route('dashboard.index') }}">
                     Painel
                   </a>
                 </li>

@@ -352,4 +352,13 @@
     </div>
   </section>
 </main>
+
+@endsection
+
+
+@section('scripts')
+
+<script src="{{ asset('libs/apexcharts/dist/apexcharts.min.js') }}"></script>
+<script src="{{ asset('js/vendors/chart.js') }}"></script>
+
 @endsection

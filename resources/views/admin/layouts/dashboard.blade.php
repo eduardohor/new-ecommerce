@@ -21,6 +21,8 @@
 
   <!-- End Tag -->
 
+  @yield('links')
+
 </head>
 
 <body>
@@ -231,7 +233,8 @@
             <ul class="navbar-nav flex-column" id="sideNavbar">
 
               <li class="nav-item ">
-                <a class="nav-link  active " href="../dashboard/index.html">
+                <a class="nav-link {{ request()->routeIs('dashboard.index') ? " active" : ' ' }} " href=" {{
+                  route('dashboard.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-house"></i></span>
                     <span class="nav-link-text">Painel</span>
@@ -250,7 +253,8 @@
                 </a>
               </li>
               <li class="nav-item ">
-                <a class="nav-link " href="../dashboard/categories.html">
+                <a class="nav-link {{ request()->routeIs('category.index') ? " active" : ' ' }}"
+                  href="{{ route('category.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-list-task"></i></span>
                     <span class="nav-link-text">Categorias</span>
@@ -681,31 +685,8 @@
 
   <!-- Theme JS -->
   <script src="{{ asset('js/theme.min.js') }}"></script>
-  <script src="{{ asset('libs/apexcharts/dist/apexcharts.min.js') }}"></script>
-  <script src="{{ asset('libs/apexcharts/dist/locales/pt-br.js') }}"></script>
-  <script src="{{ asset('js/vendors/chart.js') }}"></script>
 
-  <script>
-    var options = {
-  chart: {
-    type: 'line'
-  },
-  series: [{
-    name: 'sales',
-    data: [30,40,35,50,49,60,70,91,125]
-  }],
-  xaxis: {
-    categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]
-  }
-}
-
-var chart = new ApexCharts(document.querySelector("#chart"), options);
-
-chart.render();
-
-  </script>
-
-
+  @yield('scripts')
 
 </body>
 
