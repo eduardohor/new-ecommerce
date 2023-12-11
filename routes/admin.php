@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\OrderController;
@@ -16,3 +17,5 @@ Route::get('/produtos', [ProductController::class, 'index'])->name('products.ind
 
 Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index');
 Route::get('/pedidos/detalhes', [OrderController::class, 'show'])->name('orders.show');
+
+Route::get('/clientes', [CustomerController::class, 'index'])->name('customers.index');

@@ -272,32 +272,33 @@
                 </a>
               </li>
 
-              <li class="nav-item ">
+              {{-- <li class="nav-item ">
                 <a class="nav-link " href="../dashboard/vendor-grid.html">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-shop"></i></span>
                     <span class="nav-link-text">Lojas / Vendedores</span>
                   </div>
                 </a>
-              </li>
+              </li> --}}
               <li class="nav-item ">
-                <a class="nav-link " href="../dashboard/customers.html">
+                <a class="nav-link {{ request()->routeIs('customers.index') ? 'active' : ''}}"
+                  href="{{ route('customers.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-people"></i></span>
                     <span class="nav-link-text">Clientes</span>
                   </div>
                 </a>
               </li>
-              <li class="nav-item ">
+              {{-- <li class="nav-item ">
                 <a class="nav-link " href="../dashboard/reviews.html">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-star"></i></span>
                     <span class="nav-link-text">Avaliações</span>
                   </div>
                 </a>
-              </li>
+              </li> --}}
               <!-- Nav item -->
-              <li class="nav-item">
+              {{-- <li class="nav-item">
                 <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#navMenuLevelFirst"
                   aria-expanded="false" aria-controls="navMenuLevelFirst">
                   <span class="nav-link-icon"><i class=" bi bi-arrow-90deg-down"></i></span>
@@ -355,7 +356,7 @@
                     </li>
                   </ul>
                 </div>
-              </li>
+              </li> --}}
 
               <li class="nav-item mt-6 mb-3">
                 <span class="nav-label">Configurações do Site</span> <span class="badge bg-light-info text-dark-info">Em
@@ -451,7 +452,8 @@
           <div class="navbar-vertical-content flex-grow-1" data-simplebar="">
             <ul class="navbar-nav flex-column">
               <li class="nav-item ">
-                <a class="nav-link  active " href="../dashboard/index.html">
+                <a class="nav-link {{ request()->routeIs('dashboard.index') ? " active" : ' ' }} " href=" {{
+                  route('dashboard.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-house"></i></span>
                     <span>Painel</span>
@@ -462,7 +464,8 @@
                 <span class="nav-label">Gestão da Loja</span>
               </li>
               <li class="nav-item ">
-                <a class="nav-link " href="../dashboard/products.html">
+                <a class="nav-link {{ request()->routeIs('products.index') || request()->routeIs('products.create') ? 'active' : '' }}"
+                  href="{{ route('products.create') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-cart"></i></span>
                     <span class="nav-link-text">Produtos</span>
@@ -470,7 +473,8 @@
                 </a>
               </li>
               <li class="nav-item ">
-                <a class="nav-link " href="../dashboard/categories.html">
+                <a class="nav-link {{ request()->routeIs('categories.index') || request()->routeIs('categories.create') ? "
+                  active" : ' ' }}" href="{{ route('categories.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-list-task"></i></span>
                     <span class="nav-link-text">Categorias</span>
@@ -478,54 +482,39 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link   collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#navOrders"
-                  aria-expanded="false" aria-controls="navOrders">
+                <a class="nav-link   {{ request()->routeIs('orders.index') || request()->routeIs('orders.show') ? 'active' : ''}}"
+                  href="{{ route('orders.show') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-bag"></i></span>
                     <span class="nav-link-text">Pedidos</span>
                   </div>
                 </a>
-                <div id="navOrders" class="collapse " data-bs-parent="#sideNavbar">
-                  <ul class="nav flex-column">
-                    <li class="nav-item ">
-                      <a class="nav-link " href="../dashboard/order-list.html">
-                        Lista
-                      </a>
-                    </li>
-                    <!-- Nav item -->
-                    <li class="nav-item ">
-                      <a class="nav-link " href="../dashboard/order-single.html">
-                        Simples
-
-                      </a>
-                    </li>
-                  </ul>
-                </div>
               </li>
-              <li class="nav-item ">
+              {{-- <li class="nav-item ">
                 <a class="nav-link " href="../dashboard/vendor-grid.html">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-shop"></i></span>
                     <span class="nav-link-text">Lojas / Vendedores</span>
                   </div>
                 </a>
-              </li>
+              </li> --}}
               <li class="nav-item ">
-                <a class="nav-link " href="../dashboard/customers.html">
+                <a class="nav-link {{ request()->routeIs('customers.index') ? 'active' : ''}}"
+                  href="{{ route('customers.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-people"></i></span>
                     <span class="nav-link-text">Clientes</span>
                   </div>
                 </a>
               </li>
-              <li class="nav-item ">
+              {{-- <li class="nav-item ">
                 <a class="nav-link " href="../dashboard/reviews.html">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-star"></i></span>
                     <span class="nav-link-text">Avaliações</span>
                   </div>
                 </a>
-              </li>
+              </li> --}}
               <li class="nav-item mt-6 mb-3">
                 <span class="nav-label">Configurações do Site</span> <span class="badge bg-light-info text-dark-info">Em
                   breve</span>
