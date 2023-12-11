@@ -22,7 +22,7 @@
           </div>
           <!-- button -->
           <div>
-            <a href="add-category.html" class="btn btn-primary">Adicionar Nova Categoria</a>
+            <a href="{{ route('categories.create') }}" class="btn btn-primary">Adicionar Nova Categoria</a>
           </div>
         </div>
       </div>

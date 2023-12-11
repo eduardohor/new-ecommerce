@@ -28,7 +28,7 @@
           </div>
           <!-- button -->
           <div>
-            <a href="{{ route('product.index') }}" class="btn btn-light">Voltar para Produtos</a>
+            <a href="{{ route('products.index') }}" class="btn btn-light">Voltar para Produtos</a>
           </div>
         </div>
 
