@@ -254,8 +254,8 @@
                 </a>
               </li>
               <li class="nav-item ">
-                <a class="nav-link {{ request()->routeIs('categories.index') ? " active" : ' ' }}"
-                  href="{{ route('categories.index') }}">
+                <a class="nav-link {{ request()->routeIs('categories.index') || request()->routeIs('categories.create') ? "
+                  active" : ' ' }}" href="{{ route('categories.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-list-task"></i></span>
                     <span class="nav-link-text">Categorias</span>
@@ -263,28 +263,13 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link   collapsed " href="#" data-bs-toggle="collapse"
-                  data-bs-target="#navCategoriesOrders" aria-expanded="false" aria-controls="navCategoriesOrders">
+                <a class="nav-link {{ request()->routeIs('orders.index') ? 'active' : ''}}"
+                  href="{{ route('orders.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-bag"></i></span>
                     <span class="nav-link-text">Pedidos</span>
                   </div>
                 </a>
-                <div id="navCategoriesOrders" class="collapse " data-bs-parent="#sideNavbar">
-                  <ul class="nav flex-column">
-                    <li class="nav-item ">
-                      <a class="nav-link " href="../dashboard/order-list.html">
-                        Lista
-                      </a>
-                    </li>
-                    <!-- Nav item -->
-                    <li class="nav-item ">
-                      <a class="nav-link " href="../dashboard/order-single.html">
-                        Simples
-                      </a>
-                    </li>
-                  </ul>
-                </div>
               </li>
 
               <li class="nav-item ">

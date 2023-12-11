@@ -1,5 +1,5 @@
 @extends('admin.layouts.dashboard')
-@section('title', 'Produto')
+@section('title', 'Cadastrar Produto')
 @section('content')
 
 @section('links')

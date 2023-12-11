@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\OrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/painel', [DashboardController::class, 'index'])->name('dashboard.index');
@@ -12,3 +13,5 @@ Route::get('/categorias/cadastro', [CategoryController::class, 'create'])->name(
 
 Route::get('/produtos/cadastro', [ProductController::class, 'create'])->name('products.create');
 Route::get('/produtos', [ProductController::class, 'index'])->name('products.index');
+
+Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index');

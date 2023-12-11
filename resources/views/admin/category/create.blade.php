@@ -1,5 +1,5 @@
 @extends('admin.layouts.dashboard')
-@section('title', 'Categorias')
+@section('title', 'Cadastrar Categoria')
 @section('content')
 
 <main class="main-content-wrapper">
@@ -15,7 +15,7 @@
             <!-- breacrumb -->
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a href="#" class="text-inherit">Início</a></li>
+                <li class="breadcrumb-item"><a href="#" class="text-inherit">Painel</a></li>
                 <li class="breadcrumb-item"><a href="#" class="text-inherit">Categorias</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Adicionar Nova Categoria</li>
               </ol>
