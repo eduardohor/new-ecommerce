@@ -15,3 +15,4 @@ Route::get('/produtos/cadastro', [ProductController::class, 'create'])->name('pr
 Route::get('/produtos', [ProductController::class, 'index'])->name('products.index');
 
 Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index');
+Route::get('/pedidos/detalhes', [OrderController::class, 'show'])->name('orders.show');

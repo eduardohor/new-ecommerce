@@ -12,4 +12,9 @@ class OrderController extends Controller
     {
         return view('admin.order.index');
     }
+
+    public function show()
+    {
+        return view('admin.order.show');
+    }
 }
