@@ -1,5 +1,5 @@
-@extends('front/layouts/login')
-@section('Entrar')
+@extends('front/layouts/auth')
+@section('title', 'Entrar')
 @section('content')
 
 <main>
@@ -19,31 +19,46 @@
             <p>Bem-vindo de volta ao FreshCart! Insira o seu email e senha para iniciar.</p>
           </div>
 
-          <form>
+          @if (session('status'))
+          <div class="alert alert-success mb-4">
+            {{ session('status') }}
+          </div>
+          @endif
+
+          <form method="POST" action="{{ route('login.store') }}">
+            @csrf
             <div class="row g-3">
               <!-- row -->
 
               <div class="col-12">
                 <!-- input -->
-                <input type="email" class="form-control" id="inputEmail4" placeholder="Email" required>
+                <input type="email" class="form-control" id="inputEmail4" placeholder="Email" name="email"
+                  value="{{ old('email') }}" required autofocus autocomplete="username">
+                @error('email')
+                <span class="text-danger">{{ $message }}</span>
+                @enderror
               </div>
               <div class="col-12">
                 <!-- input -->
                 <div class="password-field position-relative">
-      <input type="password" id="fakePassword" placeholder="Senha" class="form-control" required >
-      <span><i id="passwordToggler"class="bi bi-eye-slash"></i></span>
-    </div>
+                  <input type="password" id="fakePassword" placeholder="Senha" class="form-control" name="password"
+                    autocomplete="current-password">
+                  <span><i id="passwordToggler" class="bi bi-eye-slash"></i></span>
+                  @error('password')
+                  <span class="text-danger">{{ $message }}</span>
+                  @enderror
+                </div>
 
               </div>
               <div class="d-flex justify-content-between">
                 <!-- form check -->
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="remember">
                   <!-- label --> <label class="form-check-label" for="flexCheckDefault">
                     Lembrar de mim
                   </label>
                 </div>
-                <div> Esqueceu sua senha? <a href="{{ route('forgot-password') }}">Redefinir</a></div>
+                <div> Esqueceu sua senha? <a href="{{ route('password.request') }}">Redefinir</a></div>
               </div>
               <!-- btn -->
               <div class="col-12 d-grid"> <button type="submit" class="btn btn-primary">Entrar</button>
