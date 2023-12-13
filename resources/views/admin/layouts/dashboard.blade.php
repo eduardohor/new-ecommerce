@@ -49,8 +49,8 @@
           </div>
           <div>
             <ul class="list-unstyled d-flex align-items-center mb-0 ms-5 ms-lg-0">
-
-              <li class="dropdown-center ">
+              {{-- Noficication --}}
+              {{-- <li class="dropdown-center ">
                 <a class="position-relative btn-icon btn-ghost-secondary btn rounded-circle" href="#" role="button"
                   data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="bi bi-bell fs-5"></i>
@@ -62,7 +62,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-lg p-0 border-0 ">
                   <div class="border-bottom p-5 d-flex
-          justify-content-between align-items-center">
+                   justify-content-between align-items-center">
                     <div>
                       <h5 class="mb-1">Notificações</h5>
                       <p class="mb-0 small">Você tem 2 mensagens não lidas</p>
@@ -160,53 +160,34 @@
                   </div>
                 </div>
 
-              </li>
+              </li> --}}
               <li class="dropdown ms-4">
                 <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img src="{{ asset('images/avatar/avatar-1.jpg') }}" alt="" class="avatar avatar-md rounded-circle">
+                  <img src="{{ asset('images/avatar/avatar.png') }}" alt="" class="avatar avatar-md rounded-circle">
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-end p-0">
 
-
-
                   <div class="lh-1 px-5 py-4 border-bottom">
-                    <h5 class="mb-1 h6">Administrador FreshCart</h5>
-                    <small>admindemo@email.com</small>
+                    <h5 class="mb-1 h6">Administrador {{ auth()->user()->name }}</h5>
+                    <small>{{ auth()->user()->email }}</small>
                   </div>
-
-
 
                   <ul class="list-unstyled px-2 py-3">
 
                     <li>
-                      <a class="dropdown-item" href="#!">
-                        Início
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#!">
+                      <a class="dropdown-item" href="{{ route('profile.edit.admin') }}">
                         Perfil
                       </a>
 
-
                     </li>
-
-
-                    <li>
-                      <a class="dropdown-item" href="#!">
-
-                        Configurações
-                      </a>
-                    </li>
-
                   </ul>
-                  <div class="border-top px-5 py-3">
-
-                    <a href="#">Sair</a>
+                  <div class="border-top px-1 py-3">
+                    <form action="{{ route('logout') }}" method="post">
+                      @csrf
+                      <button class="btn text-primary">Sair</button>
+                    </form>
                   </div>
-
-
 
                 </div>
 
@@ -225,7 +206,7 @@
       <nav class="navbar-vertical-nav d-none d-xl-block ">
         <div class="navbar-vertical">
           <div class="px-4 py-5">
-            <a href="../index.html" class="navbar-brand">
+            <a href="{{ route('home') }}" class="navbar-brand">
               <img src="{{ asset('images/logo/freshcart-logo.svg') }}" alt="">
             </a>
           </div>
@@ -243,6 +224,15 @@
               </li>
               <li class="nav-item mt-6 mb-3">
                 <span class="nav-label">Gestão da Loja</span>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link {{ request()->routeIs('users.index') ? 'active' : ''}}"
+                  href="{{ route('users.index') }}">
+                  <div class="d-flex align-items-center">
+                    <span class="nav-link-icon"> <i class="bi bi-person"></i></span>
+                    <span class="nav-link-text">Usuários</span>
+                  </div>
+                </a>
               </li>
               <li class="nav-item ">
                 <a class="nav-link {{ request()->routeIs('products.index') || request()->routeIs('products.create') ? 'active' : '' }}"
@@ -444,7 +434,7 @@
       <nav class="navbar-vertical-nav offcanvas offcanvas-start navbar-offcanvac" tabindex="-1" id="offcanvasExample">
         <div class="navbar-vertical">
           <div class="px-4 py-5 d-flex justify-content-between align-items-center">
-            <a href="../index.html" class="navbar-brand">
+            <a href="{{ route('home') }}" class="navbar-brand">
               <img src="{{ asset('images/logo/freshcart-logo.svg') }}" alt="">
             </a>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -462,6 +452,15 @@
               </li>
               <li class="nav-item mt-6 mb-3">
                 <span class="nav-label">Gestão da Loja</span>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link {{ request()->routeIs('users.index') ? 'active' : ''}}"
+                  href="{{ route('users.index') }}">
+                  <div class="d-flex align-items-center">
+                    <span class="nav-link-icon"> <i class="bi bi-person"></i></span>
+                    <span class="nav-link-text">Usuários</span>
+                  </div>
+                </a>
               </li>
               <li class="nav-item ">
                 <a class="nav-link {{ request()->routeIs('products.index') || request()->routeIs('products.create') ? 'active' : '' }}"

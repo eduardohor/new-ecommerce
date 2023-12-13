@@ -5,11 +5,19 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'admin'])->group(function () {
   Route::prefix('admin')->group(function () {
+    Route::get('/usuarios', [UserController::class, 'index'])->name('users.index');
+
     Route::get('/painel', [DashboardController::class, 'index'])->name('dashboard.index');
+
+    Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit.admin');
+    Route::patch('/perfil', [ProfileController::class, 'update'])->name('profile.update.admin');
+    Route::delete('/perfil', [ProfileController::class, 'destroy'])->name('profile.destroy.admin');
 
     Route::get('/categorias', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/categorias/cadastro', [CategoryController::class, 'create'])->name('categories.create');
