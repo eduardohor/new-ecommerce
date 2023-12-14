@@ -1,5 +1,12 @@
 @extends('admin.layouts.dashboard')
 @section('title', 'Cadastrar Usuário')
+
+@section('links')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+  integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
+@endsection
+
 @section('content')
 
 <main class="main-content-wrapper">
@@ -67,7 +74,7 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Telefone</label>
-                  <input type="text" name="phone" class="form-control" placeholder="Número do telefone"
+                  <input type="text" id="phone" name="phone" class="form-control" placeholder="Número do telefone"
                     value="{{ old('phone') }}" autocomplete="phone" @error('phone') autofocus @enderror>
                   @error('phone')
                   <span class="text-danger">{{ $message }}</span>
@@ -119,10 +126,45 @@
     </div>
   </div>
 
-
-
   </div>
 
 </main>
+
+@endsection
+
+@section('scripts')
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+  integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="{{ asset('libs/inputmask/dist/jquery.inputmask.min.js') }}"></script>
+<script src="{{ asset('js/custom.js') }}"></script>
+<script>
+  $(document).ready(function() {
+    // Verifica se a sessão contém o status 'user-created'
+    var status = "{{ session('status') }}";
+    
+    if (status === 'user-created') {
+      // Configuração do Toastr
+      toastr.options = {
+        "positionClass": "toast-top-right",
+        "closeButton": true,
+        "progressBar": true,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "6000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      };
+
+      // Exibe a mensagem do Toastr
+      toastr.success("Usuário Cadastrado com Sucesso!");
+    }
+  });
+</script>
 
 @endsection

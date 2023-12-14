@@ -39,7 +39,7 @@
             <!-- input -->
             <div class="mb-5">
               <label class="form-label">Telefone</label>
-              <input type="text" name="phone" class="form-control" placeholder="Número do telefone"
+              <input type="text" id=phone name="phone" class="form-control" placeholder="Número do telefone"
                 value="{{ old('phone', $user->phone) }}" autocomplete="phone" @error('phone') autofocus @enderror>
               @error('phone')
               <span class="text-danger">{{ $message }}</span>
@@ -179,6 +179,9 @@
 @endsection
 
 @section('scripts')
+
+<script src="{{ asset('libs/inputmask/dist/jquery.inputmask.min.js') }}"></script>
+<script src="{{ asset('js/custom.js') }}"></script>
 
 <script>
   $(document).ready(function() {
