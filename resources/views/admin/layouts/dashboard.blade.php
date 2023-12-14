@@ -225,8 +225,9 @@
               <li class="nav-item mt-6 mb-3">
                 <span class="nav-label">Gestão da Loja</span>
               </li>
+              @if (auth()->user()->is_super_admin)
               <li class="nav-item ">
-                <a class="nav-link {{ request()->routeIs('users.index') ? 'active' : ''}}"
+                <a class="nav-link {{ request()->routeIs('users.index') || request()->routeIs('users.create') ? 'active' : ''}}"
                   href="{{ route('users.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-person"></i></span>
@@ -234,6 +235,7 @@
                   </div>
                 </a>
               </li>
+              @endif
               <li class="nav-item ">
                 <a class="nav-link {{ request()->routeIs('products.index') || request()->routeIs('products.create') ? 'active' : '' }}"
                   href="{{ route('products.index') }}">

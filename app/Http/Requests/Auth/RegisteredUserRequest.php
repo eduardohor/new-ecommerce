@@ -28,6 +28,7 @@ class RegisteredUserRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'phone' => ['nullable', 'string', 'max:20'],
         ];
     }
 
@@ -43,7 +44,9 @@ class RegisteredUserRequest extends FormRequest
             'email.unique' => 'O e-mail já está sendo utilizado.',
             'password.required' => 'O campo senha é obrigatório.',
             'password.confirmed' => 'As senhas não correspondem',
-            'password.min' => 'O campo de senha deve ter pelo menos 8 caracteres.'
+            'password.min' => 'O campo de senha deve ter pelo menos 8 caracteres.',
+            'phone.string' => 'O campo telefone deve ser uma string.',
+            'phone.max' => 'O campo telefone não pode ter mais de :max caracteres.',
         ];
     }
 }

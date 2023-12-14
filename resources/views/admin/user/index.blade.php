@@ -18,7 +18,7 @@
             </nav>
           </div>
           <div>
-            <a href="#!" class="btn btn-primary">Adicionar Novo Usuário</a>
+            <a href="{{ route('users.create') }}" class="btn btn-primary">Adicionar Novo Usuário</a>
           </div>
         </div>
       </div>

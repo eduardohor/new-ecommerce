@@ -9,10 +9,8 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'admin'])->group(function () {
-  Route::prefix('admin')->group(function () {
-    Route::get('/usuarios', [UserController::class, 'index'])->name('users.index');
-
+Route::prefix('admin')->middleware('auth')->group(function () {
+  Route::middleware('admin')->group(function () {
     Route::get('/painel', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit.admin');
@@ -29,5 +27,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/pedidos/detalhes', [OrderController::class, 'show'])->name('orders.show');
 
     Route::get('/clientes', [CustomerController::class, 'index'])->name('customers.index');
+  });
+
+  Route::middleware('super.admin')->group(function () {
+    Route::get('/usuarios', [UserController::class, 'index'])->name('users.index');
+    Route::get('/usuarios/cadastro', [UserController::class, 'create'])->name('users.create');
+    Route::post('/usuarios/cadastro', [UserController::class, 'store'])->name('users.store');
   });
 });
