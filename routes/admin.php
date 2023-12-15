@@ -33,5 +33,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/usuarios', [UserController::class, 'index'])->name('users.index');
     Route::get('/usuarios/cadastro', [UserController::class, 'create'])->name('users.create');
     Route::post('/usuarios/cadastro', [UserController::class, 'store'])->name('users.store');
+    Route::get('/usuarios/editar/{id}', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('/usuarios/editar/{id}', [UserController::class, 'update'])->name('users.update');
   });
 });

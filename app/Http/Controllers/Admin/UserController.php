@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisteredUserRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
@@ -35,5 +36,36 @@ class UserController extends Controller
         $this->user->create($request->all());
 
         return redirect()->back()->with('status', 'user-created');
+    }
+
+    public function edit($id): View
+    {
+        if (!$user = $this->user->find($id)) {
+            return redirect('users.index');
+        }
+
+        return view('admin.user.edit', compact('user'));
+    }
+
+    public function update(UserUpdateRequest $request, $id): RedirectResponse
+    {
+        if (!$user = $this->user->find($id)) {
+            return redirect('users.index');
+        }
+
+        $is_super_admin = 0;
+
+        if ($request->has('is_super_admin')) {
+            $is_super_admin = 1;
+        }
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'is_super_admin' => $is_super_admin
+        ]);
+
+        return redirect()->back()->with('status', 'user-updated');
     }
 }

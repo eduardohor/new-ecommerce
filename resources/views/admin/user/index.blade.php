@@ -77,7 +77,7 @@
                         <img src="{{ asset('images/avatar/avatar.png') }}" alt=""
                           class="avatar avatar-xs rounded-circle">
                         <div class="ms-2">
-                          <a href="#" class="text-inherit">{{ $user->name }}</a>
+                          <a href="{{ route('users.edit', $user->id) }}" class="text-inherit">{{ $user->name }}</a>
                         </div>
                       </div>
                     </td>
@@ -97,7 +97,8 @@
                         </a>
                         <ul class="dropdown-menu">
                           <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Excluir</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Editar</a>
+                          <li><a class="dropdown-item" href="{{ route('users.edit', $user->id) }}"><i
+                                class="bi bi-pencil-square me-3 "></i>Editar</a>
                           </li>
                         </ul>
                       </div>
