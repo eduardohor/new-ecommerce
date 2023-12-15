@@ -35,5 +35,6 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/usuarios/cadastro', [UserController::class, 'store'])->name('users.store');
     Route::get('/usuarios/editar/{id}', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/usuarios/editar/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/usuarios/editar/{id}', [UserController::class, 'destroy'])->name('users.destroy');
   });
 });

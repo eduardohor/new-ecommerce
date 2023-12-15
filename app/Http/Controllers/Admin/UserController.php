@@ -68,4 +68,15 @@ class UserController extends Controller
 
         return redirect()->back()->with('status', 'user-updated');
     }
+
+    public function destroy($id): RedirectResponse
+    {
+        if (!$user = $this->user->find($id)) {
+            return redirect('users.index');
+        }
+
+        $user->delete();
+
+        return redirect()->back()->with('status', 'user-deleted');
+    }
 }
