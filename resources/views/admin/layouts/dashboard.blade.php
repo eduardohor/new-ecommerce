@@ -236,20 +236,20 @@
               </li>
               @endif
               <li class="nav-item ">
-                <a class="nav-link {{ request()->routeIs('products.index') || request()->routeIs('products.create') ? 'active' : '' }}"
-                  href="{{ route('products.index') }}">
-                  <div class="d-flex align-items-center">
-                    <span class="nav-link-icon"> <i class="bi bi-cart"></i></span>
-                    <span class="nav-link-text">Produtos</span>
-                  </div>
-                </a>
-              </li>
-              <li class="nav-item ">
                 <a class="nav-link {{ request()->routeIs('categories.index') || request()->routeIs('categories.create') ? "
                   active" : ' ' }}" href="{{ route('categories.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-list-task"></i></span>
                     <span class="nav-link-text">Categorias</span>
+                  </div>
+                </a>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link {{ request()->routeIs('products.index') || request()->routeIs('products.create') ? 'active' : '' }}"
+                  href="{{ route('products.index') }}">
+                  <div class="d-flex align-items-center">
+                    <span class="nav-link-icon"> <i class="bi bi-cart"></i></span>
+                    <span class="nav-link-text">Produtos</span>
                   </div>
                 </a>
               </li>
@@ -464,20 +464,20 @@
                 </a>
               </li>
               <li class="nav-item ">
-                <a class="nav-link {{ request()->routeIs('products.index') || request()->routeIs('products.create') ? 'active' : '' }}"
-                  href="{{ route('products.create') }}">
-                  <div class="d-flex align-items-center">
-                    <span class="nav-link-icon"> <i class="bi bi-cart"></i></span>
-                    <span class="nav-link-text">Produtos</span>
-                  </div>
-                </a>
-              </li>
-              <li class="nav-item ">
                 <a class="nav-link {{ request()->routeIs('categories.index') || request()->routeIs('categories.create') ? "
                   active" : ' ' }}" href="{{ route('categories.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-list-task"></i></span>
                     <span class="nav-link-text">Categorias</span>
+                  </div>
+                </a>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link {{ request()->routeIs('products.index') || request()->routeIs('products.create') ? 'active' : '' }}"
+                  href="{{ route('products.create') }}">
+                  <div class="d-flex align-items-center">
+                    <span class="nav-link-icon"> <i class="bi bi-cart"></i></span>
+                    <span class="nav-link-text">Produtos</span>
                   </div>
                 </a>
               </li>

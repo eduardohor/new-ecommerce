@@ -14,3 +14,9 @@ $("#editor").length &&
         },
         theme: "snow",
     }));
+
+// Adicionar um ouvinte de evento para o envio do formulário
+$("form").submit(function () {
+    var descriptionValue = quill.root.innerHTML;
+    $("#description").val(descriptionValue);
+});
