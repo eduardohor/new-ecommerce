@@ -69,7 +69,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach ($users as $user)
+                  @forelse ($users as $user)
                   <tr>
                     <td>
                       <div class="form-check">
@@ -115,7 +115,11 @@
                       </div>
                     </td>
                   </tr>
-                  @endforeach
+                  @empty
+                  <tr>
+                    <td colspan="7" class="text-center">Nenhum usuário encontrado.</td>
+                  </tr>
+                  @endforelse
                 </tbody>
               </table>
 
@@ -140,12 +144,14 @@
   </div>
 </main>
 
+@if (!empty($users))
 <!-- Modal -->
 <div class="modal fade" id="confirm-user-deletion" tabindex="-1" aria-labelledby="confirm-user-deletion-label"
   aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form id="deleteAccountForm" method="post" action="{{ route('users.destroy', $user->id) }}" class="p-6">
+      <form id="deleteAccountForm" method="post" action="{{ route('users.destroy', isset($user) ? $user->id : '') }}"
+        class="p-6">
         @csrf
         @method('delete')
 
@@ -158,7 +164,7 @@
 
         <div class="modal-body">
           <h5 class="mt-1 text-xl text-gray-600">
-            Nome: <strong>{{ $user->name }}</strong>
+            Nome: <strong>{{ isset($user) ? $user->name : '' }}</strong>
           </h5>
         </div>
 
@@ -174,6 +180,9 @@
     </div>
   </div>
 </div>
+
+@endif
+
 
 @endsection
 

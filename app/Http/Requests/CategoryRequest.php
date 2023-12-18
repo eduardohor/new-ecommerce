@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
+
 
 class CategoryRequest extends FormRequest
 {
@@ -19,18 +23,29 @@ class CategoryRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
+
+    protected function prepareForValidation()
+    {
+        // Format the 'slug' field using Str::slug
+        $this->merge([
+            'slug' => Str::slug($this->slug),
+        ]);
+    }
+
     public function rules(): array
     {
         return [
-            'parent_id' => 'nullable|exists:categories,id',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:1048|dimensions:width=120,height=120',
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:categories,slug',
-            'date' => 'nullable|date',
-            'description' => 'nullable|string',
-            'status' => 'required|in:Ativo,Desabilitado',
-            'metatitle' => 'nullable|string|max:255',
-            'meta_description' => 'nullable|string',
+            'parent_id' => ['nullable', 'exists:categories,id'],
+            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:1048', 'dimensions:width=120,height=120'],
+            'name' => ['required', 'string', 'max:255'],
+            'slug' => [
+                'required', 'string', 'max:255', Rule::unique('categories', 'slug')->ignore($this->route('category')),
+            ],
+            'date' => ['nullable', 'date'],
+            'description' => ['nullable', 'string'],
+            'status' => ['required', 'in:Ativo,Desabilitado'],
+            'metatitle' => ['nullable', 'string', 'max:255'],
+            'meta_description' => ['nullable', 'string'],
         ];
     }
 

@@ -35,10 +35,12 @@
             <div class="row justify-content-between">
               <div class="col-lg-4 col-md-6 col-12 mb-2 mb-md-0">
                 <!-- form -->
-                <form class="d-flex" role="search">
-                  <input class="form-control" type="search" placeholder="Pesquisar Categoria" aria-label="Search">
+                <form class="d-flex" role="search" method="get" action="{{ route('categories.index') }}">
+                  <input class="form-control" type="search" placeholder="Pesquisar Categorias" name="search">
+                  <button class="btn btn-primary ms-3" type="submit">Pesquisar</button>
                 </form>
               </div>
+              {{--
               <!-- select option -->
               <div class="col-xl-2 col-md-4 col-12">
                 <select class="form-select">
@@ -46,7 +48,7 @@
                   <option value="Published">Publicadas</option>
                   <option value="Unpublished">Não Publicadas</option>
                 </select>
-              </div>
+              </div> --}}
             </div>
           </div>
           <!-- card body -->
@@ -64,15 +66,16 @@
                         </label>
                       </div>
                     </th>
-                    <th>Ícone</th>
+                    <th>Imagem</th>
                     <th>Nome</th>
-                    <th>Produto</th>
+                    <th>Produtos</th>
                     <th>Status</th>
 
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
+                  @foreach ($categories as $category)
                   <tr>
 
                     <td>
@@ -84,14 +87,16 @@
                       </div>
                     </td>
                     <td>
-                      <a href="#!"> <img src="{{ asset('images/icons/snacks.svg') }}" alt=""
+                      <a href="#!"> <img src="{{ asset('storage/' . $category->image)  }}" alt=""
                           class="icon-shape icon-sm"></a>
                     </td>
-                    <td><a href="#" class="text-reset">Snack & Munchies</a></td>
-                    <td>12</td>
+                    <td><a href="#" class="text-reset">{{ $category->name }}</a></td>
+                    <td>--</td>
 
                     <td>
-                      <span class="badge bg-light-primary text-dark-primary">Publicada</span>
+                      <span
+                        class="text-dark-primary badge bg-light-{{ $category->status == 'Ativo' ? 'primary' : 'danger' }}">{{
+                        $category->status }}</span>
                     </td>
 
                     <td>
@@ -107,295 +112,23 @@
                       </div>
                     </td>
                   </tr>
-                  <tr>
-
-                    <td>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="categoryTwo">
-                        <label class="form-check-label" for="categoryTwo">
-
-                        </label>
-                      </div>
-                    </td>
-                    <td>
-                      <a href="#!"> <img src="{{ asset('images/icons/bakery.svg') }}" alt=""
-                          class="icon-shape icon-sm"></a>
-                    </td>
-                    <td><a href="#" class="text-reset">Bakery & Biscuits</a></td>
-                    <td>8</td>
-
-                    <td>
-                      <span class="badge bg-light-primary text-dark-primary">Publicada</span>
-                    </td>
-
-                    <td>
-                      <div class="dropdown">
-                        <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="feather-icon icon-more-vertical fs-5"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Delete</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Edit</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="categoryThree">
-                        <label class="form-check-label" for="categoryThree">
-
-                        </label>
-                      </div>
-                    </td>
-                    <td>
-                      <a href="#!"> <img src="{{ asset('images/icons/baby-food.svg') }}" alt=""
-                          class="icon-shape icon-sm"></a>
-                    </td>
-                    <td><a href="#" class="text-reset">Baby Care</a></td>
-                    <td>32</td>
-
-                    <td>
-                      <span class="badge bg-light-primary text-dark-primary">Publicada</span>
-                    </td>
-
-                    <td>
-                      <div class="dropdown">
-                        <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="feather-icon icon-more-vertical fs-5"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Delete</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Edit</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="categoryFour">
-                        <label class="form-check-label" for="categoryFour">
-
-                        </label>
-                      </div>
-                    </td>
-                    <td>
-                      <a href="#!"> <img src="{{ asset('images/icons/wine.svg') }}" alt=""
-                          class="icon-shape icon-sm"></a>
-                    </td>
-                    <td><a href="#" class="text-reset">Cold Drinks & Juices</a></td>
-                    <td>34</td>
-
-                    <td>
-                      <span class="badge bg-light-primary text-dark-primary">Publicada</span>
-                    </td>
-
-                    <td>
-                      <div class="dropdown">
-                        <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="feather-icon icon-more-vertical fs-5"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Delete</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Edit</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="categoryFive">
-                        <label class="form-check-label" for="categoryFive">
-
-                        </label>
-                      </div>
-                    </td>
-                    <td>
-                      <a href="#!"> <img src="{{ asset('images/icons/toiletries.svg') }}" alt=""
-                          class="icon-shape icon-sm"></a>
-                    </td>
-                    <td><a href="#" class="text-reset">Toiletries</a></td>
-                    <td>23</td>
-
-                    <td>
-                      <span class="badge bg-light-danger text-dark-danger">Não Publicada</span>
-                    </td>
-
-                    <td>
-                      <div class="dropdown">
-                        <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="feather-icon icon-more-vertical fs-5"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Delete</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Edit</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="categorySeven">
-                        <label class="form-check-label" for="categorySeven">
-
-                        </label>
-                      </div>
-                    </td>
-                    <td>
-                      <a href="#!"> <img src="{{ asset('images/icons/dairy.svg') }}" alt=""
-                          class="icon-shape icon-sm"></a>
-                    </td>
-                    <td><a href="#" class="text-reset">Dairy, Bread & Eggs</a></td>
-                    <td>16</td>
-
-                    <td>
-                      <span class="badge bg-light-primary text-dark-primary">Publicada</span>
-                    </td>
-
-                    <td>
-                      <div class="dropdown">
-                        <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="feather-icon icon-more-vertical fs-5"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Delete</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Edit</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="categoryEight">
-                        <label class="form-check-label" for="categoryEight">
-
-                        </label>
-                      </div>
-                    </td>
-                    <td>
-                      <a href="#!"> <img src="{{ asset('images/icons/fish.svg') }}" alt=""
-                          class="icon-shape icon-sm"></a>
-                    </td>
-                    <td><a href="#" class="text-reset">Chicken, Meat & Fish</a></td>
-                    <td>14</td>
-
-                    <td>
-                      <span class="badge bg-light-primary text-dark-primary">Publicada</span>
-                    </td>
-
-                    <td>
-                      <div class="dropdown">
-                        <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="feather-icon icon-more-vertical fs-5"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Delete</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Edit</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="categoryNine">
-                        <label class="form-check-label" for="categoryNine">
-
-                        </label>
-                      </div>
-                    </td>
-                    <td>
-                      <a href="#!"> <img src="{{ asset('images/icons/fruit.svg') }}" alt=""
-                          class="icon-shape icon-sm"></a>
-                    </td>
-                    <td><a href="#" class="text-reset">Fruits & Vegetables</a></td>
-                    <td>32</td>
-
-                    <td>
-                      <span class="badge bg-light-primary text-dark-primary">Publicada</span>
-                    </td>
-
-                    <td>
-                      <div class="dropdown">
-                        <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="feather-icon icon-more-vertical fs-5"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Delete</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Edit</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-
-                    <td>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="categoryTen">
-                        <label class="form-check-label" for="categoryTen">
-
-                        </label>
-                      </div>
-                    </td>
-                    <td>
-                      <a href="#!"> <img src="{{ asset('images/icons/petfoods.svg') }}" alt=""
-                          class="icon-shape icon-sm"></a>
-                    </td>
-                    <td><a href="#" class="text-reset">Pet Food</a></td>
-                    <td>25</td>
-
-                    <td>
-                      <span class="badge bg-light-danger text-dark-danger">Não Publicada</span>
-                    </td>
-
-                    <td>
-                      <div class="dropdown">
-                        <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="feather-icon icon-more-vertical fs-5"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Excluir</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Editar</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
+                  @endforeach
                 </tbody>
               </table>
 
             </div>
           </div>
-          <div class="border-top d-md-flex justify-content-between align-items-center  px-6 py-6">
-            <span>Mostrando 1 a 8 de 12 entradas</span>
+
+          <div class="border-top d-md-flex justify-content-between align-items-center p-2 p-md-6">
+            <span class="mb-2 mb-md-0">Mostrando {{ $categories->firstItem() }} a {{ $categories->lastItem() }} de {{
+              $categories->total() }} resultados</span>
             <nav class="mt-2 mt-md-0">
-              <ul class="pagination mb-0 ">
-                <li class="page-item disabled"><a class="page-link " href="#!">Anterior</a></li>
-                <li class="page-item"><a class="page-link active" href="#!">1</a></li>
-                <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                <li class="page-item"><a class="page-link" href="#!">Próximo</a></li>
-              </ul>
+              {{ $categories->appends([
+              'search' => request()->get('search', '')
+              ])->links() }}
             </nav>
           </div>
+
         </div>
       </div>
     </div>

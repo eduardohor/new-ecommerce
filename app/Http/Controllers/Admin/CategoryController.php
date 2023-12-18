@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -17,9 +16,10 @@ class CategoryController extends Controller
         $this->category = $category;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.category.index');
+        $categories = $this->category->getCategories($request->get('search', ''));
+        return view('admin.category.index', compact('categories'));
     }
 
     public function create()
@@ -40,13 +40,9 @@ class CategoryController extends Controller
             $data['parent_id'] = $request->parent_id;
         }
 
-        $slug = Str::slug($request->slug);
-
         $path = $request->file('image')->store('categories');
 
         $data['image'] = $path;
-
-        $data['slug'] = $slug;
 
         $this->category->create($data);
 
