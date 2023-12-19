@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Category;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
@@ -27,19 +28,47 @@ class CategoryRequest extends FormRequest
     protected function prepareForValidation()
     {
         // Format the 'slug' field using Str::slug
-        $this->merge([
-            'slug' => Str::slug($this->slug),
-        ]);
+        if ($this->has('slug')) {
+            // Format the 'slug' field using Str::slug
+            $this->merge([
+                'slug' => Str::slug($this->slug),
+            ]);
+        }
+
+        // Convert the 'date' field format
+        if ($this->has('date')) {
+            // Convert the 'date' field format
+            $this->merge([
+                'date' => $this->convertDateFormat($this->date),
+            ]);
+        }
+    }
+
+    /**
+     * Convert the date format from 'd/m/Y' to 'Y-m-d'.
+     *
+     * @param string|null $date
+     * @return string|null
+     */
+    private function convertDateFormat(?string $date): ?string
+    {
+        if ($date) {
+            return Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
+        }
+
+        return null;
     }
 
     public function rules(): array
     {
-        return [
+        $id = $this->route('id');
+
+        $rules =  [
             'parent_id' => ['nullable', 'exists:categories,id'],
             'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:1048', 'dimensions:width=120,height=120'],
             'name' => ['required', 'string', 'max:255'],
             'slug' => [
-                'required', 'string', 'max:255', Rule::unique('categories', 'slug')->ignore($this->route('category')),
+                'required', 'string', 'max:255', Rule::unique('categories', 'slug')->ignore($id),
             ],
             'date' => ['nullable', 'date'],
             'description' => ['nullable', 'string'],
@@ -47,6 +76,13 @@ class CategoryRequest extends FormRequest
             'metatitle' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string'],
         ];
+
+        if ($this->method('PUT')) {
+            $rules['image'] = [
+                'nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:1048', 'dimensions:width=120,height=120'
+            ];
+        }
+        return $rules;
     }
 
     public function messages(): array

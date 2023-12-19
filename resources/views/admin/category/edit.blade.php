@@ -1,5 +1,5 @@
 @extends('admin.layouts.dashboard')
-@section('title', 'Cadastrar Categoria')
+@section('title', 'Editar Categoria')
 
 @section('links')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
@@ -39,14 +39,16 @@
         <!-- card -->
         <div class="card mb-6 shadow border-0">
           <!-- card body -->
-          <form action="{{ route('categories.store') }}" method="post" enctype="multipart/form-data">
+          <form action="{{ route('categories.update', $category->id) }}" method="post" enctype="multipart/form-data">
             @csrf
+            @method('PUT')
             <div class=" card-body p-6 ">
               <h4 class=" mb-5 h5">Imagem da Categoria</h4>
               <div class="mb-4 d-flex">
                 <div class="position-relative">
                   <img class="image icon-shape icon-xxxl bg-light rounded-4"
-                    src="{{ old('image', asset('images/icons/bakery.svg')) }}" alt="Image">
+                    src="{{ $category->image ? asset('storage/' . $category->image) : asset('images/icons/bakery.svg') }}"
+                    alt="Image">
 
                   <div class="file-upload position-absolute end-0 top-0 mt-n2 me-n1">
                     <input type="file" class="file-input" name="image" @error('image') autofocus @enderror>
@@ -77,7 +79,7 @@
                 <div class="mb-3 col-lg-6">
                   <label class="form-label">Nome da Categoria</label>
                   <input type="text" name="name" class="form-control" placeholder="Nome da Categoria" @error('name')
-                    autofocus @enderror value="{{ old('name') }}" required>
+                    autofocus @enderror value="{{ old('name', $category->name) }}" required>
                   @error('name')
                   <span class="text-danger">{{ $message }}</span>
                   @enderror
@@ -86,7 +88,7 @@
                 <div class="mb-3 col-lg-6">
                   <label class="form-label">Slug</label>
                   <input type="text" name="slug" class="form-control" placeholder="Slug" @error('slug') autofocus
-                    @enderror value="{{ old('slug') }}" required>
+                    @enderror value="{{ old('slug', $category->slug) }}" required>
                   @error('slug')
                   <span class="text-danger">{{ $message }}</span>
                   @enderror
@@ -96,8 +98,11 @@
                   <label class="form-label">Categoria Superior</label>
                   <select class="form-select" name="parent_id" @error('parent_id') autofocus @enderror>
                     <option value="">Nenhuma (Categoria Principal)</option>
-                    @foreach($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @foreach($categories as $categorySelect)
+                    <option @if ($category->parent_id == $categorySelect->id) selected @endif
+                      value="{{$categorySelect->id}}">
+                      {{ $categorySelect->name }}
+                    </option>
                     @endforeach
                   </select>
                   @error('parent_id')
@@ -108,7 +113,8 @@
                 <div class="mb-3 col-lg-6">
                   <label class="form-label">Data</label>
                   <input type="text" name="date" class="form-control flatpickr" placeholder="Selecione a data"
-                    data-date-format="d/m/Y" @error('date') autofocus @enderror value="{{ old('date') }}">
+                    data-date-format="d/m/Y" @error('date') autofocus @enderror
+                    value="{{ old('date', \Carbon\Carbon::parse($category->date)->format('d/m/Y')) }}">
                   @error('date')
                   <span class="text-danger">{{ $message }}</span>
                   @enderror
@@ -122,7 +128,8 @@
                   <label class="form-label">Descrições</label>
 
                   <div class="py-8" id="editor"></div>
-                  <input type="hidden" name="description" id="description" @error('description') autofocus @enderror>
+                  <input type="hidden" name="description" id="description"
+                    value="{{ old('date', $category->description) }}">
                   @error('description')
                   <span class="text-danger">{{ $message }}</span>
                   @enderror
@@ -133,13 +140,13 @@
                   <label class="form-label">Status</label><br>
                   <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="status" id="inlineRadio1" value="Ativo" checked
-                      {{ old('status')=='Ativo' ? 'checked' : '' }}>
+                      {{ $category->status =='Ativo' ? 'checked' : '' }}>
                     <label class="form-check-label" for="inlineRadio1">Ativo</label>
                   </div>
 
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="status" id="inlineRadio2" value="Desabilitado" {{
-                      old('status')=='Desabilitado' ? 'checked' : '' }}>
+                    <input class="form-check-input" type="radio" name="status" id="inlineRadio2" value="Desabilitado"
+                      {{$category->status =='Desabilitado' ? 'checked' : '' }}>
                     <label class="form-check-label" for="inlineRadio2">Desabilitado</label>
                   </div>
                   @error('status')
@@ -152,7 +159,7 @@
                   <div class="mb-3">
                     <label class="form-label">Metatítulo</label>
                     <input type="text" name="metatitle" class="form-control" placeholder="Título" @error('metatitle')
-                      autofocus @enderror value="{{ old('metatitle') }}">
+                      autofocus @enderror value="{{ old('metatitle', $category->metatitle) }}">
                     @error('metatitle')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -162,7 +169,8 @@
                   <div class="mb-3">
                     <label class="form-label">Meta Descrição</label>
                     <textarea class="form-control" name="meta_description" rows="3" placeholder="Meta Descrição"
-                      @error('meta_description') autofocus @enderror>{{ old('meta_description') }}</textarea>
+                      @error('meta_description') autofocus
+                      @enderror>{{ old('meta_description', $category->meta_description) }}</textarea>
                     @error('meta_description')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -171,7 +179,7 @@
 
                 <div class="col-lg-12">
                   <button type="submit" class="btn btn-primary">
-                    Salvar
+                    Atualizar
                   </button>
                   <a href="{{ route('categories.index') }}" class="btn btn-secondary ms-2">
                     Cancelar
@@ -202,12 +210,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
   integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
   crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script>
   $(document).ready(function() {
-      // Verifica se a sessão contém o status 'user-created'
       var status = "{{ session('status') }}";
       
-      if (status === 'category-created') {
+      if (status === 'category-updated') {
         // Configuração do Toastr
         toastr.options = {
           "positionClass": "toast-top-right",
@@ -223,20 +231,28 @@
           "hideMethod": "fadeOut"
         };
   
-        // Exibe a mensagem do Toastr
-        toastr.success("Categoria Cadastradada com Sucesso!");
+        toastr.success("Categoria Atualizada com Sucesso!");
       }
-    });
 
-    // Opções do Flatpickr
-    flatpickr(".flatpickr", {
-      locale: "pt",  // Definir o idioma como "pt" para português
+      // Obtém a instância existente do Quill
+      if (quill) {
+          // Desativa o Quill temporariamente
+          quill.disable();
 
-    });
-</script>
+          // Obtém o conteúdo da descrição e define no editor Quill
+          var descriptionContent = {!! json_encode($category->description) !!}; 
+          quill.root.innerHTML = descriptionContent;
 
-<script>
+          // Reativa o Quill
+          quill.enable();
+      }
 
+      // Opções do Flatpickr
+      flatpickr(".flatpickr", {
+        locale: "pt",  // Definir o idioma como "pt" para português
+      });
+
+  });
 </script>
 
 @endsection

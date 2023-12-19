@@ -1,5 +1,11 @@
 @extends('admin.layouts.dashboard')
 @section('title', 'Categorias')
+@section('links')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+  integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
+@endsection
+
 @section('content')
 
 <main class="main-content-wrapper">
@@ -105,8 +111,11 @@
                           <i class="feather-icon icon-more-vertical fs-5"></i>
                         </a>
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Delete</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Edit</a>
+                          <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Excluir</a></li>
+                          <li>
+                            <form action="{{ route('categories.edit', $category->id) }}" method="get">
+                              <button class="dropdown-item"><i class="bi bi-pencil-square me-3 "></i>Editar</button>
+                            </form>
                           </li>
                         </ul>
                       </div>
@@ -134,5 +143,42 @@
     </div>
   </div>
 </main>
+
+@endsection
+
+@section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+  integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+  $(document).ready(function() {
+    var error  = "{{ session('error') }}";
+    var warning = "{{ session('warning') }}";
+    
+      // Configuração do Toastr
+      toastr.options = {
+        "positionClass": "toast-top-right",
+        "closeButton": true,
+        "progressBar": true,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "6000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      };
+
+      if (error) {
+        toastr.error(error);
+      }
+       
+      if (warning) {
+        toastr.warning(warning);
+      }
+  });
+</script>
 
 @endsection

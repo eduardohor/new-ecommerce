@@ -13,6 +13,7 @@ $("#editor").length &&
             ],
         },
         theme: "snow",
+        placeholder: "Digite aqui...",
     }));
 
 // Adicionar um ouvinte de evento para o envio do formulário

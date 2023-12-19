@@ -20,6 +20,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/categorias', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/categorias/cadastro', [CategoryController::class, 'create'])->name('categories.create');
     Route::post('/categorias/cadastro', [CategoryController::class, 'store'])->name('categories.store');
+    Route::get('/categorias/editar/{id}', [CategoryController::class, 'edit'])->name('categories.edit');
+    Route::put('/categorias/editar/{id}', [CategoryController::class, 'update'])->name('categories.update');
 
     Route::get('/produtos/cadastro', [ProductController::class, 'create'])->name('products.create');
     Route::get('/produtos', [ProductController::class, 'index'])->name('products.index');
