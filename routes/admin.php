@@ -20,9 +20,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/categorias', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/categorias/cadastro', [CategoryController::class, 'create'])->name('categories.create');
     Route::post('/categorias/cadastro', [CategoryController::class, 'store'])->name('categories.store');
-    Route::get('/categorias/editar/{id}', [CategoryController::class, 'edit'])->name('categories.edit');
-    Route::put('/categorias/editar/{id}', [CategoryController::class, 'update'])->name('categories.update');
-    Route::delete('/categorias/editar/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+    Route::get('/categorias/{id}/editar', [CategoryController::class, 'edit'])->name('categories.edit');
+    Route::put('/categorias/{id}/editar', [CategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/categorias/{id}/editar', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
     Route::get('/produtos/cadastro', [ProductController::class, 'create'])->name('products.create');
     Route::get('/produtos', [ProductController::class, 'index'])->name('products.index');
@@ -37,8 +37,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/usuarios', [UserController::class, 'index'])->name('users.index');
     Route::get('/usuarios/cadastro', [UserController::class, 'create'])->name('users.create');
     Route::post('/usuarios/cadastro', [UserController::class, 'store'])->name('users.store');
-    Route::get('/usuarios/editar/{id}', [UserController::class, 'edit'])->name('users.edit');
-    Route::put('/usuarios/editar/{id}', [UserController::class, 'update'])->name('users.update');
-    Route::delete('/usuarios/editar/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::get('/usuarios/{id}/editar', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('/usuarios/{id}/editar', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/usuarios/{id}/editar', [UserController::class, 'destroy'])->name('users.destroy');
   });
 });

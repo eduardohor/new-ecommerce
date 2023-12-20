@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\RegisteredUserRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -35,23 +36,19 @@ class UserController extends Controller
     {
         $this->user->create($request->all());
 
-        return redirect()->back()->with('status', 'user-created');
+        return redirect()->route('users.index')->with('status', 'user-created');
     }
 
-    public function edit($id): View
+    public function edit(string|int $id): View
     {
-        if (!$user = $this->user->find($id)) {
-            return redirect('users.index');
-        }
+        $user = $this->findUserOrFail($id);
 
         return view('admin.user.edit', compact('user'));
     }
 
-    public function update(UserUpdateRequest $request, $id): RedirectResponse
+    public function update(UserUpdateRequest $request, string|int $id): RedirectResponse
     {
-        if (!$user = $this->user->find($id)) {
-            return redirect('users.index');
-        }
+        $user = $this->findUserOrFail($id);
 
         $is_super_admin = 0;
 
@@ -66,17 +63,29 @@ class UserController extends Controller
             'is_super_admin' => $is_super_admin
         ]);
 
-        return redirect()->back()->with('status', 'user-updated');
+        if (!$user->wasChanged()) {
+            return redirect()->route('users.index')->with('warning', 'Nenhuma alteração detectada no usuário');
+        }
+
+        return redirect()->route('users.index')->with('status', 'user-updated');
     }
 
-    public function destroy($id): RedirectResponse
+    public function destroy(string|int $id): RedirectResponse
     {
-        if (!$user = $this->user->find($id)) {
-            return redirect('users.index');
-        }
+        $user = $this->findUserOrFail($id);
 
         $user->delete();
 
-        return redirect()->back()->with('status', 'user-deleted');
+        return redirect()->route('users.index')->with('status', 'user-deleted');
+    }
+
+    private function findUserOrFail(string|int $id): Model
+    {
+        try {
+            return $this->user->findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            $redirectResponse = redirect()->route('users.index')->with('error', 'Usuário não encontrado');
+            $redirectResponse->send();  // Encerra a execução imediatamente
+        }
     }
 }

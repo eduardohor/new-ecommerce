@@ -1,5 +1,6 @@
 @extends('admin.layouts.dashboard')
 @section('title', 'Categorias')
+
 @section('links')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
   integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
@@ -118,9 +119,8 @@
                                 class="bi bi-trash me-3"></i>Excluir</a>
                           </li>
                           <li>
-                            <form action="{{ route('categories.edit', $category->id) }}" method="get">
-                              <button class="dropdown-item"><i class="bi bi-pencil-square me-3 "></i>Editar</button>
-                            </form>
+                            <a class="dropdown-item" href="{{ route('categories.edit', $category->id) }}"><i
+                                class="bi bi-pencil-square me-3 "></i>Editar</a>
                           </li>
                         </ul>
                       </div>
@@ -192,9 +192,21 @@
         toastr.warning(warning);
       }
 
-      if (status === 'category-deleted') {
-        toastr.success("Categoria Excluída com Sucesso!");
+      switch (status) {
+        case 'category-created':
+        toastr.success("Categoria Cadastrada com Sucesso!");
+          break;
 
+        case 'category-updated':
+        toastr.success("Categoria Atualizada com Sucesso!");
+          break;
+
+        case 'category-deleted':
+        toastr.success("Categoria Excluída com Sucesso!");
+          break;
+      
+        default:
+          break;
       }
   });
 </script>

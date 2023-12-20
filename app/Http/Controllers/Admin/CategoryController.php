@@ -6,33 +6,36 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
-    private $category;
+    private Category $category;
 
     public function __construct(Category $category)
     {
         $this->category = $category;
     }
 
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $categories = $this->category->getCategories($request->get('search', ''));
         return view('admin.category.index', compact('categories'));
     }
 
-    public function create()
+    public function create(): View
     {
         $categories = $this->category->all();
 
         return view('admin.category.create', compact('categories'));
     }
 
-    public function store(CategoryRequest $request)
+    public function store(CategoryRequest $request): RedirectResponse
     {
         $data = $request->all();
 
@@ -48,10 +51,10 @@ class CategoryController extends Controller
 
         $this->category->create($data);
 
-        return redirect()->back()->with('status', 'category-created');
+        return redirect()->route('categories.index')->with('status', 'category-created');
     }
 
-    public function edit($id)
+    public function edit(string|int $id): View
     {
         $category = $this->findCategoryOrFail($id);
 
@@ -60,7 +63,7 @@ class CategoryController extends Controller
         return view('admin.category.edit', compact('category', 'categories'));
     }
 
-    public function update(CategoryRequest $request, $id)
+    public function update(CategoryRequest $request, string|int $id): RedirectResponse
     {
         $category = $this->findCategoryOrFail($id);
 
@@ -74,14 +77,14 @@ class CategoryController extends Controller
 
         $category->update($data);
 
-        if ($category->wasChanged()) {
-            return redirect()->back()->with('status', 'category-updated');
-        } else {
-            return redirect()->back()->with('warning', 'Nenhuma alteração detectada na categoria');
+        if (!$category->wasChanged()) {
+            return redirect()->route('categories.index')->with('warning', 'Nenhuma alteração detectada na categoria');
         }
+
+        return redirect()->route('categories.index')->with('status', 'category-updated');
     }
 
-    public function destroy($id)
+    public function destroy(string|int $id): RedirectResponse
     {
         $category = $this->findCategoryOrFail($id);
 
@@ -89,10 +92,14 @@ class CategoryController extends Controller
 
         $category->delete();
 
-        return redirect()->back()->with('status', 'category-deleted');
+        if ($category->wasChanged()) {
+            return redirect()->route('categories.index')->with('warning', 'Nenhuma alteração detectada na categoria');
+        }
+
+        return redirect()->route('categories.index')->with('status', 'category-deleted');
     }
 
-    private function findCategoryOrFail($id)
+    private function findCategoryOrFail(string|int $id): Model
     {
         try {
             return $this->category->findOrFail($id);

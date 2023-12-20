@@ -157,31 +157,50 @@
 
 <script>
   $(document).ready(function() {
-    // Verifica se a sessão contém o status 'user-created'
-    var status = "{{ session('status') }}";
-    
-    if (status === 'user-deleted') {
-    
-
-      // Configuração do Toastr
-      toastr.options = {
-        "positionClass": "toast-top-right",
-        "closeButton": true,
-        "progressBar": true,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "6000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-      };
-
-      // Exibe a mensagem do Toastr
-      toastr.success("Usuário Excluído com Sucesso!");
-    }
-  });
+      var error  = "{{ session('error') }}";
+      var warning = "{{ session('warning') }}";
+      var status = "{{ session('status') }}";
+      
+        // Configuração do Toastr
+        toastr.options = {
+          "positionClass": "toast-top-right",
+          "closeButton": true,
+          "progressBar": true,
+          "showDuration": "300",
+          "hideDuration": "1000",
+          "timeOut": "6000",
+          "extendedTimeOut": "1000",
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut"
+        };
+  
+        if (error) {
+          toastr.error(error);
+        }
+         
+        if (warning) {
+          toastr.warning(warning);
+        }
+  
+        switch (status) {
+          case 'user-created':
+          toastr.success("Usuário Cadastrado com Sucesso!");
+            break;
+  
+          case 'user-updated':
+          toastr.success("Usuário Atualizado com Sucesso!");
+            break;
+  
+          case 'user-deleted':
+          toastr.success("Usuário Excluído com Sucesso!");
+            break;
+        
+          default:
+            break;
+        }
+    });
 </script>
 
 @endsection

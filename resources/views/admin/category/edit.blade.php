@@ -1,12 +1,6 @@
 @extends('admin.layouts.dashboard')
 @section('title', 'Editar Categoria')
 
-@section('links')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
-  integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
-  crossorigin="anonymous" referrerpolicy="no-referrer" />
-@endsection
-
 @section('content')
 
 <main class="main-content-wrapper">
@@ -207,33 +201,9 @@
 <script src="{{ asset('libs/quill/dist/quill.min.js') }}"></script>
 <script src="{{ asset('js/vendors/editor.js') }}"></script>
 <script src="{{ asset('js/theme.min.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
-  integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
-  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
   $(document).ready(function() {
-      var status = "{{ session('status') }}";
-      
-      if (status === 'category-updated') {
-        // Configuração do Toastr
-        toastr.options = {
-          "positionClass": "toast-top-right",
-          "closeButton": true,
-          "progressBar": true,
-          "showDuration": "300",
-          "hideDuration": "1000",
-          "timeOut": "6000",
-          "extendedTimeOut": "1000",
-          "showEasing": "swing",
-          "hideEasing": "linear",
-          "showMethod": "fadeIn",
-          "hideMethod": "fadeOut"
-        };
-  
-        toastr.success("Categoria Atualizada com Sucesso!");
-      }
-
       // Obtém a instância existente do Quill
       if (quill) {
           // Desativa o Quill temporariamente
