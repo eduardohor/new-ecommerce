@@ -81,7 +81,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach ($categories as $category)
+                  @forelse ($categories as $category)
                   <tr>
 
                     <td>
@@ -104,14 +104,19 @@
                         class="text-dark-primary badge bg-light-{{ $category->status == 'Ativo' ? 'primary' : 'danger' }}">{{
                         $category->status }}</span>
                     </td>
-
                     <td>
                       <div class="dropdown">
+                        @include('admin.partials.delete_modal')
+
                         <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
                           <i class="feather-icon icon-more-vertical fs-5"></i>
                         </a>
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Excluir</a></li>
+                          <li>
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#confirm-deletion"
+                              onclick="showDeleteModal('{{ $category->name }}', '{{ route('categories.destroy', $category->id) }}')"><i
+                                class="bi bi-trash me-3"></i>Excluir</a>
+                          </li>
                           <li>
                             <form action="{{ route('categories.edit', $category->id) }}" method="get">
                               <button class="dropdown-item"><i class="bi bi-pencil-square me-3 "></i>Editar</button>
@@ -121,9 +126,16 @@
                       </div>
                     </td>
                   </tr>
-                  @endforeach
+                  @empty
+                  <tr>
+                    <td colspan="6" class="text-center">Nenhuma categoria encontrada.</td>
+                  </tr>
+
+
+                  @endforelse
                 </tbody>
               </table>
+
 
             </div>
           </div>
@@ -155,6 +167,7 @@
   $(document).ready(function() {
     var error  = "{{ session('error') }}";
     var warning = "{{ session('warning') }}";
+    var status = "{{ session('status') }}";
     
       // Configuração do Toastr
       toastr.options = {
@@ -177,6 +190,11 @@
        
       if (warning) {
         toastr.warning(warning);
+      }
+
+      if (status === 'category-deleted') {
+        toastr.success("Categoria Excluída com Sucesso!");
+
       }
   });
 </script>

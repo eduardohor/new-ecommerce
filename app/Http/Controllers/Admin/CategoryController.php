@@ -38,7 +38,6 @@ class CategoryController extends Controller
 
         $data['parent_id'] = null;
 
-        // Verifica se a opção "Nenhuma (Categoria Principal)" foi selecionada
         if ($request->filled('parent_id')) {
             $data['parent_id'] = $request->parent_id;
         }
@@ -54,11 +53,7 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        try {
-            $category = $this->category->findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return redirect()->route('categories.index')->with('error', 'Categoria não encontrada');
-        }
+        $category = $this->findCategoryOrFail($id);
 
         $categories = $this->category->all();
 
@@ -67,11 +62,7 @@ class CategoryController extends Controller
 
     public function update(CategoryRequest $request, $id)
     {
-        try {
-            $category = $this->category->findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return redirect()->route('categories.index')->with('error', 'Categoria não encontrada');
-        }
+        $category = $this->findCategoryOrFail($id);
 
         $data = $request->all();
 
@@ -87,6 +78,27 @@ class CategoryController extends Controller
             return redirect()->back()->with('status', 'category-updated');
         } else {
             return redirect()->back()->with('warning', 'Nenhuma alteração detectada na categoria');
+        }
+    }
+
+    public function destroy($id)
+    {
+        $category = $this->findCategoryOrFail($id);
+
+        Storage::delete($category->image);
+
+        $category->delete();
+
+        return redirect()->back()->with('status', 'category-deleted');
+    }
+
+    private function findCategoryOrFail($id)
+    {
+        try {
+            return $this->category->findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            $redirectResponse = redirect()->route('categories.index')->with('error', 'Categoria não encontrada');
+            $redirectResponse->send();  // Encerra a execução imediatamente
         }
     }
 }
