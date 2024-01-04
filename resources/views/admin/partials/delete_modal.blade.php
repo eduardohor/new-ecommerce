@@ -35,6 +35,7 @@
 
 <script>
   function showDeleteModal(resourceName, deleteRoute) {
+      console.log(deleteRoute);
       $('#resourceName').text(resourceName);
       $('#deleteForm').attr('action', deleteRoute);
       $('#confirm-deletion-modal').modal('show');

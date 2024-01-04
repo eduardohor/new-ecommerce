@@ -168,7 +168,7 @@
     var error  = "{{ session('error') }}";
     var warning = "{{ session('warning') }}";
     var status = "{{ session('status') }}";
-    
+   
       // Configuração do Toastr
       toastr.options = {
         "positionClass": "toast-top-right",

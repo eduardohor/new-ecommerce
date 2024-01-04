@@ -134,6 +134,27 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('status', 'product-updated');
     }
 
+    public function destroy($id)
+    {
+        $product = $this->findPoductOrFail($id);
+
+        $productImages = $product->productImages;
+
+        foreach ($productImages as $productImage) {
+            Storage::delete($productImage->image_path);
+        }
+
+        $productImage->delete();
+
+        $product->delete();
+
+        if (!$product->wasChanged()) {
+            return redirect()->route('products.index')->with('warning', 'Nenhuma alteração detectada no produto');
+        }
+
+        return redirect()->route('products.index')->with('status', 'product-deleted');
+    }
+
     private function findPoductOrFail(string|int $id): Model
     {
         try {

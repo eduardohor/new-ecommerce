@@ -29,6 +29,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/produtos/cadastro', [ProductController::class, 'store'])->name('products.store');
     Route::get('/produtos/edit/{id}', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/produtos/edit/{id}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('/produtos/edit/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 
     Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/pedidos/detalhes', [OrderController::class, 'show'])->name('orders.show');

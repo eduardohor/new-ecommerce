@@ -473,8 +473,8 @@
                 </a>
               </li>
               <li class="nav-item ">
-                <a class="nav-link {{ request()->routeIs('products.index') || request()->routeIs('products.create') ? 'active' : '' }}"
-                  href="{{ route('products.create') }}">
+                <a class="nav-link {{ request()->routeIs('products.index') || request()->routeIs('products.index') ? 'active' : '' }}"
+                  href="{{ route('products.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-cart"></i></span>
                     <span class="nav-link-text">Produtos</span>

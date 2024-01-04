@@ -103,15 +103,16 @@
                     <td>{{ \Carbon\Carbon::parse($product->created_at)->format('d M Y') }}</td>
                     <td>
                       <div class="dropdown">
+                        @include('admin.partials.delete_modal')
+
                         <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
                           <i class="feather-icon icon-more-vertical fs-5"></i>
                         </a>
                         <ul class="dropdown-menu">
                           <li>
-                            {{-- <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                              data-bs-target="#confirm-deletion"
-                              onclick="showDeleteModal('{{ $category->name }}', '{{ route('categories.destroy', $category->id) }}')"><i
-                                class="bi bi-trash me-3"></i>Excluir</a> --}}
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#confirm-deletion"
+                              onclick="showDeleteModal('{{ $product->title }}', '{{ route('products.destroy', $product->id) }}')"><i
+                                class="bi bi-trash me-3"></i>Excluir</a>
                           </li>
                           <li>
                             <a class="dropdown-item" href="{{ route('products.edit', $product->id) }}"><i
@@ -148,5 +149,61 @@
     </div>
   </div>
 </main>
+
+@endsection
+
+@section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+  integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+  $(document).ready(function() {
+    var error  = "{{ session('error') }}";
+    var warning = "{{ session('warning') }}";
+    var status = "{{ session('status') }}";
+    console.log('status')
+    
+      // Configuração do Toastr
+      toastr.options = {
+        "positionClass": "toast-top-right",
+        "closeButton": true,
+        "progressBar": true,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "6000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      };
+
+      if (error) {
+        toastr.error(error);
+      }
+       
+      if (warning) {
+        toastr.warning(warning);
+      }
+
+      switch (status) {
+        case 'product-created':
+        toastr.success("Produto Cadastrado com Sucesso!");
+          break;
+
+        case 'product-updated':
+        toastr.success("Produto Atualizado com Sucesso!");
+          break;
+
+        case 'product-deleted':
+        toastr.success("Produto Excluído com Sucesso!");
+          break;
+      
+        default:
+          break;
+      }
+  });
+</script>
 
 @endsection
