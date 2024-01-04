@@ -123,7 +123,7 @@
 
                   <div class="py-8" id="editor"></div>
                   <input type="hidden" name="description" id="description"
-                    value="{{ old('date', $category->description) }}">
+                    value="{{ old('description', $category->description) }}">
                   @error('description')
                   <span class="text-danger">{{ $message }}</span>
                   @enderror

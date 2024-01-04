@@ -50,7 +50,7 @@ class ProductRequest extends FormRequest
     {
         $id = $this->route('product');
 
-        return [
+        $rules =  [
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'weight' => 'required|numeric',
@@ -67,6 +67,14 @@ class ProductRequest extends FormRequest
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
         ];
+
+        if ($this->isMethod('PUT')) {
+            $rules['images'] = [
+                'nullable', 'array', 'min:1'
+            ];
+        }
+
+        return $rules;
     }
 
     public function messages()

@@ -107,8 +107,15 @@
                           <i class="feather-icon icon-more-vertical fs-5"></i>
                         </a>
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-3"></i>Excluir</a></li>
-                          <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square me-3 "></i>Editar</a>
+                          <li>
+                            {{-- <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                              data-bs-target="#confirm-deletion"
+                              onclick="showDeleteModal('{{ $category->name }}', '{{ route('categories.destroy', $category->id) }}')"><i
+                                class="bi bi-trash me-3"></i>Excluir</a> --}}
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="{{ route('products.edit', $product->id) }}"><i
+                                class="bi bi-pencil-square me-3 "></i>Editar</a>
                           </li>
                         </ul>
                       </div>

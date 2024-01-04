@@ -27,6 +27,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/produtos', [ProductController::class, 'index'])->name('products.index');
     Route::get('/produtos/cadastro', [ProductController::class, 'create'])->name('products.create');
     Route::post('/produtos/cadastro', [ProductController::class, 'store'])->name('products.store');
+    Route::get('/produtos/edit/{id}', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/produtos/edit/{id}', [ProductController::class, 'update'])->name('products.update');
 
     Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/pedidos/detalhes', [OrderController::class, 'show'])->name('orders.show');
