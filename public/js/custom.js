@@ -13,6 +13,7 @@ $(document).ready(function () {
         placeholder: "0",
         rightAlign: false,
         autoUnmask: true,
+        numericInput: true,
         prefix: "R$ ",
     });
 
@@ -27,6 +28,7 @@ $(document).ready(function () {
         placeholder: "0",
         rightAlign: false,
         autoUnmask: true,
+        numericInput: true,
         suffix: " kg",
     });
 });

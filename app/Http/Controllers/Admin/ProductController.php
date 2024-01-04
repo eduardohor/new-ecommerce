@@ -23,9 +23,11 @@ class ProductController extends Controller
         $this->productImage = $productImage;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.product.index');
+        $products = $this->product->getProducts($request->get('search', ''));
+
+        return view('admin.product.index', compact('products'));
     }
 
     public function create()
