@@ -37,13 +37,12 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request): RedirectResponse
     {
+        dd($request->all());
         $data = $request->all();
 
         $data['parent_id'] = null;
 
-        if ($request->filled('parent_id')) {
-            $data['parent_id'] = $request->parent_id;
-        }
+        $request->filled('parent_id') ? $data['parent_id'] = $request->parent_id : null;
 
         $path = $request->file('image')->store('categories');
 

@@ -77,7 +77,7 @@ class CategoryRequest extends FormRequest
             'meta_description' => ['nullable', 'string'],
         ];
 
-        if ($this->method('PUT')) {
+        if ($this->isMethod('put')) {
             $rules['image'] = [
                 'nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:1048', 'dimensions:width=120,height=120'
             ];

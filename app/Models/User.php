@@ -55,7 +55,8 @@ class User extends Authenticatable
                 $query->orWhere('name', 'LIKE', "%$search%");
             }
         })
-            ->where('id', '!=', auth()->id()) // Exclui o usuário logado
+            ->where('id', '!=', auth()->id())
+            ->where('is_admin', 1)
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 

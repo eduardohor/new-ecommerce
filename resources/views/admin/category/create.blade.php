@@ -201,8 +201,4 @@
     });
 </script>
 
-<script>
-
-</script>
-
 @endsection

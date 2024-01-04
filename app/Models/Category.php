@@ -32,6 +32,11 @@ class Category extends Model
         return $this->hasMany(Category::class, 'parent_id');
     }
 
+    public function nestedCategories()
+    {
+        return $this->with('children')->whereNull('parent_id')->get();
+    }
+
     public function getCategories(string $search = null): LengthAwarePaginator
     {
         $categories = $this->where(function ($query) use ($search) {
