@@ -148,10 +148,6 @@ class ProductController extends Controller
 
         $product->delete();
 
-        if (!$product->wasChanged()) {
-            return redirect()->route('products.index')->with('warning', 'Nenhuma alteração detectada no produto');
-        }
-
         return redirect()->route('products.index')->with('status', 'product-deleted');
     }
 

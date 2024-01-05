@@ -91,10 +91,6 @@ class CategoryController extends Controller
 
         $category->delete();
 
-        if ($category->wasChanged()) {
-            return redirect()->route('categories.index')->with('warning', 'Nenhuma alteração detectada na categoria');
-        }
-
         return redirect()->route('categories.index')->with('status', 'category-deleted');
     }
 
