@@ -37,7 +37,6 @@
   <!-- Javascript-->
 
   <!-- Theme JS -->
-  <script src="{{ asset('js/theme.min.js') }}"></script>
 
   <!-- Libs JS -->
   <script src="{{ asset('libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>

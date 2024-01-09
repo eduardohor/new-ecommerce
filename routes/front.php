@@ -16,6 +16,7 @@ Route::get('/', [StoreController::class, 'home'])->name('home');
 Route::get('/loja', [StoreController::class, 'store'])->name('store');
 Route::get('/lista-de-desejos', [StoreController::class, 'wishlist'])->name('wishlist');
 Route::get('/pagina-nao-encontrada', [StoreController::class, 'pageNotFound'])->name('page-not-found');
+Route::get('/adicionar-view-produto/{productId}', [StoreController::class, 'addViewProduct'])->name('add-view-product');
 
 Route::get('/produto', [ProductController::class, 'index'])->name('product');
 

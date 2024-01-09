@@ -31,7 +31,8 @@
                     </a>
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="{{ route('orders.index.customer') }}">Pedidos</a></li>
-                      <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Perfil</a></li>
+                      <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Perfil</a>
+                      </li>
                       <li>
                         <form action="{{ route('logout') }}" method="post">
                           @csrf
@@ -57,7 +58,8 @@
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         class="feather feather-shopping-bag">
                         <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="6" x2="21" y2="6">
+                        </line>
                         <path d="M16 10a4 4 0 0 1-8 0"></path>
                       </svg>
                       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
@@ -93,7 +95,8 @@
                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                       class="feather feather-search">
                       <circle cx="11" cy="11" r="8"></circle>
-                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65">
+                      </line>
                     </svg>
                   </button>
                 </span>
@@ -102,11 +105,12 @@
             </form>
           </div>
           <div class="col-md-2 col-xxl-3 d-none d-lg-block">
+            {{--
             <!-- Button trigger modal -->
             <button type="button" class="btn  btn-outline-gray-400 text-muted" data-bs-toggle="modal"
               data-bs-target="#locationModal">
               <i class="feather-icon icon-map-pin me-2"></i>Localização
-            </button>
+            </button> --}}
 
 
           </div>
@@ -125,7 +129,8 @@
                   </svg>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{ route('orders.index.customer') }}">Pedidos</a></li>
+                  <li><a class="dropdown-item" href="{{ route('orders.index.customer') }}">Pedidos</a>
+                  </li>
                   <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Perfil</a></li>
                   <li>
                     <form action="{{ route('logout') }}" method="post">
@@ -205,17 +210,18 @@
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         class="feather feather-search">
                         <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65">
+                        </line>
                       </svg>
                     </button>
                   </span>
                 </div>
               </form>
               <div class="mt-2">
-                <button type="button" class="btn  btn-outline-gray-400 text-muted w-100 " data-bs-toggle="modal"
+                {{-- <button type="button" class="btn  btn-outline-gray-400 text-muted w-100 " data-bs-toggle="modal"
                   data-bs-target="#locationModal">
                   <i class="feather-icon icon-map-pin me-2"></i>Escolha o Local
-                </button>
+                </button> --}}
               </div>
             </div>
             <div class="d-block d-lg-none mb-4">
@@ -234,13 +240,23 @@
               <div class="collapse mt-2" id="collapseExample">
                 <div class="card card-body">
                   <ul class="mb-0 list-unstyled">
-                    <li><a class="dropdown-item" href="./pages/shop-grid.html">Dairy, Bread & Eggs</a></li>
-                    <li><a class="dropdown-item" href="./pages/shop-grid.html">Snacks & Munchies</a></li>
-                    <li><a class="dropdown-item" href="./pages/shop-grid.html">Fruits & Vegetables</a></li>
-                    <li><a class="dropdown-item" href="./pages/shop-grid.html">Cold Drinks & Juices</a></li>
-                    <li><a class="dropdown-item" href="./pages/shop-grid.html">Breakfast & Instant Food</a></li>
-                    <li><a class="dropdown-item" href="./pages/shop-grid.html">Bakery & Biscuits</a></li>
-                    <li><a class="dropdown-item" href="./pages/shop-grid.html">Chicken, Meat & Fish</a></li>
+                    @forelse ($categoriesProvider as $categoryProvider)
+                    <li><a class="dropdown-item text-primary" href="#">{{ $categoryProvider->name
+                        }}</a>
+                      @if ($categoryProvider->children)
+                      <ul class="mb-0 ms-2 list-unstyled">
+                        @foreach ($categoryProvider->children as $child)
+                        <li><a class="dropdown-item" href="#">{{
+                            $categoryProvider->name }}</a>
+                        </li>
+                        @endforeach
+                      </ul>
+                      @endif
+                    </li>
+                    @empty
+                    <li><a class="dropdown-item" href="#">Aguandando
+                        Categorias...</a></li>
+                    @endforelse
                   </ul>
                 </div>
               </div>
@@ -259,13 +275,23 @@
                   </svg></span> Todos os departamentos
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="./pages/shop-grid.html">Dairy, Bread & Eggs</a></li>
-                <li><a class="dropdown-item" href="./pages/shop-grid.html">Snacks & Munchies</a></li>
-                <li><a class="dropdown-item" href="./pages/shop-grid.html">Fruits & Vegetables</a></li>
-                <li><a class="dropdown-item" href="./pages/shop-grid.html">Cold Drinks & Juices</a></li>
-                <li><a class="dropdown-item" href="./pages/shop-grid.html">Breakfast & Instant Food</a></li>
-                <li><a class="dropdown-item" href="./pages/shop-grid.html">Bakery & Biscuits</a></li>
-                <li><a class="dropdown-item" href="./pages/shop-grid.html">Chicken, Meat & Fish</a></li>
+                @forelse ($categoriesProvider as $categoryProvider)
+                <li><a class="dropdown-item text-primary" href="#">{{ $categoryProvider->name
+                    }}</a>
+                  @if ($categoryProvider->children)
+                  <ul class="mb-0 ms-2 list-unstyled">
+                    @foreach ($categoryProvider->children as $child)
+                    <li><a class="dropdown-item" href="#">{{
+                        $categoryProvider->name }}</a>
+                    </li>
+                    @endforeach
+                  </ul>
+                  @endif
+                </li>
+                @empty
+                <li><a class="dropdown-item" href="#">Aguandando
+                    Categorias...</a></li>
+                @endforelse
               </ul>
             </div>
             <div class="">
@@ -288,17 +314,26 @@
                     Loja
                   </a>
                   {{-- <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="./pages/shop-grid.html">Shop Grid - Filter</a></li>
-                    <li><a class="dropdown-item" href="./pages/shop-grid-3-column.html">Shop Grid - 3 column</a>
+                    <li><a class="dropdown-item" href="#">Shop Grid -
+                        Filter</a></li>
+                    <li><a class="dropdown-item" href="./pages/shop-grid-3-column.html">Shop Grid -
+                        3 column</a>
                     </li>
-                    <li><a class="dropdown-item" href="./pages/shop-list.html">Shop List - Filter</a></li>
-                    <li><a class="dropdown-item" href="./pages/shop-filter.html">Shop - Filter</a></li>
-                    <li><a class="dropdown-item" href="./pages/shop-fullwidth.html">Shop Wide</a></li>
-                    <li><a class="dropdown-item" href="./pages/shop-single.html">Shop Single</a></li>
-                    <li><a class="dropdown-item" href="./pages/shop-single-2.html">Shop Single v2</a></li>
-                    <li><a class="dropdown-item" href="./pages/shop-wishlist.html">Shop Wishlist</a></li>
+                    <li><a class="dropdown-item" href="./pages/shop-list.html">Shop List -
+                        Filter</a></li>
+                    <li><a class="dropdown-item" href="./pages/shop-filter.html">Shop - Filter</a>
+                    </li>
+                    <li><a class="dropdown-item" href="./pages/shop-fullwidth.html">Shop Wide</a>
+                    </li>
+                    <li><a class="dropdown-item" href="./pages/shop-single.html">Shop Single</a>
+                    </li>
+                    <li><a class="dropdown-item" href="./pages/shop-single-2.html">Shop Single
+                        v2</a></li>
+                    <li><a class="dropdown-item" href="./pages/shop-wishlist.html">Shop Wishlist</a>
+                    </li>
                     <li><a class="dropdown-item" href="./pages/shop-cart.html">Shop Cart</a></li>
-                    <li><a class="dropdown-item" href="./pages/shop-checkout.html">Shop Checkout</a></li>
+                    <li><a class="dropdown-item" href="./pages/shop-checkout.html">Shop Checkout</a>
+                    </li>
                   </ul> --}}
                 </li>
                 {{-- <li class="nav-item dropdown w-100 w-lg-auto">
@@ -309,10 +344,11 @@
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="./pages/store-list.html">Store List</a></li>
                     <li><a class="dropdown-item" href="./pages/store-grid.html">Store Grid</a></li>
-                    <li><a class="dropdown-item" href="./pages/store-single.html">Store Single</a></li>
+                    <li><a class="dropdown-item" href="./pages/store-single.html">Store Single</a>
+                    </li>
                   </ul>
                 </li> --}}
-                <li class="nav-item dropdown w-100 w-lg-auto dropdown-fullwidth">
+                {{-- <li class="nav-item dropdown w-100 w-lg-auto dropdown-fullwidth">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     Mega menu
@@ -321,36 +357,45 @@
                     <div class="row p-2 p-lg-4">
                       <div class="col-lg-3 col-12 mb-4 mb-lg-0">
                         <h6 class="text-primary ps-3">Dairy, Bread & Eggs</h6>
-                        <a class="dropdown-item" href="./pages/shop-grid.html">Butter</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html">Milk Drinks</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html">Curd & Yogurt</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html">Eggs</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html">Buns & Bakery</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html">Cheese</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html">Condensed Milk</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html">Dairy Products</a>
+                        <a class="dropdown-item" href="#">Butter</a>
+                        <a class="dropdown-item" href="#">Milk Drinks</a>
+                        <a class="dropdown-item" href="#">Curd & Yogurt</a>
+                        <a class="dropdown-item" href="#">Eggs</a>
+                        <a class="dropdown-item" href="#">Buns & Bakery</a>
+                        <a class="dropdown-item" href="#">Cheese</a>
+                        <a class="dropdown-item" href="#">Condensed
+                          Milk</a>
+                        <a class="dropdown-item" href="#">Dairy
+                          Products</a>
                       </div>
                       <div class="col-lg-3 col-12 mb-4 mb-lg-0">
                         <h6 class="text-primary ps-3">Breakfast & Instant Food</h6>
-                        <a class="dropdown-item" href="./pages/shop-grid.html">Breakfast Cereal</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html"> Noodles, Pasta & Soup</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html">Frozen Veg Snacks</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html"> Frozen Non-Veg Snacks</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html"> Vermicelli</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html"> Instant Mixes</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html"> Batter</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html"> Fruit and Juices</a>
+                        <a class="dropdown-item" href="#">Breakfast
+                          Cereal</a>
+                        <a class="dropdown-item" href="#"> Noodles, Pasta &
+                          Soup</a>
+                        <a class="dropdown-item" href="#">Frozen Veg
+                          Snacks</a>
+                        <a class="dropdown-item" href="#"> Frozen Non-Veg
+                          Snacks</a>
+                        <a class="dropdown-item" href="#"> Vermicelli</a>
+                        <a class="dropdown-item" href="#"> Instant
+                          Mixes</a>
+                        <a class="dropdown-item" href="#"> Batter</a>
+                        <a class="dropdown-item" href="#"> Fruit and
+                          Juices</a>
                       </div>
                       <div class="col-lg-3 col-12 mb-4 mb-lg-0">
                         <h6 class="text-primary ps-3">Cold Drinks & Juices</h6>
-                        <a class="dropdown-item" href="./pages/shop-grid.html">Soft Drinks</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html">Fruit Juices</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html">Coldpress</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html">Water & Ice Cubes</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html">Soda & Mixers</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html">Health Drinks</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html">Herbal Drinks</a>
-                        <a class="dropdown-item" href="./pages/shop-grid.html">Milk Drinks</a>
+                        <a class="dropdown-item" href="#">Soft Drinks</a>
+                        <a class="dropdown-item" href="#">Fruit Juices</a>
+                        <a class="dropdown-item" href="#">Coldpress</a>
+                        <a class="dropdown-item" href="#">Water & Ice
+                          Cubes</a>
+                        <a class="dropdown-item" href="#">Soda & Mixers</a>
+                        <a class="dropdown-item" href="#">Health Drinks</a>
+                        <a class="dropdown-item" href="#">Herbal Drinks</a>
+                        <a class="dropdown-item" href="#">Milk Drinks</a>
                       </div>
                       <div class="col-lg-3 col-12 mb-4 mb-lg-0">
                         <div class="card border-0">
@@ -358,13 +403,14 @@
                             class="img-fluid">
                           <div class="position-absolute ps-6 mt-8">
                             <h5 class=" mb-0 ">Dont miss this <br>offer today.</h5>
-                            <a href="#" class="btn btn-primary btn-sm mt-3">Comprar Agora</a>
+                            <a href="#" class="btn btn-primary btn-sm mt-3">Comprar
+                              Agora</a>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </li>
+                </li> --}}
                 {{-- <li class="nav-item dropdown w-100 w-lg-auto">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
@@ -372,8 +418,10 @@
                   </a>
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="./pages/blog.html">Blog</a></li>
-                    <li><a class="dropdown-item" href="./pages/blog-single.html">Blog Single</a></li>
-                    <li><a class="dropdown-item" href="./pages/blog-category.html">Blog Category</a></li>
+                    <li><a class="dropdown-item" href="./pages/blog-single.html">Blog Single</a>
+                    </li>
+                    <li><a class="dropdown-item" href="./pages/blog-category.html">Blog Category</a>
+                    </li>
                     <li><a class="dropdown-item" href="./pages/about.html">About us</a></li>
                     <li><a class="dropdown-item" href="./pages/404error.html">404 Error</a></li>
                     <li><a class="dropdown-item" href="./pages/contact.html">Contact</a></li>
@@ -387,7 +435,8 @@
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="./pages/signin.html">Sign in</a></li>
                     <li><a class="dropdown-item" href="./pages/signup.html">Signup</a></li>
-                    <li><a class="dropdown-item" href="./pages/forgot-password.html">Forgot Password</a></li>
+                    <li><a class="dropdown-item" href="./pages/forgot-password.html">Forgot
+                        Password</a></li>
                     <li class="dropdown-submenu dropend">
                       <a class="dropdown-item dropdown-list-group-item dropdown-toggle" href="#">
                         My Account
@@ -443,8 +492,9 @@
             <div class="mb-5">
               <label for="password" class="form-label">Senha</label>
               <input type="password" class="form-control" id="password" placeholder="Digite sua senha" required="">
-              <small class="form-text">Ao se cadastrar, você concorda com nossos <a href="#!">Termos de Serviço</a> & <a
-                  href="#!">Política de Privacidade</a></small>
+              <small class="form-text">Ao se cadastrar, você concorda com nossos <a href="#!">Termos de
+                  Serviço</a> & <a href="#!">Política de
+                  Privacidade</a></small>
             </div>
 
             <button type="submit" class="btn btn-primary">Cadastrar</button>
@@ -475,7 +525,8 @@
       <div class="">
         <!-- alert -->
         <div class="alert alert-danger p-2" role="alert">
-          Você tem entrega GRATUITA. Comece a finalizar a <a href="#!" class="alert-link">compra agora!</a>
+          Você tem entrega GRATUITA. Comece a finalizar a <a href="#!" class="alert-link">compra
+            agora!</a>
         </div>
         <ul class="list-group list-group-flush">
           <!-- list group -->
@@ -747,7 +798,8 @@
           <div class="d-flex justify-content-between align-items-start ">
             <div>
               <h5 class="mb-1" id="locationModalLabel">Escolha o seu Local de Entrega</h5>
-              <p class="mb-0 small">Digite seu endereço e especificaremos a área de oferta para você. </p>
+              <p class="mb-0 small">Digite seu endereço e especificaremos a área de oferta para você.
+              </p>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
