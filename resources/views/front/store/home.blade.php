@@ -195,8 +195,6 @@
     </div>
   </section>
 
-  @include('front.partials.product-view-modal')
-
   <!-- Popular Products Start-->
   <section class="my-lg-14 my-8">
     <div class="container">
@@ -244,8 +242,6 @@
                   {{-- <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Comparar"><i
                       class="bi bi-arrow-left-right"></i></a> --}}
                 </div>
-                @include('front.partials.product-view-modal')
-
 
               </div>
               <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>{{
@@ -425,6 +421,9 @@
       </div>
     </div>
   </section>
+
+  @include('front.partials.product-view-modal')
+
 </main>
 
 @section('footer')
@@ -433,8 +432,9 @@
 <script src="{{ asset('libs/slick-carousel/slick/slick.min.js') }}"></script>
 <script src="{{ asset('js/vendors/slick-slider.js') }}"></script>
 <script src="{{ asset('libs/tiny-slider/dist/min/tiny-slider.js') }}"></script>
-<script src="{{ asset('js/vendors/tns-slider.js') }}"></script>
+{{-- <script src="{{ asset('js/vendors/tns-slider.js') }}"></script> --}}
 <script src="{{ asset('js/vendors/increment-value.js') }}"></script>
+<script src="{{ asset('js/vendors/zoom.js') }}"></script>
 
 @endsection
 

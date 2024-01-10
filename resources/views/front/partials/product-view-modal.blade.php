@@ -14,30 +14,7 @@
             <!-- product tools -->
             <div class="product-tools">
               <div class="thumbnails row g-3" id="productModalThumbnails">
-                {{-- <div class="col-3" class="tns-nav-active">
-                  <div class="thumbnails-img">
-                    <!-- img -->
-                    <img src="{{ asset('images/products/product-single-img-1.jpg') }}" alt="">
-                  </div>
-                </div>
-                <div class="col-3">
-                  <div class="thumbnails-img">
-                    <!-- img -->
-                    <img src="{{ asset('images/products/product-single-img-2.jpg') }}" alt="">
-                  </div>
-                </div>
-                <div class="col-3">
-                  <div class="thumbnails-img">
-                    <!-- img -->
-                    <img src="{{ asset('images/products/product-single-img-3.jpg') }}" alt="">
-                  </div>
-                </div>
-                <div class="col-3">
-                  <div class="thumbnails-img">
-                    <!-- img -->
-                    <img src="{{ asset('images/products/product-single-img-4.jpg') }}" alt="">
-                  </div>
-                </div> --}}
+
               </div>
             </div>
           </div>
@@ -127,16 +104,14 @@
 
 
 <script>
+  // Funções de utilidade
   function formatPrice(price) {
     return parseFloat(price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
   function formatWeight(weight) {
     var parsedWeight = parseFloat(weight);
-    if (parsedWeight >= 1) {
-      return parsedWeight.toLocaleString('pt-BR') + ' kg';
-    } 
-    return (parsedWeight * 1000).toLocaleString('pt-BR') + 'g';
+    return parsedWeight >= 1 ? parsedWeight.toLocaleString('pt-BR') + ' kg' : (parsedWeight * 1000).toLocaleString('pt-BR') + 'g';
   }
 
   function createZoomImage(imagePath) {
@@ -158,6 +133,7 @@
     return thumbnailDiv;
   }
 
+  // Função para atualizar o conteúdo do modal
   function updateModalContent(product) {
     var modal = $('#productViewModal');
     var productModalContainer = modal.find("#productModal");
@@ -204,9 +180,29 @@
     modal.find('#discount').toggle(hasSalePrice).text(Math.round(discountPercentage) + '% de desconto');
   }
 
+  // Função para mostrar o modal e inicializar o slider
   function showProductViewModal(product) {
     updateModalContent(product);
     $('#productViewModal').modal('show');
+
+    var slider;
+
+    if ($(".productModal").length > 0) {
+      slider = tns({
+        container: "#productModal",
+        items: 1,
+        startIndex: 0,
+        navContainer: "#productModalThumbnails",
+        navAsThumbnails: true,
+        autoplay: false,
+        autoplayTimeout: 1500,
+        swipeAngle: false,
+        speed: 1500,
+        controls: false,
+        autoplayButtonOutput: false,
+        loop: false,
+      });
+    }
 
     $.ajax({
       url: '/adicionar-view-produto/' + product.id,
@@ -219,5 +215,4 @@
       }
     });
   }
-
 </script>
