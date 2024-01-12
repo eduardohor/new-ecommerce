@@ -37,7 +37,6 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request): RedirectResponse
     {
-        dd($request->all());
         $data = $request->all();
 
         $data['parent_id'] = null;

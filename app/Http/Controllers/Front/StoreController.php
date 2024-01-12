@@ -28,9 +28,18 @@ class StoreController extends Controller
         return view('front.store.home', compact('categories', 'popularProducts', 'topSellingProducts'));
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        return view('front.store.store');
+        $categories = $this->category->nestedCategories();
+        $perPage = $request->input('per_page', 32);
+        $orderBy = $request->input('order_by', 'updated_at');
+
+        $products = $this->product->allProductsWithFilters(
+            $perPage,
+            $orderBy
+        );
+
+        return view('front.store.store', compact('categories', 'products'));
     }
 
     public function wishlist()

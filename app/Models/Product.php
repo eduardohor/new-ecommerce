@@ -41,7 +41,7 @@ class Product extends Model
         return $this->hasOne(ProductStatistic::class);
     }
 
-    public function getProducts(string $search = null): LengthAwarePaginator
+    public function getProducts(string $search = null)
     {
         $products = $this->with('category', 'productImages')
             ->where(function ($query) use ($search) {
@@ -97,6 +97,52 @@ class Product extends Model
         $products = $products->sortByDesc(function ($product) {
             return $product->statistics ? $product->statistics->sales : 0;
         });
+
+        return $products;
+    }
+
+    public function allProductsWithFilters(int $perPage = 32, string $orderBy = "updated_at")
+    {
+        $orderDirection = '';
+
+        $products = $this->with(['statistics', 'category', 'productImages'])
+            ->where('status', 'ativo');
+
+        switch ($orderBy) {
+            case 'highlighted':
+                // Ordenar os produtos com base nas visualizações
+                $products = $products->leftJoin('product_statistics', 'products.id', '=', 'product_statistics.product_id')
+                    ->orderByDesc('product_statistics.views')
+                    ->select('products.*');
+                break;
+
+            case 'low_to_high':
+                $orderBy = 'regular_price';
+                $orderDirection = 'asc';
+                $products->orderBy($orderBy, $orderDirection);
+                break;
+
+            case 'high_to_low':
+                $orderBy = 'regular_price';
+                $orderDirection = 'desc';
+                $products->orderBy($orderBy, $orderDirection);
+                break;
+
+            case 'release_date':
+                $orderBy = 'updated_at';
+                $orderDirection = 'desc';
+                $products->orderBy($orderBy, $orderDirection);
+                break;
+
+            default:
+                // Ordenar os produtos com base nas visualizações
+                $products = $products->leftJoin('product_statistics', 'products.id', '=', 'product_statistics.product_id')
+                    ->orderByDesc('product_statistics.views')
+                    ->select('products.*');
+                break;
+        }
+
+        $products = $products->paginate($perPage);
 
         return $products;
     }
