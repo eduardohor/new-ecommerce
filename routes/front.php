@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Front\CategoryController;
 use App\Http\Controllers\Front\AddressController;
 use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\CheckoutController;
@@ -17,6 +18,8 @@ Route::get('/loja', [StoreController::class, 'store'])->name('store');
 Route::get('/lista-de-desejos', [StoreController::class, 'wishlist'])->name('wishlist');
 Route::get('/pagina-nao-encontrada', [StoreController::class, 'pageNotFound'])->name('page-not-found');
 Route::get('/adicionar-view-produto/{productId}', [StoreController::class, 'addViewProduct'])->name('add-view-product');
+
+Route::get('categoria/{slug}', [CategoryController::class, 'categoryProducts'])->name('category-products');
 
 Route::get('/produto', [ProductController::class, 'index'])->name('product');
 

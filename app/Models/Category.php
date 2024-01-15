@@ -22,6 +22,11 @@ class Category extends Model
         'date'
     ];
 
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
     public function parent()
     {
         return $this->belongsTo(Category::class, 'parent_id');
@@ -48,5 +53,50 @@ class Category extends Model
             ->paginate(10);
 
         return $categories;
+    }
+
+    public function productsWithFilters(int $perPage = 32, string $orderBy = "updated_at")
+    {
+        $products = $this->products()
+            ->with(['statistics', 'productImages'])
+            ->where('status', 'ativo');
+
+        switch ($orderBy) {
+            case 'highlighted':
+                // Ordenar os produtos com base nas visualizações
+                $products = $products->leftJoin('product_statistics', 'products.id', '=', 'product_statistics.product_id')
+                    ->orderByDesc('product_statistics.views')
+                    ->select('products.*');
+                break;
+
+            case 'low_to_high':
+                $orderBy = 'regular_price';
+                $orderDirection = 'asc';
+                $products->orderBy($orderBy, $orderDirection);
+                break;
+
+            case 'high_to_low':
+                $orderBy = 'regular_price';
+                $orderDirection = 'desc';
+                $products->orderBy($orderBy, $orderDirection);
+                break;
+
+            case 'release_date':
+                $orderBy = 'updated_at';
+                $orderDirection = 'desc';
+                $products->orderBy($orderBy, $orderDirection);
+                break;
+
+            default:
+                // Ordenar os produtos com base nas visualizações
+                $products = $products->leftJoin('product_statistics', 'products.id', '=', 'product_statistics.product_id')
+                    ->orderByDesc('product_statistics.views')
+                    ->select('products.*');
+                break;
+        }
+
+        $products = $products->paginate($perPage);
+
+        return $products;
     }
 }

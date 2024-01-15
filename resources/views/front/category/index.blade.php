@@ -51,23 +51,23 @@
                 <h5 class="mb-3">Categorias</h5>
                 <!-- nav -->
                 <ul class="nav nav-category" id="categoryCollapseMenu">
-                  @foreach ($categories as $category)
+                  @foreach ($nestedCategories as $nestedCategory)
                   <li class="nav-item border-bottom w-100">
                     <a href="#" class="nav-link collapsed" data-bs-toggle="collapse"
-                      data-bs-target="#category{{ $category->id }}" aria-expanded="false"
-                      aria-controls="category{{ $category->id }}">
-                      {{ $category->name }}
+                      data-bs-target="#category{{ $nestedCategory->id }}" aria-expanded="false"
+                      aria-controls="category{{ $nestedCategory->id }}">
+                      {{ $nestedCategory->name }}
                       <i class="feather-icon icon-chevron-right"></i>
                     </a>
 
-                    @if ($category->children)
+                    @if ($nestedCategory->children)
                     <!-- accordion collapse -->
-                    <div id="category{{ $category->id }}" class="accordion-collapse collapse"
+                    <div id="category{{ $nestedCategory->id }}" class="accordion-collapse collapse"
                       data-bs-parent="#categoryCollapseMenu">
                       <div>
                         <!-- nav -->
                         <ul class="nav flex-column ms-3">
-                          @foreach ($category->children as $child)
+                          @foreach ($nestedCategory->children as $child)
                           <!-- nav item -->
                           <li class="nav-item"><a href="#!" class="nav-link">{{ $child->name }}</a></li>
                           @endforeach
@@ -288,7 +288,7 @@
                 </div>
               </div>
 
-              <form method="GET" action="{{ route('store') }}">
+              <form method="GET" action="{{ route('category-products', ['slug' => $category->slug]) }}">
                 <div class="d-flex mt-2 mt-lg-0">
                   <div class="me-2 flex-grow-1">
                     <!-- select option -->

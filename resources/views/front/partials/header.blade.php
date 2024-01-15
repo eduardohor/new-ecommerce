@@ -241,13 +241,16 @@
                 <div class="card card-body">
                   <ul class="mb-0 list-unstyled">
                     @forelse ($categoriesProvider as $categoryProvider)
-                    <li><a class="dropdown-item text-primary" href="#">{{ $categoryProvider->name
+                    <li><a class="dropdown-item text-primary"
+                        href="{{ route('category-products', ['slug' => $categoryProvider->slug]) }}">{{
+                        $categoryProvider->name
                         }}</a>
                       @if ($categoryProvider->children)
                       <ul class="mb-0 ms-2 list-unstyled">
                         @foreach ($categoryProvider->children as $child)
-                        <li><a class="dropdown-item" href="#">{{
-                            $categoryProvider->name }}</a>
+                        <li><a class="dropdown-item"
+                            href="{{ route('category-products', ['slug' => $child->slug]) }}">{{
+                            $child->name }}</a>
                         </li>
                         @endforeach
                       </ul>
@@ -276,13 +279,15 @@
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 @forelse ($categoriesProvider as $categoryProvider)
-                <li><a class="dropdown-item text-primary" href="#">{{ $categoryProvider->name
+                <li><a class="dropdown-item text-primary"
+                    href="{{ route('category-products', ['slug' => $categoryProvider->slug]) }}">{{
+                    $categoryProvider->name
                     }}</a>
                   @if ($categoryProvider->children)
                   <ul class="mb-0 ms-2 list-unstyled">
                     @foreach ($categoryProvider->children as $child)
-                    <li><a class="dropdown-item" href="#">{{
-                        $categoryProvider->name }}</a>
+                    <li><a class="dropdown-item" href="{{ route('category-products', ['slug' => $child->slug]) }}">{{
+                        $child->name }}</a>
                     </li>
                     @endforeach
                   </ul>
