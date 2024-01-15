@@ -208,10 +208,8 @@
       url: '/adicionar-view-produto/' + product.id,
       type: 'GET',
       success: function(response) {
-        console.log('Visualização do produto registrada com sucesso.');
       },
       error: function(error) {
-        console.error('Erro ao tentar registrar a visualização do produto.');
       }
     });
   }

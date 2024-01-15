@@ -246,7 +246,7 @@
                 </div>
                 <!-- Banner Content -->
                 <!-- Banner Image -->
-                <!-- img --><img src="{{ asset('') }}images/banner/assortment-citrus-fruits.png" alt=""
+                <!-- img --><img src="{{ asset('images/banner/assortment-citrus-fruits.png') }}" alt=""
                   class="img-fluid rounded ">
                 <!-- Banner Image -->
               </div>
@@ -410,6 +410,9 @@
       </div>
     </div>
   </div>
+
+  @include('front.partials.product-view-modal')
+
 </main>
 
 
