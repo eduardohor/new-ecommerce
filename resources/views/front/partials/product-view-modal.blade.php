@@ -150,7 +150,10 @@
       thumbnailsContainer.append(thumbnailDiv);
     });
 
-    modal.find(".category").text(product.category.name);
+    modal.find(".category")
+    .text(product.category.name)
+    .attr('href', "{{ route('category-products', ['slug' => ':slug']) }}".replace(':slug', product.category.slug));
+    
     modal.find('#productViewModalLabel').text(product.category.name);
     modal.find('#productViewModal img').attr('src', "{{ asset('storage/') }}" + '/' + product.product_images[0].image_path);
     modal.find('.title').text(product.title);

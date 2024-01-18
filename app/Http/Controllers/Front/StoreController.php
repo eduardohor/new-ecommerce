@@ -21,7 +21,7 @@ class StoreController extends Controller
 
     public function home()
     {
-        $categories = $this->category->all();
+        $categories = $this->category->join('products', 'categories.id', '=', 'products.category_id')->get();
         $popularProducts = $this->product->getPopularProducts();
         $topSellingProducts = $this->product->getTopSellingProducts();
 

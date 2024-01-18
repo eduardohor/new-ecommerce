@@ -57,7 +57,8 @@
       <div class="category-slider ">
 
         @forelse ($categories as $category)
-        <div class="item"> <a href="{{ route('store') }}" class="text-decoration-none text-inherit">
+        <div class="item"> <a href="{{ route('category-products', ['slug' => $category->slug]) }}"
+            class="text-decoration-none text-inherit">
             <div class="card card-product mb-lg-4">
               <div class="card-body text-center py-8">
                 <img src="{{ asset('storage/' . $category->image) }}" alt="Grocery Ecommerce Template"

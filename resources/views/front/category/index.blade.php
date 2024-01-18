@@ -23,7 +23,8 @@
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
               <li class="breadcrumb-item"><a href="{{ route('home') }}">Início</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Loja</li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('store') }}">Loja</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{{ $category->name }}</li>
             </ol>
           </nav>
         </div>
@@ -53,23 +54,33 @@
                 <ul class="nav nav-category" id="categoryCollapseMenu">
                   @foreach ($nestedCategories as $nestedCategory)
                   <li class="nav-item border-bottom w-100">
-                    <a href="#" class="nav-link collapsed" data-bs-toggle="collapse"
-                      data-bs-target="#category{{ $nestedCategory->id }}" aria-expanded="false"
-                      aria-controls="category{{ $nestedCategory->id }}">
-                      {{ $nestedCategory->name }}
-                      <i class="feather-icon icon-chevron-right"></i>
-                    </a>
+                    <div class="d-flex align-items-center">
+                      <a href="{{ route('category-products', ['slug' => $nestedCategory->slug]) }}"
+                        class="nav-link flex-grow-1 {{ Request::is('categoria/'.$nestedCategory->slug) ? 'text-success' : '' }}">
+                        {{ $nestedCategory->name }}
+                      </a>
+                      @if ($nestedCategory->children)
+                      <i class="feather-icon icon-chevron-right" data-bs-toggle="collapse"
+                        data-bs-target="#category{{ $nestedCategory->id }}" aria-expanded="false"
+                        aria-controls="category{{ $nestedCategory->id }}"></i>
+                      @endif
+                    </div>
 
                     @if ($nestedCategory->children)
                     <!-- accordion collapse -->
-                    <div id="category{{ $nestedCategory->id }}" class="accordion-collapse collapse"
+                    <div id="category{{ $nestedCategory->id }}" class="accordion-collapse collapse show"
                       data-bs-parent="#categoryCollapseMenu">
                       <div>
                         <!-- nav -->
                         <ul class="nav flex-column ms-3">
                           @foreach ($nestedCategory->children as $child)
                           <!-- nav item -->
-                          <li class="nav-item"><a href="#!" class="nav-link">{{ $child->name }}</a></li>
+                          <li class="nav-item">
+                            <a href="{{ route('category-products', ['slug' => $child->slug]) }}"
+                              class="nav-link {{ Request::is('categoria/'.$child->slug) ? 'text-success' : '' }}">
+                              {{ $child->name }}
+                            </a>
+                          </li>
                           @endforeach
                         </ul>
                       </div>
@@ -78,6 +89,7 @@
                   </li>
                   @endforeach
                 </ul>
+
 
               </div>
 
@@ -258,7 +270,7 @@
           <div class="card mb-4 bg-light border-0">
             <!-- card body -->
             <div class="card-body">
-              <h2 class="mb-0 fs-1">Todos os Produtos</h2>
+              <h2 class="mb-0 fs-1">{{ $category->name }}</h2>
             </div>
           </div>
           <!-- list icon -->
@@ -435,6 +447,15 @@
 
 <!-- Theme JS -->
 <script src="{{ asset('js/theme.min.js') }}"></script>
+
+<script>
+  // Adiciona um manipulador de eventos ao ícone de colapso
+  $('.collapse-toggle').ready(function () {
+      var categoryId = $(this).data('category-id');
+      console.log(categoryId);
+      $('#category' + categoryId).collapse('toggle');
+  });
+</script>
 
 @endsection
 

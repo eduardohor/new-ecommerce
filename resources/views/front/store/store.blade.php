@@ -53,12 +53,15 @@
                 <ul class="nav nav-category" id="categoryCollapseMenu">
                   @foreach ($categories as $category)
                   <li class="nav-item border-bottom w-100">
-                    <a href="#" class="nav-link collapsed" data-bs-toggle="collapse"
-                      data-bs-target="#category{{ $category->id }}" aria-expanded="false"
-                      aria-controls="category{{ $category->id }}">
-                      {{ $category->name }}
-                      <i class="feather-icon icon-chevron-right"></i>
-                    </a>
+                    <div class="d-flex align-items-center">
+                      <a href="{{ route('category-products', ['slug' => $category->slug]) }}"
+                        class="nav-link flex-grow-1">
+                        {{ $category->name }}
+                      </a>
+                      <i class="feather-icon icon-chevron-right" data-bs-toggle="collapse"
+                        data-bs-target="#category{{ $category->id }}" aria-expanded="false"
+                        aria-controls="category{{ $category->id }}"></i>
+                    </div>
 
                     @if ($category->children)
                     <!-- accordion collapse -->
@@ -69,7 +72,11 @@
                         <ul class="nav flex-column ms-3">
                           @foreach ($category->children as $child)
                           <!-- nav item -->
-                          <li class="nav-item"><a href="#!" class="nav-link">{{ $child->name }}</a></li>
+                          <li class="nav-item">
+                            <a href="{{ route('category-products', ['slug' => $child->slug]) }}" class="nav-link">
+                              {{ $child->name }}
+                            </a>
+                          </li>
                           @endforeach
                         </ul>
                       </div>
