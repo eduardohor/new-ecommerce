@@ -24,6 +24,7 @@ Route::get('categoria/{slug}', [CategoryController::class, 'categoryProducts'])-
 Route::get('/produto', [ProductController::class, 'index'])->name('product');
 
 Route::get('/carrinho', [CartController::class, 'index'])->name('cart.index');
+Route::post('/adicionar-ao-carrinho', [CartController::class, 'postAddToCart'])->name('cart.post-add-to-cart');
 
 Route::middleware('auth')->group(function () {
   Route::get('/finalizar-compra', [CheckoutController::class, 'index'])->name('checkout.index');

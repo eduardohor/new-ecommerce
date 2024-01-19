@@ -398,7 +398,12 @@
                     </div>
 
                     <div>
-                      <a href="#!" class="btn btn-primary btn-sm">Adicionar</a>
+                      <form action="{{ route('cart.post-add-to-cart') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="btn btn-primary btn-sm">Adicionar</button>
+                      </form>
                     </div>
                   </div>
                 </div>

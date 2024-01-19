@@ -273,7 +273,12 @@
                 </div>
 
                 <div>
-                  <a href="#!" class="btn btn-primary btn-sm">Adicionar</a>
+                  <form action="{{ route('cart.post-add-to-cart') }}" method="post">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $popularProduct->id }}">
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit" class="btn btn-primary btn-sm">Adicionar</button>
+                  </form>
                 </div>
               </div>
             </div>
@@ -361,7 +366,12 @@
 
                 </div>
                 <div class="d-grid mt-2">
-                  <a href="#!" class="btn btn-primary ">Adicionar ao carrinho </a>
+                  <form action="{{ route('cart.post-add-to-cart') }}" method="post">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $topSellingProduct->id }}">
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit" class="btn btn-primary ">Adicionar ao carrinho </button>
+                  </form>
                 </div>
                 <div class="d-flex justify-content-start text-center mt-3">
                   <div class="deals-countdown w-100" data-countdown="2024/01/30 00:00:00"></div>

@@ -47,7 +47,7 @@
                 <!-- input -->
                 <div class="input-group input-spinner  ">
                   <input type="button" value="-" class="button-minus  btn  btn-sm " data-field="quantity">
-                  <input type="number" step="1" max="10" value="1" name="quantity"
+                  <input type="number" step="1" max="10" value="1" name="quantity" id="quantity"
                     class="quantity-field form-control-sm form-input   ">
                   <input type="button" value="+" class="button-plus btn btn-sm " data-field="quantity">
                 </div>
@@ -57,8 +57,8 @@
                 <div class="col-lg-4 col-md-5 col-6 d-grid">
                   <!-- button -->
                   <!-- btn -->
-                  <button type="button" class="btn btn-primary">
-                    <i class="feather-icon icon-shopping-bag me-2"></i>Adicionar
+                  <button type="button" class="btn btn-primary" onclick="postAddToCart()">
+                    Adicionar
                   </button>
                 </div>
                 <div class="col-md-4 col-5">
@@ -104,7 +104,11 @@
 
 
 <script>
+  var currentProductId = null;
+  window.csrfToken = @json(csrf_token());
+  
   // Funções de utilidade
+
   function formatPrice(price) {
     return parseFloat(price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
@@ -135,6 +139,8 @@
 
   // Função para atualizar o conteúdo do modal
   function updateModalContent(product) {
+    currentProductId = product.id;
+
     var modal = $('#productViewModal');
     var productModalContainer = modal.find("#productModal");
     var thumbnailsContainer = modal.find("#productModalThumbnails");
@@ -216,4 +222,31 @@
       }
     });
   }
+
+  function postAddToCart() {
+  var quantity = $('#quantity').val();
+
+  if (currentProductId) {
+
+    $.ajax({
+      url: '/adicionar-ao-carrinho',
+      type: 'POST',
+      data: {
+        _token: window.csrfToken,
+        product_id: currentProductId,
+        quantity: quantity,
+      },
+      success: function(response) {
+        window.location.href = '{{ route('cart.index') }}';
+      },
+      error: function(error) {
+        console.error("Erro ao adicionar o produto ao carrinho:", error);
+      }
+    });
+
+  } else {
+    console.error("ID do Produto não disponível.");
+  }
+}
+
 </script>
