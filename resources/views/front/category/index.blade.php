@@ -398,7 +398,7 @@
                     </div>
 
                     <div>
-                      <form action="{{ route('cart.post-add-to-cart') }}" method="post">
+                      <form action="{{ route('cart.add-product-to-cart') }}" method="post">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <input type="hidden" name="quantity" value="1">

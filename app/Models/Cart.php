@@ -16,4 +16,14 @@ class Cart extends Model
         'total_amount',
         'item_count'
     ];
+
+    public function cartProducts()
+    {
+        return $this->hasMany(CartProduct::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'cart_products');
+    }
 }

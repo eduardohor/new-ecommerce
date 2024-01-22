@@ -41,6 +41,11 @@ class Product extends Model
         return $this->hasOne(ProductStatistic::class);
     }
 
+    public function cart()
+    {
+        return $this->belongsToMany(Cart::class, 'cart_products');
+    }
+
     public function getProducts(string $search = null)
     {
         $products = $this->with('category', 'productImages')

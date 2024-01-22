@@ -15,40 +15,69 @@ class CartController extends Controller
     private $cart;
     private $cartProduct;
 
-
     public function __construct(Product $product, Cart $cart, CartProduct $cartProduct)
     {
         $this->product = $product;
         $this->cart = $cart;
         $this->cartProduct = $cartProduct;
     }
+
     public function index()
     {
-        return view('front.cart.index');
+        $user = Auth::user();
+
+        $cart = $this->getCart($user);
+
+        return view('front.cart.index', compact('cart'));
     }
 
-    public function postAddToCart(Request $request)
+    public function addProductToCart(Request $request)
     {
         $user = Auth::user();
-        $newSessionToken = session()->get('_token');
         $product = $this->product->find($request->product_id);
         $quantity = $request->quantity;
-        $price = $product->regular_price;
+        $price = $product->sale_price > 0 ? $product->sale_price : $product->regular_price;
 
-        if ($product->sale_price > 0) {
-            $price = $product->sale_price;
-        }
+        $cart = $this->getOrCreateCart($user);
 
-        if ($user) {
-            $cart = $this->cart->updateOrCreate(['user_id' => $user->id], [
-                'status' => 'open'
-            ]);
-        } else {
-            $cart = $this->cart->updateOrCreate(['unique_identifier' => $newSessionToken], [
-                'status' => 'open'
-            ]);
-        }
+        $this->updateCart($cart, $product, $quantity, $price);
 
+        return redirect()->route('cart.index');
+    }
+
+    public function deleteProductToCart(Request $request)
+    {
+        $user = Auth::user();
+        $product = $this->product->find($request->product_id);
+        $quantity = $request->quantity;
+        $price = $product->sale_price > 0 ? $product->sale_price : $product->regular_price;
+        $removeAll = $request->remove_all;
+
+        $cart = $this->getCart($user);
+        $cartProduct = $this->getCartProduct($cart, $product);
+
+        $this->handleProductRemoval($cart, $cartProduct, $quantity, $removeAll);
+
+        return redirect()->route('cart.index');
+    }
+
+    private function getCart($user = null)
+    {
+        $newSessionToken = session()->get('_token');
+        return $user
+            ? $this->cart->where(['user_id' => $user->id, 'status' => 'open'])->first()
+            : $this->cart->where(['unique_identifier' => $newSessionToken, 'status' => 'open'])->first();
+    }
+
+    private function getOrCreateCart($user)
+    {
+        return $user
+            ? $this->cart->updateOrCreate(['user_id' => $user->id], ['status' => 'open'])
+            : $this->cart->updateOrCreate(['unique_identifier' => session()->get('_token')], ['status' => 'open']);
+    }
+
+    private function updateCart($cart, $product, $quantity, $price)
+    {
         if ($cart->status == 'open') {
             $alreadyAddedProduct = $this->cartProduct->where(["product_id" => $product->id, 'cart_id' => $cart->id])->first();
 
@@ -56,7 +85,7 @@ class CartController extends Controller
                 $alreadyAddedProduct->quantity += $quantity;
                 $alreadyAddedProduct->save();
             } else {
-                $cartProduct = $this->cartProduct->create([
+                $this->cartProduct->create([
                     'cart_id' => $cart->id,
                     'product_id' => $product->id,
                     'quantity' => $quantity,
@@ -68,9 +97,33 @@ class CartController extends Controller
 
             $cart->item_count = $this->cartProduct->where('cart_id', $cart->id)->sum('quantity');
             $cart->save();
-            return redirect()->route('cart.index');
+        }
+    }
+
+    private function getCartProduct($cart, $product)
+    {
+        return $this->cartProduct->where(["product_id" => $product->id, 'cart_id' => $cart->id])->first();
+    }
+
+    private function handleProductRemoval($cart, $cartProduct, $quantity, $removeAll)
+    {
+        if ($removeAll) {
+            $cart->item_count -= $cartProduct->quantity;
+            $cartProduct->delete();
         } else {
-            return redirect()->route('home');
+            $cartProduct->quantity -= $quantity;
+            $cartProduct->save();
+            $cart->item_count -= $quantity;
+            $this->updateCartTotalAmount($cart);
+
+            if ($cartProduct->quantity <= 0) {
+                $cartProduct->delete();
+            }
+        }
+
+        if ($cart->item_count <= 0) {
+            $cart->status = 'closed';
+            $cart->save();
         }
     }
 

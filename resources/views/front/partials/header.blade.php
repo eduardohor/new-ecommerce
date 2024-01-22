@@ -167,8 +167,7 @@
               </div>
               <div class="list-inline-item">
 
-                <a class="text-muted position-relative " data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                  href="#offcanvasExample" role="button" aria-controls="offcanvasRight">
+                <a class="text-muted position-relative " href="{{ route('cart.index') }}">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="feather feather-shopping-bag">
@@ -176,9 +175,9 @@
                     <line x1="3" y1="6" x2="21" y2="6"></line>
                     <path d="M16 10a4 4 0 0 1-8 0"></path>
                   </svg>
-                  <span id="cartQuantity"
-                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
-                    1
+
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                    {{ $cartProvider ? $cartProvider->item_count : 0}}
                   </span>
                 </a>
 
@@ -517,11 +516,10 @@
 
   <!-- Shop Cart -->
 
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  {{-- <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
     <div class="offcanvas-header border-bottom">
       <div class="text-start">
         <h5 id="offcanvasRightLabel" class="mb-0 fs-4">Carrinho de Compras</h5>
-        <small>Localização em 382480</small>
       </div>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
@@ -792,7 +790,7 @@
 
       </div>
     </div>
-  </div>
+  </div> --}}
 
   <!-- Modal -->
   <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
