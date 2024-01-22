@@ -114,12 +114,13 @@ class CartController extends Controller
             $cartProduct->quantity -= $quantity;
             $cartProduct->save();
             $cart->item_count -= $quantity;
-            $this->updateCartTotalAmount($cart);
 
             if ($cartProduct->quantity <= 0) {
                 $cartProduct->delete();
             }
         }
+
+        $this->updateCartTotalAmount($cart);
 
         if ($cart->item_count <= 0) {
             $cart->status = 'closed';
