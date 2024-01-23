@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -45,6 +46,14 @@ class UserController extends Controller
             return redirect()->route('users.index')->with('status', 'user-created');
         } catch (\Exception $error) {
             DB::rollBack();
+
+            Log::error('Erro ao criar usuário:', [
+                'message' => $error->getMessage(),
+                'type' => get_class($error),
+                'file' => $error->getFile(),
+                'line' => $error->getLine(),
+                'trace' => $error->getTrace(),
+            ]);
 
             return redirect()->route('users.index')->with('error', 'Erro ao criar usuário. Por favor, tente novamente.');
         }
@@ -81,6 +90,14 @@ class UserController extends Controller
         } catch (\Exception $error) {
             DB::rollBack();
 
+            Log::error('Erro ao editar usuário:', [
+                'message' => $error->getMessage(),
+                'type' => get_class($error),
+                'file' => $error->getFile(),
+                'line' => $error->getLine(),
+                'trace' => $error->getTrace(),
+            ]);
+
             return redirect()->route('users.index')->with('error', 'Erro ao editar usuário. Por favor, tente novamente.');
         }
     }
@@ -99,6 +116,14 @@ class UserController extends Controller
         } catch (\Exception $error) {
             DB::rollBack();
 
+            Log::error('Erro ao excluir usuário:', [
+                'message' => $error->getMessage(),
+                'type' => get_class($error),
+                'file' => $error->getFile(),
+                'line' => $error->getLine(),
+                'trace' => $error->getTrace(),
+            ]);
+
             return redirect()->route('users.index')->with('error', 'Erro ao excluir usuário. Por favor, tente novamente.');
         }
     }
@@ -107,7 +132,10 @@ class UserController extends Controller
     {
         try {
             return $this->user->findOrFail($id);
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $error) {
+            $errorMessage = 'Usuário não encontrado. Detalhes: ' . $error->getMessage();
+            Log::error($errorMessage);
+
             $redirectResponse = redirect()->route('users.index')->with('error', 'Usuário não encontrado');
             $redirectResponse->send();  // Encerra a execução imediatamente
         }

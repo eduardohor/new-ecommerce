@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class CartController extends Controller
@@ -26,13 +27,13 @@ class CartController extends Controller
         $this->cartProduct = $cartProduct;
     }
 
-    public function index(): View
+    public function show(): View
     {
         $user = Auth::user();
 
         $cart = $this->getCart($user);
 
-        return view('front.cart.index', compact('cart'));
+        return view('front.cart.show', compact('cart'));
     }
 
     public function addProductToCart(Request $request): RedirectResponse
@@ -53,9 +54,17 @@ class CartController extends Controller
         } catch (\Exception  $error) {
             DB::rollBack();
 
+            Log::error('Erro ao adicionar produto ao carrinho:', [
+                'message' => $error->getMessage(),
+                'type' => get_class($error),
+                'file' => $error->getFile(),
+                'line' => $error->getLine(),
+                'trace' => $error->getTrace(),
+            ]);
+
             return redirect()->back()->with('error', 'Erro ao adicionar produto ao carrinho.');
         }
-        return redirect()->route('cart.index');
+        return redirect()->route('cart.show');
     }
 
     public function deleteProductToCart(Request $request): RedirectResponse
@@ -78,10 +87,18 @@ class CartController extends Controller
         } catch (\Exception $error) {
             DB::rollBack();
 
+            Log::error('Erro ao remover produto do carrinho:', [
+                'message' => $error->getMessage(),
+                'type' => get_class($error),
+                'file' => $error->getFile(),
+                'line' => $error->getLine(),
+                'trace' => $error->getTrace(),
+            ]);
+
             return redirect()->back()->with('error', 'Erro ao remover produto do carrinho.');
         }
 
-        return redirect()->route('cart.index');
+        return redirect()->route('cart.show');
     }
 
     private function getCart(?User $user = null): ?Cart

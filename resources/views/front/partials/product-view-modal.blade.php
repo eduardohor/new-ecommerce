@@ -237,7 +237,7 @@
         quantity: quantity,
       },
       success: function(response) {
-        window.location.href = '{{ route('cart.index') }}';
+        window.location.href = '{{ route('cart.show') }}';
       },
       error: function(error) {
         console.error("Erro ao adicionar o produto ao carrinho:", error);

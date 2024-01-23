@@ -20,7 +20,7 @@
           <!-- breadcrumb -->
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
-              <li class="breadcrumb-item"><a href="{{ route('store') }}">Início</a></li>
+              <li class="breadcrumb-item"><a href="{{ route('home') }}">Início</a></li>
               <li class="breadcrumb-item"><a href="{{ route('store') }}">Loja</a></li>
               <li class="breadcrumb-item active" aria-current="page">Carrinho de Compras</li>
             </ol>
@@ -66,7 +66,7 @@
                   </div>
                   <div class="col-4 col-md-5">
                     <!-- title -->
-                    <a href="shop-single.html" class="text-inherit">
+                    <a href="{{ route('product.show', $cartProduct->product->id) }}" class="text-inherit">
                       <h6 class="mb-0">{{ $cartProduct->product->title }}</h6>
                     </a>
                     <span><small class="text-muted">Código do Produto: {{ $cartProduct->product->product_code

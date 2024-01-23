@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -58,6 +59,14 @@ class CategoryController extends Controller
         } catch (\Exception  $error) {
             DB::rollBack();
 
+            Log::error('Erro ao criar categoria:', [
+                'message' => $error->getMessage(),
+                'type' => get_class($error),
+                'file' => $error->getFile(),
+                'line' => $error->getLine(),
+                'trace' => $error->getTrace(),
+            ]);
+
             return redirect()->route('categories.index')->with('error', 'Erro ao criar categoria. Por favor, tente novamente.');
         }
     }
@@ -93,6 +102,14 @@ class CategoryController extends Controller
         } catch (\Exception $error) {
             DB::rollBack();
 
+            Log::error('Erro ao editar categoria:', [
+                'message' => $error->getMessage(),
+                'type' => get_class($error),
+                'file' => $error->getFile(),
+                'line' => $error->getLine(),
+                'trace' => $error->getTrace(),
+            ]);
+
             return redirect()->route('categories.index')->with('error', 'Erro ao atualizar categoria. Por favor, tente novamente.');
         }
     }
@@ -111,8 +128,16 @@ class CategoryController extends Controller
             DB::commit();
 
             return redirect()->route('categories.index')->with('status', 'category-deleted');
-        } catch (\Throwable $th) {
+        } catch (\Exception $error) {
             DB::rollBack();
+
+            Log::error('Erro ao excluir categoria:', [
+                'message' => $error->getMessage(),
+                'type' => get_class($error),
+                'file' => $error->getFile(),
+                'line' => $error->getLine(),
+                'trace' => $error->getTrace(),
+            ]);
 
             return redirect()->route('categories.index')->with('error', 'Erro ao excluir categoria. Por favor, tente novamente.');
         }
@@ -122,7 +147,10 @@ class CategoryController extends Controller
     {
         try {
             return $this->category->findOrFail($id);
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $error) {
+            $errorMessage = 'Categoria não encontrado. Detalhes: ' . $error->getMessage();
+            Log::error($errorMessage);
+
             $redirectResponse = redirect()->route('categories.index')->with('error', 'Categoria não encontrada');
             $redirectResponse->send();  // Encerra a execução imediatamente
         }

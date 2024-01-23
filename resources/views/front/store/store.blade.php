@@ -366,7 +366,8 @@
                   </div>
                   <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>{{
                         $categoryProduct->name }}</small></a></div>
-                  <h2 class="fs-6"><a href="{{ route('product') }}" class="text-inherit text-decoration-none">{{
+                  <h2 class="fs-6"><a href="{{ route('product.show', $product->id) }}"
+                      class="text-inherit text-decoration-none">{{
                       $product->title }}</a></h2>
 
                   {{-- <div>

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -87,6 +88,14 @@ class ProductController extends Controller
         } catch (\Exception $error) {
             DB::rollBack();
 
+            Log::error('Erro ao criar produto:', [
+                'message' => $error->getMessage(),
+                'type' => get_class($error),
+                'file' => $error->getFile(),
+                'line' => $error->getLine(),
+                'trace' => $error->getTrace(),
+            ]);
+
             return redirect()->route('products.index')->with('error', 'Erro ao criar produto. Por favor, tente novamente.');
         }
     }
@@ -149,6 +158,14 @@ class ProductController extends Controller
         } catch (\Exception $error) {
             DB::rollBack();
 
+            Log::error('Erro ao editar produto:', [
+                'message' => $error->getMessage(),
+                'type' => get_class($error),
+                'file' => $error->getFile(),
+                'line' => $error->getLine(),
+                'trace' => $error->getTrace(),
+            ]);
+
             return redirect()->route('products.index')->with('error', 'Erro ao criar produto. Por favor, tente novamente.');
         }
     }
@@ -175,6 +192,14 @@ class ProductController extends Controller
         } catch (\Exception $error) {
             DB::rollBack();
 
+            Log::error('Erro ao excluir produto:', [
+                'message' => $error->getMessage(),
+                'type' => get_class($error),
+                'file' => $error->getFile(),
+                'line' => $error->getLine(),
+                'trace' => $error->getTrace(),
+            ]);
+
             return redirect()->route('products.index')->with('error', 'Erro ao excluir produto. Por favor, tente novamente.');
         }
     }
@@ -183,7 +208,10 @@ class ProductController extends Controller
     {
         try {
             return $this->product->with('category', 'productImages')->findOrFail($id);
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $error) {
+            $errorMessage = 'Produto não encontrado. Detalhes: ' . $error->getMessage();
+            Log::error($errorMessage);
+
             $redirectResponse = redirect()->route('products.index')->with('error', 'Produto não encontrado');
             $redirectResponse->send();  // Encerra a execução imediatamente
         }

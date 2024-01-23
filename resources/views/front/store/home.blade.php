@@ -231,7 +231,8 @@
                   <span class="badge bg-success">{{ $discountPercentage }}%</span>
                   @endif
                 </div>
-                <a href="#!"> <img src="{{ asset('storage/' . $imagesPopularProduct->first()->image_path) }}"
+                <a href="{{ route('product.show', $popularProduct->id) }}"> <img
+                    src="{{ asset('storage/' . $imagesPopularProduct->first()->image_path) }}"
                     alt="Image Produto {{ $popularProduct->title }}" class="mb-4 mt-6 img-fluid"></a>
 
                 <div class="card-product-action">
@@ -245,9 +246,11 @@
                 </div>
 
               </div>
-              <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>{{
+              <div class="text-small mb-1"><a href="{{ route('category-products', $categoryPopularProduct->slug) }}"
+                  class="text-decoration-none text-muted"><small>{{
                     $categoryPopularProduct->name }}</small></a></div>
-              <h2 class="fs-6"><a href="{{ route('product') }}" class="text-inherit text-decoration-none">{{
+              <h2 class="fs-6"><a href="{{ route('product.show', $popularProduct->id) }}"
+                  class="text-inherit text-decoration-none">{{
                   $popularProduct->title }}</a></h2>
 
               {{-- <div>
@@ -323,12 +326,14 @@
           <div class="col">
             <div class="card card-product">
               <div class="card-body">
-                <div class="text-center  position-relative "> <a href="{{ route('product') }}"><img
+                <div class="text-center  position-relative "> <a
+                    href="{{ route('product.show', $topSellingProduct->id) }}"><img
                       src="{{ asset('storage/' .$imagesTopProduct->first()->image_path) }}"
                       alt="Grocery Ecommerce Template" class="mb-3 img-fluid"></a>
 
                   <div class="card-product-action">
-                    <a href="#!" class="btn-action" data-bs-toggle="modal" data-bs-target="#productViewModal"
+                    <a href="{{ route('product.show', $topSellingProduct->id) }}" class="btn-action"
+                      data-bs-toggle="modal" data-bs-target="#productViewModal"
                       onclick="showProductViewModal({{ $topSellingProduct }})"><i class="bi bi-eye"
                         data-bs-toggle="tooltip" data-bs-html="true" title="Olhada Rápida"></i></a>
                     <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true"
@@ -337,9 +342,11 @@
                       title="Comparar"><i class="bi bi-arrow-left-right"></i></a> --}}
                   </div>
                 </div>
-                <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>{{
+                <div class="text-small mb-1"><a href="{{ route('category-products', $categoryTopProduct->slug) }}"
+                    class="text-decoration-none text-muted"><small>{{
                       $categoryTopProduct->name }}</small></a></div>
-                <h2 class="fs-6"><a href="{{ route('product') }}" class="text-inherit text-decoration-none">{{
+                <h2 class="fs-6"><a href="{{ route('product.show', $topSellingProduct->id) }}"
+                    class="text-inherit text-decoration-none">{{
                     $topSellingProduct->title }}</a></h2>
 
                 <div class="d-flex justify-content-between align-items-center mt-3">

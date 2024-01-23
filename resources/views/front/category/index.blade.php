@@ -355,7 +355,8 @@
                       <span class="badge bg-success">{{ $discountPercentage }}%</span>
                       @endif
                     </div>
-                    <a href="#!"> <img src="{{ asset('storage/' . $imagesProduct->first()->image_path) }}"
+                    <a href="{{ route('product.show', $product->id) }}"> <img
+                        src="{{ asset('storage/' . $imagesProduct->first()->image_path) }}"
                         alt="Image Produto {{ $product->title }}" class="mb-4 mt-6 img-fluid"></a>
 
                     <div class="card-product-action">
@@ -369,9 +370,11 @@
                     </div>
 
                   </div>
-                  <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>{{
+                  <div class="text-small mb-1"><a href="{{ route('category-products', $categoryProduct->slug) }}"
+                      class="text-decoration-none text-muted"><small>{{
                         $categoryProduct->name }}</small></a></div>
-                  <h2 class="fs-6"><a href="{{ route('product') }}" class="text-inherit text-decoration-none">{{
+                  <h2 class="fs-6"><a href="{{ route('product.show', $product->id) }}"
+                      class="text-inherit text-decoration-none">{{
                       $product->title }}</a></h2>
 
                   {{-- <div>
