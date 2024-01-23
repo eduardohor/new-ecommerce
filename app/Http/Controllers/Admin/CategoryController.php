@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -37,19 +38,28 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request): RedirectResponse
     {
-        $data = $request->all();
+        try {
+            DB::beginTransaction();
+            $data = $request->all();
 
-        $data['parent_id'] = null;
+            $data['parent_id'] = null;
 
-        $request->filled('parent_id') ? $data['parent_id'] = $request->parent_id : null;
+            $request->filled('parent_id') ? $data['parent_id'] = $request->parent_id : null;
 
-        $path = $request->file('image')->store('categories');
+            $path = $request->file('image')->store('categories');
 
-        $data['image'] = $path;
+            $data['image'] = $path;
 
-        $this->category->create($data);
+            $this->category->create($data);
 
-        return redirect()->route('categories.index')->with('status', 'category-created');
+            DB::commit();
+
+            return redirect()->route('categories.index')->with('status', 'category-created');
+        } catch (\Exception  $error) {
+            DB::rollBack();
+
+            return redirect()->route('categories.index')->with('error', 'Erro ao criar categoria. Por favor, tente novamente.');
+        }
     }
 
     public function edit(string|int $id): View
@@ -63,34 +73,49 @@ class CategoryController extends Controller
 
     public function update(CategoryRequest $request, string|int $id): RedirectResponse
     {
-        $category = $this->findCategoryOrFail($id);
+        try {
+            DB::beginTransaction();
+            $category = $this->findCategoryOrFail($id);
 
-        $data = $request->all();
+            $data = $request->all();
 
-        if ($request->has('image')) {
-            Storage::delete($category->image);
-            $path = $request->file('image')->store('categories');
-            $data['image'] = $path;
+            if ($request->has('image')) {
+                Storage::delete($category->image);
+                $path = $request->file('image')->store('categories');
+                $data['image'] = $path;
+            }
+
+            $category->update($data);
+
+            DB::commit();
+
+            return redirect()->route('categories.index')->with('status', 'category-updated');
+        } catch (\Exception $error) {
+            DB::rollBack();
+
+            return redirect()->route('categories.index')->with('error', 'Erro ao atualizar categoria. Por favor, tente novamente.');
         }
-
-        $category->update($data);
-
-        if (!$category->wasChanged()) {
-            return redirect()->route('categories.index')->with('warning', 'Nenhuma alteração detectada na categoria');
-        }
-
-        return redirect()->route('categories.index')->with('status', 'category-updated');
     }
 
     public function destroy(string|int $id): RedirectResponse
     {
-        $category = $this->findCategoryOrFail($id);
+        try {
+            DB::beginTransaction();
 
-        Storage::delete($category->image);
+            $category = $this->findCategoryOrFail($id);
 
-        $category->delete();
+            Storage::delete($category->image);
 
-        return redirect()->route('categories.index')->with('status', 'category-deleted');
+            $category->delete();
+
+            DB::commit();
+
+            return redirect()->route('categories.index')->with('status', 'category-deleted');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+
+            return redirect()->route('categories.index')->with('error', 'Erro ao excluir categoria. Por favor, tente novamente.');
+        }
     }
 
     private function findCategoryOrFail(string|int $id): Model

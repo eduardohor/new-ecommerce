@@ -6,8 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\CartProduct;
 use App\Models\Product;
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class CartController extends Controller
 {
@@ -22,7 +26,7 @@ class CartController extends Controller
         $this->cartProduct = $cartProduct;
     }
 
-    public function index()
+    public function index(): View
     {
         $user = Auth::user();
 
@@ -31,37 +35,56 @@ class CartController extends Controller
         return view('front.cart.index', compact('cart'));
     }
 
-    public function addProductToCart(Request $request)
+    public function addProductToCart(Request $request): RedirectResponse
     {
-        $user = Auth::user();
-        $product = $this->product->find($request->product_id);
-        $quantity = $request->quantity;
-        $price = $product->sale_price > 0 ? $product->sale_price : $product->regular_price;
+        try {
+            DB::beginTransaction();
 
-        $cart = $this->getOrCreateCart($user);
+            $user = Auth::user();
+            $product = $this->product->find($request->product_id);
+            $quantity = $request->quantity;
+            $price = $product->sale_price > 0 ? $product->sale_price : $product->regular_price;
 
-        $this->updateCart($cart, $product, $quantity, $price);
+            $cart = $this->getOrCreateCart($user);
+
+            $this->updateCart($cart, $product, $quantity, $price);
+
+            DB::commit();
+        } catch (\Exception  $error) {
+            DB::rollBack();
+
+            return redirect()->back()->with('error', 'Erro ao adicionar produto ao carrinho.');
+        }
+        return redirect()->route('cart.index');
+    }
+
+    public function deleteProductToCart(Request $request): RedirectResponse
+    {
+        try {
+            DB::beginTransaction();
+
+            $user = Auth::user();
+            $product = $this->product->find($request->product_id);
+            $quantity = $request->quantity;
+            $price = $product->sale_price > 0 ? $product->sale_price : $product->regular_price;
+            $removeAll = $request->remove_all;
+
+            $cart = $this->getCart($user);
+            $cartProduct = $this->getCartProduct($cart, $product);
+
+            $this->handleProductRemoval($cart, $cartProduct, $quantity, $removeAll);
+
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollBack();
+
+            return redirect()->back()->with('error', 'Erro ao remover produto do carrinho.');
+        }
 
         return redirect()->route('cart.index');
     }
 
-    public function deleteProductToCart(Request $request)
-    {
-        $user = Auth::user();
-        $product = $this->product->find($request->product_id);
-        $quantity = $request->quantity;
-        $price = $product->sale_price > 0 ? $product->sale_price : $product->regular_price;
-        $removeAll = $request->remove_all;
-
-        $cart = $this->getCart($user);
-        $cartProduct = $this->getCartProduct($cart, $product);
-
-        $this->handleProductRemoval($cart, $cartProduct, $quantity, $removeAll);
-
-        return redirect()->route('cart.index');
-    }
-
-    private function getCart($user = null)
+    private function getCart(?User $user = null): ?Cart
     {
         $newSessionToken = session()->get('_token');
         return $user
@@ -69,14 +92,14 @@ class CartController extends Controller
             : $this->cart->where(['unique_identifier' => $newSessionToken, 'status' => 'open'])->first();
     }
 
-    private function getOrCreateCart($user)
+    private function getOrCreateCart(?User $user): Cart
     {
         return $user
             ? $this->cart->updateOrCreate(['user_id' => $user->id], ['status' => 'open'])
             : $this->cart->updateOrCreate(['unique_identifier' => session()->get('_token')], ['status' => 'open']);
     }
 
-    private function updateCart($cart, $product, $quantity, $price)
+    private function updateCart(Cart $cart, Product $product, int $quantity, float $price): void
     {
         if ($cart->status == 'open') {
             $alreadyAddedProduct = $this->cartProduct->where(["product_id" => $product->id, 'cart_id' => $cart->id])->first();
@@ -100,12 +123,12 @@ class CartController extends Controller
         }
     }
 
-    private function getCartProduct($cart, $product)
+    private function getCartProduct(Cart $cart, Product $product): ?CartProduct
     {
         return $this->cartProduct->where(["product_id" => $product->id, 'cart_id' => $cart->id])->first();
     }
 
-    private function handleProductRemoval($cart, $cartProduct, $quantity, $removeAll)
+    private function handleProductRemoval(Cart $cart, ?CartProduct $cartProduct, int $quantity = null, bool $removeAll = null): void
     {
         if ($removeAll) {
             $cart->item_count -= $cartProduct->quantity;
@@ -128,10 +151,10 @@ class CartController extends Controller
         }
     }
 
-    private function updateCartTotalAmount($cart)
+    private function updateCartTotalAmount(Cart $cart): void
     {
         $cart->total_amount = $this->cartProduct->where('cart_id', $cart->id)
-            ->sum(\DB::raw('quantity * price'));
+            ->sum(DB::raw('quantity * price'));
 
         $cart->save();
     }

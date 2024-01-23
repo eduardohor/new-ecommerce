@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductStatistic;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class StoreController extends Controller
 {
@@ -19,7 +20,7 @@ class StoreController extends Controller
         $this->product = $product;
     }
 
-    public function home()
+    public function home(): View
     {
         $categories = $this->category->join('products', 'categories.id', '=', 'products.category_id')->get();
         $popularProducts = $this->product->getPopularProducts();
@@ -28,7 +29,7 @@ class StoreController extends Controller
         return view('front.store.home', compact('categories', 'popularProducts', 'topSellingProducts'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): View
     {
         $categories = $this->category->nestedCategories();
         $perPage = $request->input('per_page', 32);
@@ -42,23 +43,23 @@ class StoreController extends Controller
         return view('front.store.store', compact('categories', 'products'));
     }
 
-    public function wishlist()
+    public function wishlist(): View
     {
         return view('front.store.wishlist');
     }
 
-    public function pageNotFound()
+    public function pageNotFound(): View
     {
         return view('front.store.404-error');
     }
 
-    public function addViewProduct($idProduct)
+    public function addViewProduct($idProduct): void
     {
         $this->addPreviewProduct($idProduct);
     }
 
 
-    public function addPreviewProduct($idProduct)
+    public function addPreviewProduct($idProduct): void
     {
         $product = $this->product->find($idProduct);
 

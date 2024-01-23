@@ -9,8 +9,11 @@ use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 
 class ProductController extends Controller
 {
@@ -26,82 +29,50 @@ class ProductController extends Controller
         $this->productImage = $productImage;
     }
 
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $products = $this->product->getProducts($request->get('search', ''));
 
         return view('admin.product.index', compact('products'));
     }
 
-    public function create()
+    public function create(): View
     {
         $categories = $this->category->nestedCategories();
 
         return view('admin.product.create', compact('categories'));
     }
 
-    public function store(ProductRequest $request)
+    public function store(ProductRequest $request): RedirectResponse
     {
-        $data = $request->all();
+        try {
+            DB::beginTransaction();
 
-        $images = $request->file('images');
+            $data = $request->all();
 
-        $path = [];
-
-        foreach ($images as $image) {
-            $path[] = $image->store('products');
-        }
-
-        $product = $this->product->create([
-            'title' => $data['title'],
-            'category_id' => $data['category_id'],
-            'weight' => $data['weight'],
-            'units' => $data['units'],
-            'description' => $data['description'],
-            'in_stock' => $data['in_stock'],
-            'product_code' => $data['product_code'],
-            'sku' => $data['sku'],
-            'status' => $data['status'],
-            'regular_price' => $data['regular_price'],
-            'sale_price' => $data['sale_price'],
-            'meta_title' => $data['meta_title'],
-            'meta_description' => $data['meta_description']
-        ]);
-
-        foreach ($path as $imagePath) {
-            $this->productImage->create([
-                'product_id' => $product->id,
-                'image_path' => $imagePath
-            ]);
-        }
-
-        return redirect()->route('products.index')->with('status', 'product-created');
-    }
-
-
-    public function edit($id)
-    {
-        $product = $this->findPoductOrFail($id);
-        $allCategories = $this->category->nestedCategories();
-
-        $product->regular_price_formatted = number_format($product->regular_price / 100, 2, ',', '.');
-
-        return view('admin.product.edit', compact('product', 'allCategories'));
-    }
-
-    public function update(ProductRequest $request, $id)
-    {
-        $product = $this->findPoductOrFail($id);
-
-        $data = $request->all();
-
-        if ($request->has('images')) {
             $images = $request->file('images');
+
             $path = [];
 
             foreach ($images as $image) {
                 $path[] = $image->store('products');
             }
+
+            $product = $this->product->create([
+                'title' => $data['title'],
+                'category_id' => $data['category_id'],
+                'weight' => $data['weight'],
+                'units' => $data['units'],
+                'description' => $data['description'],
+                'in_stock' => $data['in_stock'],
+                'product_code' => $data['product_code'],
+                'sku' => $data['sku'],
+                'status' => $data['status'],
+                'regular_price' => $data['regular_price'],
+                'sale_price' => $data['sale_price'],
+                'meta_title' => $data['meta_title'],
+                'meta_description' => $data['meta_description']
+            ]);
 
             foreach ($path as $imagePath) {
                 $this->productImage->create([
@@ -109,49 +80,106 @@ class ProductController extends Controller
                     'image_path' => $imagePath
                 ]);
             }
+
+            DB::commit();
+
+            return redirect()->route('products.index')->with('status', 'product-created');
+        } catch (\Exception $error) {
+            DB::rollBack();
+
+            return redirect()->route('products.index')->with('error', 'Erro ao criar produto. Por favor, tente novamente.');
         }
-
-        $product->update([
-            'title' => $data['title'],
-            'category_id' => $data['category_id'],
-            'weight' => $data['weight'],
-            'units' => $data['units'],
-            'description' => $data['description'],
-            'in_stock' => $data['in_stock'],
-            'product_code' => $data['product_code'],
-            'sku' => $data['sku'],
-            'status' => $data['status'],
-            'regular_price' => $data['regular_price'],
-            'sale_price' => $data['sale_price'],
-            'meta_title' => $data['meta_title'],
-            'meta_description' => $data['meta_description']
-        ]);
-
-        if (!$product->wasChanged()) {
-            return redirect()->route('products.index')->with('warning', 'Nenhuma alteração detectada no produto');
-        }
-
-        return redirect()->route('products.index')->with('status', 'product-updated');
     }
 
-    public function destroy($id)
+
+    public function edit(string|int $id): View
     {
-        $product = $this->findPoductOrFail($id);
+        $product = $this->findProductOrFail($id);
+        $allCategories = $this->category->nestedCategories();
 
-        $productImages = $product->productImages;
+        $product->regular_price_formatted = number_format($product->regular_price / 100, 2, ',', '.');
 
-        foreach ($productImages as $productImage) {
-            Storage::delete($productImage->image_path);
-        }
-
-        $productImage->delete();
-
-        $product->delete();
-
-        return redirect()->route('products.index')->with('status', 'product-deleted');
+        return view('admin.product.edit', compact('product', 'allCategories'));
     }
 
-    private function findPoductOrFail(string|int $id): Model
+    public function update(ProductRequest $request, string|int $id): RedirectResponse
+    {
+        try {
+            DB::beginTransaction();
+
+            $product = $this->findProductOrFail($id);
+
+            $data = $request->all();
+
+            if ($request->has('images')) {
+                $images = $request->file('images');
+                $path = [];
+
+                foreach ($images as $image) {
+                    $path[] = $image->store('products');
+                }
+
+                foreach ($path as $imagePath) {
+                    $this->productImage->create([
+                        'product_id' => $product->id,
+                        'image_path' => $imagePath
+                    ]);
+                }
+            }
+
+            $product->update([
+                'title' => $data['title'],
+                'category_id' => $data['category_id'],
+                'weight' => $data['weight'],
+                'units' => $data['units'],
+                'description' => $data['description'],
+                'in_stock' => $data['in_stock'],
+                'product_code' => $data['product_code'],
+                'sku' => $data['sku'],
+                'status' => $data['status'],
+                'regular_price' => $data['regular_price'],
+                'sale_price' => $data['sale_price'],
+                'meta_title' => $data['meta_title'],
+                'meta_description' => $data['meta_description']
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('products.index')->with('status', 'product-updated');
+        } catch (\Exception $error) {
+            DB::rollBack();
+
+            return redirect()->route('products.index')->with('error', 'Erro ao criar produto. Por favor, tente novamente.');
+        }
+    }
+
+    public function destroy(string|int $id): RedirectResponse
+    {
+        try {
+            DB::beginTransaction();
+            $product = $this->findProductOrFail($id);
+
+            $productImages = $product->productImages;
+
+            foreach ($productImages as $productImage) {
+                Storage::delete($productImage->image_path);
+            }
+
+            $productImage->delete();
+
+            $product->delete();
+
+            DB::commit();
+
+            return redirect()->route('products.index')->with('status', 'product-deleted');
+        } catch (\Exception $error) {
+            DB::rollBack();
+
+            return redirect()->route('products.index')->with('error', 'Erro ao excluir produto. Por favor, tente novamente.');
+        }
+    }
+
+    private function findProductOrFail(string|int $id): Model
     {
         try {
             return $this->product->with('category', 'productImages')->findOrFail($id);

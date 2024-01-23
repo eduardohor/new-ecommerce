@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
@@ -15,7 +16,7 @@ class CategoryController extends Controller
         $this->category = $category;
     }
 
-    public function categoryProducts(Request $request, $slug)
+    public function categoryProducts(Request $request, $slug): View
     {
         $perPage = $request->input('per_page', 32);
         $orderBy = $request->input('order_by', 'updated_at');

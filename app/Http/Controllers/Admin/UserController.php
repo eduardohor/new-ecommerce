@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -34,9 +35,19 @@ class UserController extends Controller
 
     public function store(RegisteredUserRequest $request): RedirectResponse
     {
-        $this->user->create($request->all());
+        try {
+            DB::beginTransaction();
+            $this->user->create($request->all());
 
-        return redirect()->route('users.index')->with('status', 'user-created');
+
+            DB::commit();
+
+            return redirect()->route('users.index')->with('status', 'user-created');
+        } catch (\Exception $error) {
+            DB::rollBack();
+
+            return redirect()->route('users.index')->with('error', 'Erro ao criar usuário. Por favor, tente novamente.');
+        }
     }
 
     public function edit(string|int $id): View
@@ -48,35 +59,48 @@ class UserController extends Controller
 
     public function update(UserUpdateRequest $request, string|int $id): RedirectResponse
     {
-        $user = $this->findUserOrFail($id);
+        try {
+            DB::beginTransaction();
+            $user = $this->findUserOrFail($id);
 
-        $is_super_admin = 0;
+            $is_super_admin = 0;
 
-        if ($request->has('is_super_admin')) {
-            $is_super_admin = 1;
+            if ($request->has('is_super_admin')) {
+                $is_super_admin = 1;
+            }
+
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'is_super_admin' => $is_super_admin
+            ]);
+
+            return redirect()->route('users.index')->with('status', 'user-updated');
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollBack();
+
+            return redirect()->route('users.index')->with('error', 'Erro ao editar usuário. Por favor, tente novamente.');
         }
-
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'is_super_admin' => $is_super_admin
-        ]);
-
-        if (!$user->wasChanged()) {
-            return redirect()->route('users.index')->with('warning', 'Nenhuma alteração detectada no usuário');
-        }
-
-        return redirect()->route('users.index')->with('status', 'user-updated');
     }
 
     public function destroy(string|int $id): RedirectResponse
     {
-        $user = $this->findUserOrFail($id);
+        try {
+            DB::beginTransaction();
+            $user = $this->findUserOrFail($id);
 
-        $user->delete();
+            $user->delete();
 
-        return redirect()->route('users.index')->with('status', 'user-deleted');
+            DB::commit();
+
+            return redirect()->route('users.index')->with('status', 'user-deleted');
+        } catch (\Exception $error) {
+            DB::rollBack();
+
+            return redirect()->route('users.index')->with('error', 'Erro ao excluir usuário. Por favor, tente novamente.');
+        }
     }
 
     private function findUserOrFail(string|int $id): Model
