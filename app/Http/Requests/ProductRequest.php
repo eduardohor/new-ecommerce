@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class ProductRequest extends FormRequest
 {
@@ -20,25 +21,38 @@ class ProductRequest extends FormRequest
         $this->merge([
             'regular_price' => $this->convertToDecimal($this->regular_price),
             'sale_price' => $this->convertToDecimal($this->sale_price),
-            'weight' => $this->formatWeightForDatabase($this->weight),
+            'weight' => $this->formatValuesForDatabase($this->weight),
+            'width' => $this->formatValuesForDatabase($this->width),
+            'height' => $this->formatValuesForDatabase($this->height),
+            'length' => $this->formatValuesForDatabase($this->length),
+            'slug' => Str::slug($this->slug),
             'in_stock' => $this->filled('in_stock') ? 1 : 0,
         ]);
     }
 
-    private function formatWeightForDatabase($weight)
+    private function formatValuesForDatabase($value)
     {
-        // Remove caracteres não numéricos, mantendo apenas dígitos e ponto decimal
-        $numericValue = preg_replace('/[^0-9.]/', '', $weight);
+        // Verifica se o valor não é null antes de aplicar a formatação
+        if ($value !== null) {
+            // Remove caracteres não numéricos, mantendo apenas dígitos e ponto decimal
+            $numericValue = preg_replace('/[^0-9.]/', '', $value);
 
-        // Converte para decimal
-        return (float) $numericValue;
+            // Converte para decimal
+            return (float) $numericValue;
+        }
+
+        return null;
     }
 
     private function convertToDecimal($value)
     {
         // Convert the value to a decimal format (assuming it's a currency input)
-        $numericValue = (float) preg_replace('/[^0-9]/', '', $value);
-        return $numericValue / 100;
+        if ($value !== null) {
+            $numericValue = (float) preg_replace('/[^0-9]/', '', $value);
+            return $numericValue / 100;
+        }
+
+        return null;
     }
 
     /**
@@ -54,13 +68,17 @@ class ProductRequest extends FormRequest
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'weight' => 'required|numeric',
-            'units' => 'nullable',
+            'quantity' => 'required|numeric',
+            'width' => 'required|numeric',
+            'height' => 'required|numeric',
+            'length' => 'required|numeric',
             'images' => 'required|array|min:1',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:1048|dimensions:width=800,height=600',
             'description' => 'nullable|string',
             'in_stock' => 'nullable|boolean',
             'product_code' => 'nullable|string',
             'sku' => 'nullable|string',
+            'slug' => 'required|string',
             'status' => 'required|in:ativo,desabilitado',
             'regular_price' => 'required|numeric',
             'sale_price' => 'nullable|numeric',
@@ -90,7 +108,18 @@ class ProductRequest extends FormRequest
             'weight.required' => 'O campo peso é obrigatório.',
             'weight.numeric' => 'O campo peso deve ser número.',
 
-            'units.in' => 'Unidades inválidas.',
+            'quantity.required' => 'O campo quantidade é obrigatório.',
+            'quantity.numeric' => 'O campo quantidade deve ser número.',
+
+            'width.required' => 'O campo largura é obrigatório.',
+            'width.numeric' => 'O campo largura deve ser número.',
+
+            'height.required' => 'O campo altura é obrigatório.',
+            'height.numeric' => 'O campo altura deve ser número.',
+
+            'length.required' => 'O campo comprimento é obrigatório.',
+            'length.numeric' => 'O campo comprimento deve ser número.',
+
 
             'images.required' => 'Pelo menos uma imagem é obrigatória.',
             'images.array' => 'O campo imagens deve ser um array.',
@@ -107,6 +136,9 @@ class ProductRequest extends FormRequest
             'product_code.string' => 'O campo código do produto deve ser uma string.',
 
             'sku.string' => 'O campo SKU do produto deve ser uma string.',
+
+            'slug.required' => 'O campo slug é obrigatório.',
+            'slug.string' => 'O campo slug do produto deve ser uma string.',
 
             'status.required' => 'O campo status é obrigatório.',
             'status.in' => 'O campo status deve ser uma das opções permitidas.',
