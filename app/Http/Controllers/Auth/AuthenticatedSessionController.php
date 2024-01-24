@@ -9,9 +9,16 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Services\CartService;
 
 class AuthenticatedSessionController extends Controller
 {
+    protected $cartService;
+
+    public function __construct(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
     /**
      * Display the login view.
      */
@@ -26,6 +33,12 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
+
+        $user = Auth::user();
+
+        $newSessionToken = session()->get('_token');
+
+        $this->cartService->checkCart($user, $newSessionToken);
 
         $request->session()->regenerate();
 

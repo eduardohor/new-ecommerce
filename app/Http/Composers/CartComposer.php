@@ -8,24 +8,24 @@ use Illuminate\View\View;
 
 class CartComposer
 {
-  private $cart;
+    private $cart;
 
-  public function __construct(Cart $cart)
-  {
-    $this->cart = $cart;
-  }
-
-  public function compose(View $view)
-  {
-    $user = Auth::user();
-    $newSessionToken = session()->get('_token');
-
-    $cartProvider = $this->cart->where('unique_identifier', $newSessionToken)->first();
-
-    if ($user) {
-      $cartProvider = $this->cart->where('user_id', $user->id)->first();
+    public function __construct(Cart $cart)
+    {
+        $this->cart = $cart;
     }
 
-    $view->with('cartProvider', $cartProvider);
-  }
+    public function compose(View $view)
+    {
+        $user = Auth::user();
+        $newSessionToken = session()->get('_token');
+
+        $cartProvider = $this->cart->where(['unique_identifier' => $newSessionToken, 'status' => 'open'])->first();
+
+        if ($user) {
+            $cartProvider = $this->cart->where(['user_id' => $user->id, 'status' => 'open'])->first();
+        }
+
+        $view->with('cartProvider', $cartProvider);
+    }
 }
