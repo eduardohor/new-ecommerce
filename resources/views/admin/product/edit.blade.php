@@ -28,9 +28,11 @@
                         <!-- breacrumb -->
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0">
-                                <li class="breadcrumb-item"><a href="#" class="text-inherit">Painel</a></li>
-                                <li class="breadcrumb-item"><a href="#" class="text-inherit">Produtos</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Adicionar Novo Produto</li>
+                                <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}"
+                                        class="text-inherit">Painel</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('products.index') }}"
+                                        class="text-inherit">Produtos</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Editar Produto</li>
                             </ol>
                         </nav>
                     </div>
@@ -53,7 +55,7 @@
                             <h4 class="mb-4 h5">Informação do Produto</h4>
                             <div class="row">
                                 <div class="mb-3 col-lg-6">
-                                    <label class="form-label">Título</label>
+                                    <label class="form-label">Título <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="title" placeholder="Nome do Produto"
                                         required value="{{ old('title', $product->title) }}">
                                     @error('title')
@@ -61,7 +63,8 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3 col-lg-6">
-                                    <label class="form-label">Categoria do Produto</label>
+                                    <label class="form-label">Categoria do Produto <span
+                                            class="text-danger">*</span></label>
                                     <select class="form-select" name="category_id">
                                         <option selected disabled>Categoria do Produto</option>
                                         @foreach ($allCategories as $singleCategory)
@@ -86,30 +89,55 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3 col-lg-6">
-                                    <label class="form-label">Peso</label>
+                                    <label class="form-label">Slug <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Slug" name="slug"
+                                        value="{{ old('slug', $product->slug) }}" required>
+                                    @error('slug')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="mb-3 col-lg-6">
+                                    <label class="form-label">Quantidade <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" placeholder="Quantidade" name="quantity"
+                                        value="{{ old('quantity', $product->quantity) }}" required>
+                                    @error('quantity')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="mb-3 col-lg-6">
+                                    <label class="form-label">Peso <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control weight" placeholder="Peso" name="weight"
-                                        required value="{{ old('weight', $product->weight) }}">
+                                        value="{{ old('weight', $product->weight) }}" required>
                                     @error('weight')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3 col-lg-6">
-                                    <label class="form-label">Unidades</label>
-                                    <select class="form-select" name="units">
-                                        <option selected disabled>Seleciona Unidades</option>
-                                        <option value="1" {{ old('units', $product->units) == '1' ? 'selected' : '' }}>1
-                                        </option>
-                                        <option value="2" {{ old('units', $product->units) == '2' ? 'selected' : '' }}>2
-                                        </option>
-                                        <option value="3" {{ old('units', $product->units) == '3' ? 'selected' : '' }}>3
-                                        </option>
-                                    </select>
-                                    @error('units')
+                                    <label class="form-label">Largura <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control dimensions" placeholder="Largura"
+                                        name="width" value="{{ old('width', $product->width) }}" required>
+                                    @error('width')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="mb-3 col-lg-6">
+                                    <label class="form-label">Altura <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control dimensions" placeholder="Altura"
+                                        name="height" value="{{ old('height', $product->height) }}" required>
+                                    @error('height')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="mb-3 col-lg-6">
+                                    <label class="form-label">Comprimento <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control dimensions" placeholder="Comprimento"
+                                        name="length" value="{{ old('length', $product->length) }}" required>
+                                    @error('length')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3 col-lg-12 mt-5">
-                                    <h4 class="mb-3 h5">Imagens do Produto</h4>
+                                    <h4 class="mb-3 h5">Imagens do Produto <span class="text-danger">*</span></h4>
                                     <div class="d-block dropzone border-dashed rounded-2">
                                         <div class="fallback">
                                             <input type="file" name="images[]" multiple>
@@ -177,7 +205,8 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label" id="productSKU">Status</label><br>
+                                    <label class="form-label" id="productSKU">Status <span
+                                            class="text-danger">*</span></label><br>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="status" id="inlineRadio1"
                                             value="ativo" {{ old('status', $product->status) == 'ativo' ? 'checked' : ''
@@ -203,7 +232,7 @@
                         <div class="card-body p-6">
                             <h4 class="mb-4 h5">Preço do Produto</h4>
                             <div class="mb-3">
-                                <label class="form-label">Preço Regular</label>
+                                <label class="form-label">Preço Regular <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control price" name="regular_price" placeholder="R$0.00"
                                     value="{{ old('regular_price', number_format($product->regular_price, 2, ',', '.')) }}"
                                     @error('regular_price') autofocus @enderror>
@@ -268,15 +297,15 @@
         if (quill) {
             // Desativa o Quill temporariamente
             quill.disable();
-  
+
             // Obtém o conteúdo da descrição e define no editor Quill
-            var descriptionContent = {!! json_encode($product->description) !!}; 
+            var descriptionContent = {!! json_encode($product->description) !!};
             quill.root.innerHTML = descriptionContent;
-  
+
             // Reativa o Quill
             quill.enable();
         }
-  
+
     });
 </script>
 @endsection

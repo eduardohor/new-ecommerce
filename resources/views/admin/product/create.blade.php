@@ -28,8 +28,10 @@
                         <!-- breacrumb -->
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0">
-                                <li class="breadcrumb-item"><a href="#" class="text-inherit">Painel</a></li>
-                                <li class="breadcrumb-item"><a href="#" class="text-inherit">Produtos</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}"
+                                        class="text-inherit">Painel</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('products.index') }}"
+                                        class="text-inherit">Produtos</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Adicionar Novo Produto</li>
                             </ol>
                         </nav>

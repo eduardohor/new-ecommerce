@@ -144,11 +144,15 @@ class ProductController extends Controller
                 'title' => $data['title'],
                 'category_id' => $data['category_id'],
                 'weight' => $data['weight'],
-                'units' => $data['units'],
+                'quantity' => $data['quantity'],
+                'width' => $data['width'],
+                'height' => $data['height'],
+                'length' => $data['length'],
                 'description' => $data['description'],
                 'in_stock' => $data['in_stock'],
                 'product_code' => $data['product_code'],
                 'sku' => $data['sku'],
+                'slug' => $data['slug'],
                 'status' => $data['status'],
                 'regular_price' => $data['regular_price'],
                 'sale_price' => $data['sale_price'],
@@ -170,7 +174,7 @@ class ProductController extends Controller
                 'trace' => $error->getTrace(),
             ]);
 
-            return redirect()->route('products.index')->with('error', 'Erro ao criar produto. Por favor, tente novamente.');
+            return redirect()->route('products.index')->with('error', 'Erro ao editar produto. Por favor, tente novamente.');
         }
     }
 
