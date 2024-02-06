@@ -67,7 +67,7 @@
                                     </div>
                                     <div class="col-4 col-md-5">
                                         <!-- title -->
-                                        <a href="{{ route('product.show', $cartProduct->product->id) }}"
+                                        <a href="{{ route('product.show', $cartProduct->product->slug) }}"
                                             class="text-inherit">
                                             <h6 class="mb-0">{{ $cartProduct->product->title }}</h6>
                                         </a>

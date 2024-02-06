@@ -15,11 +15,10 @@ class ProductController extends Controller
     {
         $this->product = $product;
     }
-    public function show(string|int $id): View
+    public function show(string $slug): View
     {
-        if (!$product = $this->product->find($id)) {
-            return redirect()->route('home');
-        }
+        $product = $this->product->where('slug', $slug)->firstOrFail();
+
 
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)

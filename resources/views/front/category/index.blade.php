@@ -374,7 +374,7 @@
                                             <span class="badge bg-success">{{ $discountPercentage }}%</span>
                                             @endif
                                         </div>
-                                        <a href="{{ route('product.show', $product->id) }}"> <img
+                                        <a href="{{ route('product.show', $product->slug) }}"> <img
                                                 src="{{ asset('storage/' . $imagesProduct->first()->image_path) }}"
                                                 alt="Image Produto {{ $product->title }}"
                                                 class="mb-4 mt-6 img-fluid"></a>
@@ -397,7 +397,7 @@
                                             href="{{ route('category-products', $categoryProduct->slug) }}"
                                             class="text-decoration-none text-muted"><small>{{
                                                 $categoryProduct->name }}</small></a></div>
-                                    <h2 class="fs-6"><a href="{{ route('product.show', $product->id) }}"
+                                    <h2 class="fs-6"><a href="{{ route('product.show', $product->slug) }}"
                                             class="text-inherit text-decoration-none">{{
                                             $product->title }}</a></h2>
 

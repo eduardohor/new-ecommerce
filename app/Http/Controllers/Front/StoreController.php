@@ -22,7 +22,7 @@ class StoreController extends Controller
 
     public function home(): View
     {
-        $categories = $this->category->join('products', 'categories.id', '=', 'products.category_id')->get();
+        $categories = $this->category->all()->take(10);
         $popularProducts = $this->product->getPopularProducts();
         $topSellingProducts = $this->product->getTopSellingProducts();
 
