@@ -107,24 +107,33 @@
                                 </div>
                                 <div class="mb-3 col-lg-6">
                                     <label class="form-label">Largura <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control dimensions" placeholder="Largura"
-                                        name="width" value="{{ old('width') }}" required>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control dimensions" placeholder="Largura"
+                                            name="width" value="{{ old('width') }}" required>
+                                        <span class="input-group-text" style="opacity: 0.7;">cm</span>
+                                    </div>
                                     @error('width')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3 col-lg-6">
                                     <label class="form-label">Altura <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control dimensions" placeholder="Altura"
-                                        name="height" value="{{ old('height') }}" required>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control dimensions" placeholder="Altura"
+                                            name="height" value="{{ old('height') }}" required>
+                                        <span class="input-group-text" style="opacity: 0.7;">cm</span>
+                                    </div>
                                     @error('height')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3 col-lg-6">
                                     <label class="form-label">Comprimento <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control dimensions" placeholder="Comprimento"
-                                        name="length" value="{{ old('length') }}" required>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control dimensions" placeholder="Comprimento"
+                                            name="length" value="{{ old('length') }}" required>
+                                        <span class="input-group-text" style="opacity: 0.7;">cm</span>
+                                    </div>
                                     @error('length')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror

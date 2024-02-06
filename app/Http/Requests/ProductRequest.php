@@ -21,27 +21,13 @@ class ProductRequest extends FormRequest
         $this->merge([
             'regular_price' => $this->convertToDecimal($this->regular_price),
             'sale_price' => $this->convertToDecimal($this->sale_price),
-            'weight' => $this->formatValuesForDatabase($this->weight),
-            'width' => $this->formatValuesForDatabase($this->width),
-            'height' => $this->formatValuesForDatabase($this->height),
-            'length' => $this->formatValuesForDatabase($this->length),
+            'weight' => (int)$this->weight,
+            'width' => (int)$this->width,
+            'height' => (int)$this->height,
+            'length' => (int)$this->length,
             'slug' => Str::slug($this->slug),
             'in_stock' => $this->filled('in_stock') ? 1 : 0,
         ]);
-    }
-
-    private function formatValuesForDatabase($value)
-    {
-        // Verifica se o valor não é null antes de aplicar a formatação
-        if ($value !== null) {
-            // Remove caracteres não numéricos, mantendo apenas dígitos e ponto decimal
-            $numericValue = preg_replace('/[^0-9.]/', '', $value);
-
-            // Converte para decimal
-            return (float) $numericValue;
-        }
-
-        return null;
     }
 
     private function convertToDecimal($value)

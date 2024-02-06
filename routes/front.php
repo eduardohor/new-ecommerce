@@ -26,17 +26,18 @@ Route::get('/produto/{id}', [ProductController::class, 'show'])->name('product.s
 Route::get('/carrinho', [CartController::class, 'show'])->name('cart.show');
 Route::post('/adicionar-ao-carrinho', [CartController::class, 'addProductToCart'])->name('cart.add-product-to-cart');
 Route::post('/remover-do-carrinho', [CartController::class, 'deleteProductToCart'])->name('cart.delete-product-to-cart');
+Route::post('/calcular-frete', [CartController::class, 'calculateShipping'])->name('calculateShipping');
 
 Route::middleware('auth')->group(function () {
-  Route::get('/finalizar-compra', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::get('/finalizar-compra', [CheckoutController::class, 'index'])->name('checkout.index');
 
-  Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index.customer');
+    Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index.customer');
 
-  Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
-  Route::patch('/perfil', [ProfileController::class, 'update'])->name('profile.update');
-  Route::delete('/perfil', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/perfil', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/perfil', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-  Route::get('/enderecos', [AddressController::class, 'index'])->name('address.index');
-  Route::get('/pagamentos', [PaymentController::class, 'index'])->name('payment.index');
-  Route::get('/notificacoes', [NotificationController::class, 'index'])->name('notification.index');
+    Route::get('/enderecos', [AddressController::class, 'index'])->name('address.index');
+    Route::get('/pagamentos', [PaymentController::class, 'index'])->name('payment.index');
+    Route::get('/notificacoes', [NotificationController::class, 'index'])->name('notification.index');
 });
