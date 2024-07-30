@@ -56,7 +56,7 @@ class ProductController extends Controller
             $path = [];
 
             foreach ($images as $image) {
-                $path[] = $image->store('products');
+                $path[] = $image->store('products', 'public');
             }
 
             $product = $this->product->create([
@@ -129,7 +129,7 @@ class ProductController extends Controller
                 $path = [];
 
                 foreach ($images as $image) {
-                    $path[] = $image->store('products');
+                    $path[] = $image->store('products', 'public');
                 }
 
                 foreach ($path as $imagePath) {

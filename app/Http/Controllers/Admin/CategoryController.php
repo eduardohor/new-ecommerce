@@ -47,7 +47,7 @@ class CategoryController extends Controller
 
             $request->filled('parent_id') ? $data['parent_id'] = $request->parent_id : null;
 
-            $path = $request->file('image')->store('categories');
+            $path = $request->file('image')->store('categories', 'public');
 
             $data['image'] = $path;
 
@@ -90,7 +90,7 @@ class CategoryController extends Controller
 
             if ($request->has('image')) {
                 Storage::delete($category->image);
-                $path = $request->file('image')->store('categories');
+                $path = $request->file('image')->store('categories', 'public');
                 $data['image'] = $path;
             }
 

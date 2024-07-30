@@ -349,7 +349,12 @@
         if (freteSelecionado.length > 0) {
             var valorFrete = parseFloat(freteSelecionado.data('custom-price'));
 
-            var subtotal = parseFloat('{{ $cart->total_amount }}');
+            @if ($cart && isset($cart->total_amount))
+                var subtotal = parseFloat('{{ $cart->total_amount }}');
+            @else
+                var subtotal = 0;
+            @endif
+
             var valorFormatado = valorFrete.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
             $("#freteValue").text(valorFormatado);
@@ -362,10 +367,20 @@
         }
     }
 
+
     function resetShippingValues() {
         $("#freteValue").text("- - -");
-        $(".subtotal").text('{{ $cart->total_amount }}');
+
+        @if ($cart && isset($cart->total_amount))
+            var subtotal = parseFloat('{{ $cart->total_amount }}');
+        @else
+            var subtotal = 0;
+        @endif
+
+        var subtotalFormatado = subtotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        $(".subtotal").text(subtotalFormatado);
     }
+
 
 
 </script>
