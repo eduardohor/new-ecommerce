@@ -229,7 +229,7 @@
                     </div>
                     <div class="d-grid mb-1 mt-4">
                         <!-- btn -->
-                        <a href="#" class="btn btn-primary btn-lg d-flex justify-content-between align-items-center"
+                        <a href="{{ route('checkout.index') }}" class="btn btn-primary btn-lg d-flex justify-content-between align-items-center"
                             type="submit" id="finalizarButton">
                             Ir para Finalização
                             <span class="fw-bold subtotal">R$
