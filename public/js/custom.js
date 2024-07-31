@@ -3,7 +3,7 @@ $(document).ready(function () {
     $("#phone").inputmask("(99) 99999-9999");
 
     // Formatar CEP
-    $("#cep").inputmask("99999-999");
+    $(".cep").inputmask("99999-999");
 
     // Formatar Valor Monetário
     $(".price").inputmask({

@@ -38,6 +38,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/perfil', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/enderecos', [AddressController::class, 'index'])->name('address.index');
+    Route::post('/enderecos-criar', [AddressController::class, 'store'])->name('address.store');
+
+
     Route::get('/pagamentos', [PaymentController::class, 'index'])->name('payment.index');
     Route::get('/notificacoes', [NotificationController::class, 'index'])->name('notification.index');
 });

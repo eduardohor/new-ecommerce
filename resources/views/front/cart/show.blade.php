@@ -165,7 +165,7 @@
                             <label for="cep" class="me-2 mb-0 fs-5">Frete:</label>
                             @csrf
                             <input type="hidden" name="cart_id" value="{{ $cart->id }}">
-                            <input type="text" class="form-control" id="cep" placeholder="00000-000"
+                            <input type="text" class="form-control cep" id="cep" placeholder="00000-000"
                                 name="cep">
                             <button type="button" id="calcularButton" class="btn btn-primary ms-2"
                                 onclick="calculateShipping(event)">Calcular</button>
