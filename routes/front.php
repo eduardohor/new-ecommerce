@@ -26,7 +26,7 @@ Route::get('/produto/{slug}', [ProductController::class, 'show'])->name('product
 Route::get('/carrinho', [CartController::class, 'show'])->name('cart.show');
 Route::post('/adicionar-ao-carrinho', [CartController::class, 'addProductToCart'])->name('cart.add-product-to-cart');
 Route::post('/remover-do-carrinho', [CartController::class, 'deleteProductToCart'])->name('cart.delete-product-to-cart');
-Route::post('/calcular-frete', [CartController::class, 'calculateShipping'])->name('calculateShipping');
+Route::post('/calcular-frete', [CartController::class, 'calculateShipping'])->name('calculate-shipping');
 
 Route::middleware('auth')->group(function () {
     Route::get('/finalizar-compra', [CheckoutController::class, 'index'])->name('checkout.index');

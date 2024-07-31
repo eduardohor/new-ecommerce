@@ -21,7 +21,7 @@ class ProductRequest extends FormRequest
         $this->merge([
             'regular_price' => $this->convertToDecimal($this->regular_price),
             'sale_price' => $this->convertToDecimal($this->sale_price),
-            'weight' => (int)$this->weight,
+            'weight' => (double)$this->weight,
             'width' => (int)$this->width,
             'height' => (int)$this->height,
             'length' => (int)$this->length,

@@ -211,7 +211,6 @@ class CartController extends Controller
             ],
             'products' => $products,
 
-            "services" =>  "1,2"
         ];
 
         try {
