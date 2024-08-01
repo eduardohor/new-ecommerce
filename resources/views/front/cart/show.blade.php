@@ -318,8 +318,6 @@
                 method: "POST",
                 data: formData,
                 success: function(response) {
-                    console.log(response);
-
                     var allErrors = response.data.every(function(frete) {
                         return frete.error !== undefined;
                     });

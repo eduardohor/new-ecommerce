@@ -179,7 +179,10 @@ class CartController extends Controller
 
     public function calculateShipping(Request $request)
     {
-        $data = $request->all();
+        $data = $request->validate([
+            'cep' => 'required',
+            'cart_id' => 'required',
+        ]);
 
         $baseUrl = 'https://sandbox.melhorenvio.com.br/api/v2/me/shipment/calculate';
 
