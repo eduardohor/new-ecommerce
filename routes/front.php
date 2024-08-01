@@ -42,5 +42,7 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/pagamentos', [PaymentController::class, 'index'])->name('payment.index');
+    Route::post('/pagamentos/processo', [PaymentController::class, 'processPayment'])->name('payment.process');
+
     Route::get('/notificacoes', [NotificationController::class, 'index'])->name('notification.index');
 });

@@ -5,6 +5,15 @@ $(document).ready(function () {
     // Formatar CEP
     $(".cep").inputmask("99999-999");
 
+    // Formatar Numero Cartao
+    $(".card_number").inputmask("9999-9999-9999-9999");
+
+    // Formatar Data Cartao
+    $(".card_validate").inputmask("99/99");
+
+    // Formatar CVV
+    $(".cvv").inputmask("999");
+
     // Formatar Valor Monetário
     $(".price").inputmask({
         alias: "numeric",

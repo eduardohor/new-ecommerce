@@ -34,6 +34,10 @@
         border-width: 0.2em;
         border-color: #28a745 transparent transparent transparent;
     }
+
+    .uppercase-input {
+        text-transform: uppercase;
+    }
 </style>
 
 
@@ -82,10 +86,11 @@
                 </div>
             </div>
             <div>
-                <!-- row -->
-                <div class="row">
-                    <form action="" method="post">
-                        @csrf
+                <form action="{{ route('payment.process') }}" method="post">
+                    @csrf
+                    <!-- row -->
+                    <div class="row">
+
                         <div class="col-lg-7 col-md-12">
                             <!-- accordion -->
                             <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -116,8 +121,7 @@
                                                     <div class="card card-body p-6 ">
                                                         <div class="form-check mb-4">
                                                             <input class="form-check-input" type="radio"
-                                                                name="selectedAddress"
-                                                                id="addressRadio{{ $address->id }}"
+                                                                name="address_id" id="addressRadio{{ $address->id }}"
                                                                 value="{{ $address->id }}" {{ $address->is_default ?
                                                             'checked' : '' }} onclick="updateShipping('{{
                                                             $address->zip_code
@@ -158,117 +162,105 @@
 
                                 <!-- accordion item -->
                                 <div class="accordion-item py-4">
-
                                     <a href="#" class="text-inherit h5" data-bs-toggle="collapse"
                                         data-bs-target="#flush-collapseFour" aria-expanded="false"
                                         aria-controls="flush-collapseFour">
                                         <i class="feather-icon icon-credit-card me-2 text-muted"></i>Forma de pagamento
                                         <!-- collapse -->
                                     </a>
-                                    <div id="flush-collapseFour" class="accordion-collapse collapse "
+                                    <div id="flush-collapseFour" class="accordion-collapse collapse"
                                         data-bs-parent="#accordionFlushExample">
 
                                         <div class="mt-5">
-                                            <div>
-                                                <!-- card -->
-                                                <div class="card card-bordered shadow-none mb-2">
-                                                    <!-- card body -->
-                                                    <div class="card-body p-6">
-                                                        <div class="d-flex mb-4">
-                                                            <div class="form-check ">
-                                                                <!-- input -->
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="flexRadioDefault" id="creditdebitcard">
-                                                                <label class="form-check-label ms-2"
-                                                                    for="creditdebitcard">
-
-                                                                </label>
-                                                            </div>
-                                                            <div>
-                                                                <h5 class="mb-1 h6"> Cartão de Crédito / Débito</h5>
-                                                                <p class="mb-0 small">Transferência segura de dinheiro
-                                                                    usando sua conta bancária. Apoiamos Mastercard
-                                                                    tercard,
-                                                                    Visa, Discover e Stripe.</p>
-                                                            </div>
+                                            <!-- Cartão de Crédito / Débito -->
+                                            <div class="card card-bordered shadow-none mb-2">
+                                                <div class="card-body p-6">
+                                                    <div class="d-flex mb-4">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="payment_method" id="creditdebitcard"
+                                                                value="credit_debit_card">
+                                                            <h5 class="mb-1 h6"> Cartão de Crédito / Débito</h5>
+                                                            <p class="mb-0 small">Transferência segura de dinheiro
+                                                                usando sua conta bancária.</p>
                                                         </div>
+                                                    </div>
+                                                    <!-- Detalhes do Cartão -->
+                                                    <div id="cardDetails" class="collapse">
                                                         <div class="row g-2">
                                                             <div class="col-12">
-                                                                <!-- input -->
                                                                 <div class="mb-3">
                                                                     <label class="form-label">Número do Cartão</label>
-                                                                    <input type="text" class="form-control"
-                                                                        placeholder="1234 4567 6789 4321">
+                                                                    <input type="text" class="form-control card_number"
+                                                                        placeholder="1234 4567 6789 4321"
+                                                                        name="card_number">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6 col-12">
-                                                                <!-- input -->
                                                                 <div class="mb-3 mb-lg-0">
-                                                                    <label class="form-label">Nome no Cartão </label>
-                                                                    <input type="text" class="form-control"
-                                                                        placeholder="Enter your first name">
+                                                                    <label class="form-label">Nome no
+                                                                        Cartão</label>
+                                                                    <input type="text" class="form-control uppercase-input"
+                                                                        placeholder="Nome impresso no cartão"
+                                                                        name="card_name">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3 col-12">
-                                                                <!-- input -->
-                                                                <div class="mb-3  mb-lg-0 position-relative">
-                                                                    <label class="form-label">Data de validade </label>
-                                                                    <input class="form-control flatpickr " type="text"
-                                                                        placeholder="Select Date">
+                                                                <div class="mb-3 mb-lg-0 position-relative">
+                                                                    <label class="form-label">Data de validade</label>
+                                                                    <input class="form-control card_validate"
+                                                                        type="text" placeholder="12/30"
+                                                                        name="card_validate">
                                                                     <div
                                                                         class="position-absolute bottom-0 end-0 p-3 lh-1">
                                                                         <i class="bi bi-calendar text-muted"></i>
                                                                     </div>
-
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3 col-12">
-                                                                <!-- input -->
-                                                                <div class="mb-3  mb-lg-0">
+                                                                <div class="mb-3 mb-lg-0">
                                                                     <label class="form-label">CVV</label>
-                                                                    <input type="password" class="form-control"
-                                                                        placeholder="***">
-
+                                                                    <input type="text" class="form-control cvv"
+                                                                        placeholder="123" name="cvv">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- card -->
-                                                <div class="card card-bordered shadow-none">
-                                                    <div class="card-body p-6">
-                                                        <!-- check input -->
-                                                        <div class="d-flex">
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="flexRadioDefault" id="cashonDelivery">
-                                                                <label class="form-check-label ms-2"
-                                                                    for="cashonDelivery">
+                                            </div>
 
-                                                                </label>
-                                                            </div>
-                                                            <div>
-                                                                <!-- title -->
-                                                                <h5 class="mb-1 h6"> Pagamento via Pix</h5>
-                                                                <p class="mb-0 small">Gere um QRCode e pague com pix.
-                                                                </p>
-                                                            </div>
+                                            <!-- Pix -->
+                                            <div class="card card-bordered shadow-none">
+                                                <div class="card-body p-6">
+                                                    <div class="d-flex">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="payment_method" id="pix" value="pix">
+                                                            <h5 class="mb-1 h6"> Pix</h5>
+                                                            <p class="mb-0 small">O QR Code para seu pagamento através
+                                                                de PIX será gerado após a confirmação da compra. Aponte
+                                                                seu celular para a tela para capturar o código ou copie
+                                                                e cole o código em seu aplicativo de pagamentos.</p>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- Button -->
-                                                <div class="mt-5 d-flex justify-content-end">
-                                                    <a href="#" class="btn btn-outline-gray-400 text-muted"
-                                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
-                                                        aria-expanded="false"
-                                                        aria-controls="flush-collapseThree">Anterior</a>
-                                                    <a href="#" class="btn btn-primary ms-2">Faça o Pedido</a>
+                                            </div>
+
+                                            <!-- Button -->
+                                            <div class="mt-5 d-flex justify-content-end align-items-center">
+                                                <div id="error-message" style="color: red; display: none;" class="m-3">
                                                 </div>
+                                                <a href="#" class="btn btn-outline-gray-400 text-muted"
+                                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
+                                                    aria-expanded="false"
+                                                    aria-controls="flush-collapseThree">Anterior</a>
+                                                <button type="submit" class="btn btn-primary ms-2">Finalizar
+                                                    Pedido</button>
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
+
                             </div>
 
                         </div>
@@ -277,6 +269,7 @@
                             <div class="mt-4 mt-lg-0">
                                 <div class="card shadow-sm">
                                     <h5 class="px-6 py-4 bg-transparent mb-0">Detalhes do Pedido</h5>
+                                    <input type="hidden" name="cart_id" value="{{ $cart->id }}">
                                     <ul class="list-group list-group-flush">
                                         <!-- list group item -->
                                         @foreach ($cart->cartProducts as $cartProduct)
@@ -366,8 +359,8 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -493,6 +486,7 @@
 <!-- Theme JS -->
 <script src="{{ asset('js/theme.min.js') }}"></script>
 <script src="{{ asset('libs/inputmask/dist/jquery.inputmask.min.js') }}"></script>
+
 <script src="{{ asset('js/custom.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
     integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
@@ -500,8 +494,9 @@
 
 <script>
     $(document).ready(function() {
+
         // Encontrar o endereço padrão selecionado
-        const defaultAddressInput = $('input[name="selectedAddress"]:checked');
+        const defaultAddressInput = $('input[name="address_id"]:checked');
 
         if (defaultAddressInput.length > 0) {
             const zipCode = defaultAddressInput.closest('.card').find('address abbr').text().trim();
@@ -509,6 +504,7 @@
             updateShipping(zipCode);
         }
 
+        //Buscar endereco por cep
         $('#cep').blur(function() {
             var cep = $(this).val().replace(/\D/g, '');
             if (cep != "") {
@@ -563,8 +559,25 @@
         if (success) {
             toastr.success(success);
         }
+
+        // Verifica se o cartão ou pix está selecionado
+        $('input[name="payment_method"]').change(function() {
+            if ($('#creditdebitcard').is(':checked')) {
+                $('#cardDetails').collapse('show');
+                $('#cardDetails input').each(function() {
+                    $(this).prop('required', true);
+                });
+            } else {
+                $('#cardDetails').collapse('hide');
+                $('#cardDetails input').each(function() {
+                    $(this).prop('required', false);
+                });
+            }
+        });
     });
 
+
+    //Atualiza a Entrega de acordo com o endereco selecionado
     function updateShipping(zipCode) {
         $('#loadingOverlay').show();
 
@@ -599,10 +612,13 @@
                             const customPrice = frete.custom_price;
                             const prazoEstimadoMin = frete.delivery_range.min;
                             const prazoEstimadoMax = frete.delivery_range.max;
+                            const shippingType = company + tipoFrete
 
                             return `
                                 <div class='form-check'>
-                                    <input class='form-check-input' type='radio' name='freteRadio' id='${tipoFrete}Radio' value='${customPrice}'>
+                                    <input class='form-check-input' type='radio' name='shipping_option' id='${tipoFrete}Radio'
+                                        data-company='${company}' data-type='${tipoFrete}' data-price='${customPrice}'
+                                        value='${customPrice}'>
                                     <label class='form-check-label' for='${tipoFrete}Radio'>
                                         ${company} (${tipoFrete}): <strong>R$ ${customPrice}</strong> <br> Prazo Estimado: ${prazoEstimadoMin} a ${prazoEstimadoMax} dias
                                     </label>
@@ -612,13 +628,6 @@
                         .join('');
 
                     $('.shipping').html(radioHtml);
-
-                    $('input[name="freteRadio"]').change(function() {
-                        const selectedPrice = parseFloat($(this).val());
-                        const subtotalAmount = parseFloat($('#subtotalItem').text().replace('R$', '').replace('.', '').replace(',', '.'));
-                        const finalAmount = subtotalAmount + selectedPrice;
-                        $('#subtotal').text(`R$ ${finalAmount.toFixed(2).replace('.', ',')}`);
-                    });
                 }
 
                 $('#loadingOverlay').hide();
@@ -632,9 +641,76 @@
                 $('#subtotal').text("R$ {{ number_format($cart->total_amount, 2, ',', '.') }}");
             }
         });
-
-
     }
+
+    // Função para verificar os campos necessario para pedido estao selecionados
+    function validateSelection() {
+        const addressSelected = $('input[name="address_id"]:checked').length > 0;
+        const shippingOptionSelected = $('input[name="shipping_option"]:checked').length > 0;
+        const paymentMethodOptionSelected = $('input[name="payment_method"]:checked').length > 0;
+
+        if (!addressSelected) {
+            $('#error-message').text("Por favor, selecione um endereço.");
+            $('#error-message').show();
+            return false;
+        }
+
+        if (!shippingOptionSelected) {
+            $('#error-message').text("Por favor, selecione uma forma de entrega.");
+            $('#error-message').show();
+            return false;
+        }
+
+        if (!paymentMethodOptionSelected) {
+            $('#error-message').text("Por favor, selecione uma forma de pagamento.");
+            $('#error-message').show();
+            return false;
+        }
+
+        return true;
+    }
+
+    // Atualiza a forma de envio e o subtotal ao selecionar uma opção de frete
+    $(document).on('change', 'input[name="shipping_option"]', function() {
+        const selectedPrice = parseFloat($(this).val());
+        const subtotalAmount = parseFloat($('#subtotalItem').text().replace('R$', '').replace('.', '').replace(',', '.'));
+        const finalAmount = subtotalAmount + selectedPrice;
+        $('#subtotal').text(`R$ ${finalAmount.toFixed(2).replace('.', ',')}`);
+    });
+
+    // Configura o evento de envio do formulário
+    $('form').on('submit', function(event) {
+        if (!validateSelection()) {
+            event.preventDefault();
+        } else {
+            const selectedShippingOption = $('input[name="shipping_option"]:checked');
+
+            if (selectedShippingOption.length) {
+                const company = selectedShippingOption.data('company');
+                const type = selectedShippingOption.data('type');
+                const price = selectedShippingOption.data('price');
+
+                const form = $(this);
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'shipping_company',
+                    value: company
+                }).appendTo(form);
+
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'shipping_type',
+                    value: type
+                }).appendTo(form);
+
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'shipping_price',
+                    value: price
+                }).appendTo(form);
+            }
+        }
+    });
 
 </script>
 

@@ -12,4 +12,9 @@ class PaymentController extends Controller
     {
         return view('front.payment.index');
     }
+
+    public function processPayment(Request $request)
+    {
+        dd($request->all());
+    }
 }
