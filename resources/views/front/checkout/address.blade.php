@@ -86,183 +86,73 @@
                 </div>
             </div>
             <div>
-                <form action="{{ route('payment.process') }}" method="post">
+                <form action="{{ route('checkout.payment') }}" method="post">
                     @csrf
                     <!-- row -->
                     <div class="row">
 
                         <div class="col-lg-7 col-md-12">
-                            <!-- accordion -->
-                            <div class="accordion accordion-flush" id="accordionFlushExample">
-                                <!-- accordion item -->
-                                <div class="accordion-item py-4">
 
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <!-- heading one -->
-                                        <a href="#" class="fs-5 text-inherit collapsed h4" data-bs-toggle="collapse"
-                                            data-bs-target="#flush-collapseOne" aria-expanded="true"
-                                            aria-controls="flush-collapseOne">
-                                            <i class="feather-icon icon-map-pin me-2 text-muted"></i>Adicionar endereço
-                                            de
-                                            entrega
-                                        </a>
-                                        <!-- btn -->
-                                        <a href="#" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#addAddressModal">Adicionar um novo endereço </a>
-                                        <!-- collapse -->
-                                    </div>
-                                    <div id="flush-collapseOne" class="accordion-collapse collapse show"
-                                        data-bs-parent="#accordionFlushExample">
-                                        <div class="mt-5">
-                                            <div class="row">
-                                                @forelse ($addresses as $address)
-                                                <div class="col-lg-6 col-12 mb-4">
-                                                    <!-- form -->
-                                                    <div class="card card-body p-6 ">
-                                                        <div class="form-check mb-4">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="address_id" id="addressRadio{{ $address->id }}"
-                                                                value="{{ $address->id }}" {{ $address->is_default ?
-                                                            'checked' : '' }} onclick="updateShipping('{{
-                                                            $address->zip_code
-                                                            }}')">
-                                                            <label class="form-check-label text-dark"
-                                                                for="addressRadio{{ $address->id }}">
-                                                                {{ $address->name }}
-                                                            </label>
-                                                        </div>
-                                                        <!-- address -->
-                                                        <address> <strong>{{ $address->neighborhood }}</strong> <br>
-
-                                                            {{ $address->number }} {{ $address->street }}, <br>
-
-                                                            {{ $address->city }}, {{ $address->state }},<br>
-
-                                                            <abbr title="Cep" class="cep">{{ $address->zip_code
-                                                                }}</abbr>
-                                                        </address>
-                                                        @if ($address->is_default)
-                                                        <span class="text-danger">Endereço padrão</span>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                                @empty
-                                                <!-- Mensagem para quando não houver endereços -->
-                                                <div class="col-12">
-                                                    <div class="alert alert-info" role="alert">
-                                                        Nenhum endereço cadastrado.
-                                                    </div>
-                                                </div>
-                                                @endforelse
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <!-- accordion item -->
-                                <div class="accordion-item py-4">
-                                    <a href="#" class="text-inherit h5" data-bs-toggle="collapse"
-                                        data-bs-target="#flush-collapseFour" aria-expanded="false"
-                                        aria-controls="flush-collapseFour">
-                                        <i class="feather-icon icon-credit-card me-2 text-muted"></i>Forma de pagamento
-                                        <!-- collapse -->
-                                    </a>
-                                    <div id="flush-collapseFour" class="accordion-collapse collapse"
-                                        data-bs-parent="#accordionFlushExample">
-
-                                        <div class="mt-5">
-                                            <!-- Cartão de Crédito / Débito -->
-                                            <div class="card card-bordered shadow-none mb-2">
-                                                <div class="card-body p-6">
-                                                    <div class="d-flex mb-4">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="payment_method" id="creditdebitcard"
-                                                                value="credit_debit_card">
-                                                            <h5 class="mb-1 h6"> Cartão de Crédito / Débito</h5>
-                                                            <p class="mb-0 small">Transferência segura de dinheiro
-                                                                usando sua conta bancária.</p>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Detalhes do Cartão -->
-                                                    <div id="cardDetails" class="collapse">
-                                                        <div class="row g-2">
-                                                            <div class="col-12">
-                                                                <div class="mb-3">
-                                                                    <label class="form-label">Número do Cartão</label>
-                                                                    <input type="text" class="form-control card_number"
-                                                                        placeholder="1234 4567 6789 4321"
-                                                                        name="card_number">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6 col-12">
-                                                                <div class="mb-3 mb-lg-0">
-                                                                    <label class="form-label">Nome no
-                                                                        Cartão</label>
-                                                                    <input type="text" class="form-control uppercase-input"
-                                                                        placeholder="Nome impresso no cartão"
-                                                                        name="card_name">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3 col-12">
-                                                                <div class="mb-3 mb-lg-0 position-relative">
-                                                                    <label class="form-label">Data de validade</label>
-                                                                    <input class="form-control card_validate"
-                                                                        type="text" placeholder="12/30"
-                                                                        name="card_validate">
-                                                                    <div
-                                                                        class="position-absolute bottom-0 end-0 p-3 lh-1">
-                                                                        <i class="bi bi-calendar text-muted"></i>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3 col-12">
-                                                                <div class="mb-3 mb-lg-0">
-                                                                    <label class="form-label">CVV</label>
-                                                                    <input type="text" class="form-control cvv"
-                                                                        placeholder="123" name="cvv">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Pix -->
-                                            <div class="card card-bordered shadow-none">
-                                                <div class="card-body p-6">
-                                                    <div class="d-flex">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="payment_method" id="pix" value="pix">
-                                                            <h5 class="mb-1 h6"> Pix</h5>
-                                                            <p class="mb-0 small">O QR Code para seu pagamento através
-                                                                de PIX será gerado após a confirmação da compra. Aponte
-                                                                seu celular para a tela para capturar o código ou copie
-                                                                e cole o código em seu aplicativo de pagamentos.</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Button -->
-                                            <div class="mt-5 d-flex justify-content-end align-items-center">
-                                                <div id="error-message" style="color: red; display: none;" class="m-3">
-                                                </div>
-                                                <a href="#" class="btn btn-outline-gray-400 text-muted"
-                                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
-                                                    aria-expanded="false"
-                                                    aria-controls="flush-collapseThree">Anterior</a>
-                                                <button type="submit" class="btn btn-primary ms-2">Finalizar
-                                                    Pedido</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
+                            <div class="d-flex justify-content-between align-items-center">
+                                <!-- heading one -->
+                                <a href="#" class="fs-5 text-inherit collapsed h4" data-bs-toggle="collapse"
+                                    data-bs-target="#flush-collapseOne" aria-expanded="true"
+                                    aria-controls="flush-collapseOne">
+                                    <i class="feather-icon icon-map-pin me-2 text-muted"></i>Adicionar endereço
+                                    de
+                                    entrega
+                                </a>
+                                <!-- btn -->
+                                <a href="#" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#addAddressModal">Adicionar um novo endereço </a>
+                                <!-- collapse -->
                             </div>
+                            <div id="flush-collapseOne" class="accordion-collapse collapse show"
+                                data-bs-parent="#accordionFlushExample">
+                                <div class="mt-5">
+                                    <div class="row">
+                                        @forelse ($addresses as $address)
+                                        <div class="col-lg-6 col-12 mb-4">
+                                            <!-- form -->
+                                            <div class="card card-body p-6 ">
+                                                <div class="form-check mb-4">
+                                                    <input class="form-check-input" type="radio" name="address_id"
+                                                        id="addressRadio{{ $address->id }}" value="{{ $address->id }}"
+                                                        {{ $address->is_default ?
+                                                    'checked' : '' }} onclick="updateShipping('{{
+                                                    $address->zip_code
+                                                    }}')">
+                                                    <label class="form-check-label text-dark"
+                                                        for="addressRadio{{ $address->id }}">
+                                                        {{ $address->name }}
+                                                    </label>
+                                                </div>
+                                                <!-- address -->
+                                                <address> <strong>{{ $address->neighborhood }}</strong> <br>
 
+                                                    {{ $address->number }} {{ $address->street }}, <br>
+
+                                                    {{ $address->city }}, {{ $address->state }},<br>
+
+                                                    <abbr title="Cep" class="cep">{{ $address->zip_code
+                                                        }}</abbr>
+                                                </address>
+                                                @if ($address->is_default)
+                                                <span class="text-danger">Endereço padrão</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        @empty
+                                        <!-- Mensagem para quando não houver endereços -->
+                                        <div class="col-12">
+                                            <div class="alert alert-info" role="alert">
+                                                Nenhum endereço cadastrado.
+                                            </div>
+                                        </div>
+                                        @endforelse
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="col-12 col-md-12 offset-lg-1 col-lg-4">
@@ -358,13 +248,18 @@
                                     </ul>
                                 </div>
                             </div>
+                            <div class="row mt-5 justify-content-end">
+                                <div id="error-message" style="color: red; display: none;" class="m-3 col-auto">
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary w-100">Ir Para Pagamento</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-
-
     </section>
 </main>
 
@@ -479,7 +374,6 @@
     </div>
 </div>
 
-
 @section('footer')
 <!-- Javascript-->
 <script src="{{ asset('libs/flatpickr/dist/flatpickr.min.js') }}"></script>
@@ -491,6 +385,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
     integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- Mercado Pago -->
+<script src="https://sdk.mercadopago.com/js/v2"></script>
 
 <script>
     $(document).ready(function() {
@@ -559,23 +456,7 @@
         if (success) {
             toastr.success(success);
         }
-
-        // Verifica se o cartão ou pix está selecionado
-        $('input[name="payment_method"]').change(function() {
-            if ($('#creditdebitcard').is(':checked')) {
-                $('#cardDetails').collapse('show');
-                $('#cardDetails input').each(function() {
-                    $(this).prop('required', true);
-                });
-            } else {
-                $('#cardDetails').collapse('hide');
-                $('#cardDetails input').each(function() {
-                    $(this).prop('required', false);
-                });
-            }
-        });
     });
-
 
     //Atualiza a Entrega de acordo com o endereco selecionado
     function updateShipping(zipCode) {
@@ -617,7 +498,7 @@
                             return `
                                 <div class='form-check'>
                                     <input class='form-check-input' type='radio' name='shipping_option' id='${tipoFrete}Radio'
-                                        data-company='${company}' data-type='${tipoFrete}' data-price='${customPrice}'
+                                        data-company='${company}' data-type='${tipoFrete}' data-price='${customPrice}' data-prazo-min='${prazoEstimadoMin}' data-prazo-max='${prazoEstimadoMax}'
                                         value='${customPrice}'>
                                     <label class='form-check-label' for='${tipoFrete}Radio'>
                                         ${company} (${tipoFrete}): <strong>R$ ${customPrice}</strong> <br> Prazo Estimado: ${prazoEstimadoMin} a ${prazoEstimadoMax} dias
@@ -647,7 +528,6 @@
     function validateSelection() {
         const addressSelected = $('input[name="address_id"]:checked').length > 0;
         const shippingOptionSelected = $('input[name="shipping_option"]:checked').length > 0;
-        const paymentMethodOptionSelected = $('input[name="payment_method"]:checked').length > 0;
 
         if (!addressSelected) {
             $('#error-message').text("Por favor, selecione um endereço.");
@@ -657,12 +537,6 @@
 
         if (!shippingOptionSelected) {
             $('#error-message').text("Por favor, selecione uma forma de entrega.");
-            $('#error-message').show();
-            return false;
-        }
-
-        if (!paymentMethodOptionSelected) {
-            $('#error-message').text("Por favor, selecione uma forma de pagamento.");
             $('#error-message').show();
             return false;
         }
@@ -689,6 +563,8 @@
                 const company = selectedShippingOption.data('company');
                 const type = selectedShippingOption.data('type');
                 const price = selectedShippingOption.data('price');
+                const prazoMin = selectedShippingOption.data('prazo-min');
+                const prazoMax = selectedShippingOption.data('prazo-max');
 
                 const form = $(this);
                 $('<input>').attr({
@@ -707,6 +583,18 @@
                     type: 'hidden',
                     name: 'shipping_price',
                     value: price
+                }).appendTo(form);
+
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'shipping_prazo_min',
+                    value: prazoMin
+                }).appendTo(form);
+
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'shipping_prazo_max',
+                    value: prazoMax
                 }).appendTo(form);
             }
         }

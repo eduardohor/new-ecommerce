@@ -29,7 +29,9 @@ Route::post('/remover-do-carrinho', [CartController::class, 'deleteProductToCart
 Route::post('/calcular-frete', [CartController::class, 'calculateShipping'])->name('calculate-shipping');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/finalizar-compra', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::get('/checkout-endereco', [CheckoutController::class, 'address'])->name('checkout.address');
+    Route::post('/checkout-pagamento', [CheckoutController::class, 'processCheckout'])->name('checkout.process');
+    Route::get('/checkout-pagamento', [CheckoutController::class, 'showPaymentPage'])->name('checkout.payment');
 
     Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index.customer');
 
