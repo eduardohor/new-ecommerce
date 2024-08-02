@@ -43,19 +43,37 @@ class PaymentController extends Controller
         if ($request->payment_method_id != 'pix') {
             try {
                 $payment = $this->createPaymentCart($request->all());
+                Log::info('Payment Response: ' . json_encode($payment));
 
                 if ($payment->status == 'approved') {
-                    return view('front.payment.success', ['payment' => $payment]);
+                    return response()->json([
+                        'status' => 'success',
+                        'redirect' => route('payment.success'), // URL para a página de sucesso
+                        'payment' => $payment
+                    ]);
                 } else {
-                    return view('front.payment.failed', ['payment' => $payment]);
+                    return response()->json([
+                        'status' => 'failed',
+                        'redirect' => route('payment.failed'), // URL para a página de falha
+                        'payment' => $payment
+                    ]);
                 }
             } catch (MPApiException $e) {
                 Log::error('API Error: ', ['exception' => $e]);
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Erro na API'
+                ], 500);
             } catch (\Exception $e) {
                 Log::error('General Error: ', ['exception' => $e]);
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Erro inesperado'
+                ], 500);
             }
         }
     }
+
 
     public function createPaymentCart($dataPayment)
     {
@@ -118,5 +136,10 @@ class PaymentController extends Controller
         ], $request_options);
 
         return $payment;
+    }
+
+    public function success()
+    {
+        return view('front.payment.success');
     }
 }

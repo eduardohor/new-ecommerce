@@ -1,5 +1,5 @@
 @extends('front/layouts/store')
-@section('title', 'Finalizar Compra')
+@section('title', 'Finalizar Compra - Endereço')
 @section('content')
 
 @section('head')
