@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Order;
-use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -99,41 +98,18 @@ class OrderController extends Controller
                 'status' => 'pending'
             ]);
 
+            $cart->cartProducts()->delete();
+
+            $cart->delete();
+
             DB::commit();
 
-            return response()->json(['message' => 'Pedido criado com sucesso!', 'order' => $order], 201);
+            return response()->json(['message' => 'Pedido criado com sucesso!', 'order' => $order, 'payment' => $order->payment], 201);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erro ao criar pedido: ', ['error' => $e->getMessage()]);
 
             return response()->json(['message' => 'Erro ao criar pedido, tente novamente mais tarde.'], 500);
         }
-    }
-
-    public function detail($order_number)
-    {
-        $order = $this->order->where('order_number', $order_number)->with('products')->first();
-
-        if (!$order) {
-            return redirect()->route('home');
-        }
-
-        Carbon::setLocale('pt_BR');
-        $formattedDate = Carbon::parse($order->created_at)->translatedFormat('d \d\e F \d\e Y');
-        $order->formatted_created_at = $formattedDate;
-
-        if ($order->payment->payment_type === 'credit_card') {
-            $order->payment_type = 'Cartão de Crédito';
-        } elseif ($order->payment->payment_type === 'bank_transfer'){
-            $order->payment_type = 'Pix';
-        }
-
-        $subtotal = $order->products->reduce(function ($carry, $product) {
-            return $carry + ($product->pivot->price * $product->pivot->quantity);
-        }, 0);
-
-        $total = $subtotal;
-
-        return view('front.order.detail', compact('order', 'subtotal', 'total'));
     }
 }

@@ -335,6 +335,8 @@
 
     const publicKey = @json($mercadoPagoPublicKey);
 
+    const userEmail = "{{ auth()->user()->email }}";
+
     const mp = new MercadoPago(publicKey, {
         locale: 'pt'
     });
@@ -348,6 +350,9 @@
         initialization: {
             amount: amount,
             preferenceId: "<PREFERENCE_ID>",
+            payer: {
+                email: userEmail
+            }
         },
         customization: {
             visual: {
@@ -393,7 +398,8 @@
         window.paymentBrickController.getFormData()
             .then(({ formData }) => {
                 if (!formData.payment_method_id) {
-                    errorMessageDiv.show();
+                    errorMessageDiv.text('Por favor, selecione um método de pagamento.').show();
+                    $('#loadingOverlay').hide();
                     return;
                 }
                 errorMessageDiv.hide();
@@ -419,20 +425,28 @@
                     return response.json();
                 })
                 .then(data => {
+                    $('#loadingOverlay').hide();
                     console.log("Dados da resposta:", data);
 
-                    if (data.status != 'failed') {
-                        createOrder(data);
+                    if (data.status == 'error') {
+                        errorMessageDiv.text('Houve um problema ao processar o pagamento. Por favor, tente novamente.').show();
+                    } else {
+                        if (data.status == 'rejected') {
+                            const transactionId = data.id;
+                            window.location.href = '{{ route("payment.failed", ":transactionId") }}'.replace(':transactionId', transactionId);
+                        } else{
+                            createOrder(data);
+                        }
                     }
-
                 })
                 .catch(error => {
                     $('#loadingOverlay').hide();
+                    errorMessageDiv.text('Houve um problema ao processar o pagamento. Por favor, tente novamente.').show();
                     console.error('Erro ao fazer fetch:', error);
                 });
             })
             .catch((error) => {
-                errorMessageDiv.show();
+                errorMessageDiv.text('Erro ao obter dados do formulário.').show();
                 $('#loadingOverlay').hide();
             });
     };
@@ -454,7 +468,7 @@
             success: function(response) {
                 console.log('Pedido criado com sucesso:', response);
                 const orderNumber = response.order.order_number;
-                 window.location.href = '{{ route("order.detail", ":orderNumber") }}'.replace(':orderNumber', orderNumber);
+                 window.location.href = '{{ route("payment.success", ":orderNumber") }}'.replace(':orderNumber', orderNumber);
             },
             error: function(xhr, status, error) {
                 console.error('Erro ao criar pedido:', error);

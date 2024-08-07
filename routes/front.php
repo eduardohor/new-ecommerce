@@ -42,15 +42,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/enderecos', [AddressController::class, 'index'])->name('address.index');
     Route::post('/enderecos-criar', [AddressController::class, 'store'])->name('address.store');
 
-
     Route::get('/pagamentos', [PaymentController::class, 'index'])->name('payment.index');
     Route::post('/pagamentos/processo', [PaymentController::class, 'processPayment'])->name('payment.process');
-    Route::get('/pagamentos/sucesso', [PaymentController::class, 'success'])->name('payment.success');
-    Route::get('/pagamentos/falha', [PaymentController::class, 'failed'])->name('payment.failed');
-    Route::get('/pagamentos/processando', [PaymentController::class, 'processing'])->name('payment.processing');
+    Route::get('/pagamentos/sucesso/{order_id}', [PaymentController::class, 'showPaymentSuccess'])->name('payment.success');
+    Route::get('/pagamentos/falha/{transaction_id}', [PaymentController::class, 'showPaymentFailed'])->name('payment.failed');
 
     Route::post('/pedidos', [OrderController::class, 'store'])->name('order.store');
-    Route::get('/pedidos/detalhes/{order_number}', [OrderController::class, 'detail'])->name('order.detail');
 
     Route::get('/notificacoes', [NotificationController::class, 'index'])->name('notification.index');
 });

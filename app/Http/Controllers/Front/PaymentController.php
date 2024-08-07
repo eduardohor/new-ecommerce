@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Models\Address;
 use App\Models\Cart;
+use App\Models\Order;
+use Carbon\Carbon;
 use Illuminate\Console\View\Components\Info;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +21,10 @@ use MercadoPago\MercadoPagoConfig;
 class PaymentController extends Controller
 {
     protected $cart;
-    public function __construct(Cart $cart)
+    protected $order;
+    protected $mercadoPagoPublicKey;
+
+    public function __construct(Cart $cart, Order $order)
     {
         MercadoPagoConfig::setAccessToken(config('mercadopago.access_token'));
 
@@ -31,6 +36,8 @@ class PaymentController extends Controller
         MercadoPagoConfig::setRuntimeEnviroment($environment);
 
         $this->cart = $cart;
+        $this->order = $order;
+        $this->mercadoPagoPublicKey = config('mercadopago.public_key');
     }
 
     public function index(): View
@@ -40,14 +47,11 @@ class PaymentController extends Controller
 
     public function processPayment(Request $request)
     {
-
         try {
             if ($request->payment_method_id == 'pix') {
                 $payment = $this->createPaymentPix($request->all());
-            } elseif ($request->payment_method_id == 'credit_card') {
-                $payment = $this->createPaymentCart($request->all());
             } else {
-                throw new \Exception('Tipo de pagamento não suportado');
+                $payment = $this->createPaymentCart($request->all());
             }
 
             Log::info('Payment Response: ' . json_encode($payment));
@@ -175,8 +179,39 @@ class PaymentController extends Controller
         }
     }
 
-    public function success()
+    public function showPaymentSuccess($order_number)
     {
-        return view('front.payment.success');
+        $order = $this->order->where('order_number', $order_number)->with('products')->first();
+
+        if (!$order) {
+            return redirect()->route('home');
+        }
+
+        Carbon::setLocale('pt_BR');
+        $formattedDate = Carbon::parse($order->created_at)->translatedFormat('d \d\e F \d\e Y');
+        $order->formatted_created_at = $formattedDate;
+
+        if ($order->payment->payment_type === 'credit_card') {
+            $order->payment_type = 'Cartão de Crédito';
+        } elseif ($order->payment->payment_type === 'bank_transfer'){
+            $order->payment_type = 'Pix';
+        }
+
+        $subtotal = $order->products->reduce(function ($carry, $product) {
+            return $carry + ($product->pivot->price * $product->pivot->quantity);
+        }, 0);
+
+        $total = $subtotal;
+
+        $mercadoPagoPublicKey = $this->mercadoPagoPublicKey;
+
+        return view('front.payment.success', compact('order', 'subtotal', 'total', 'mercadoPagoPublicKey'));
+    }
+
+    public function showPaymentFailed($transaction_id)
+    {
+        $mercadoPagoPublicKey = $this->mercadoPagoPublicKey;
+
+        return view('front.payment.failure', compact('transaction_id', 'mercadoPagoPublicKey'));
     }
 }
