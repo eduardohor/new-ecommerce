@@ -49,5 +49,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/pagamentos/falha', [PaymentController::class, 'failed'])->name('payment.failed');
     Route::get('/pagamentos/processando', [PaymentController::class, 'processing'])->name('payment.processing');
 
+    Route::post('/pedidos', [OrderController::class, 'store'])->name('order.store');
+    Route::get('/pedidos/detalhes/{order_number}', [OrderController::class, 'detail'])->name('order.detail');
+
     Route::get('/notificacoes', [NotificationController::class, 'index'])->name('notification.index');
 });

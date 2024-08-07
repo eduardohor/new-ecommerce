@@ -382,10 +382,13 @@
     renderPaymentBrick(bricksBuilder);
 
     function createPayment() {
+        $('#loadingOverlay').show();
+
         const paymentProcessUrl = "{{ route('payment.process') }}";
         const csrfToken = $('meta[name="csrf-token"]').attr('content');
         const errorMessageDiv = $('#error-message');
         const cartId = "{{ $cart->id }}";
+
 
         window.paymentBrickController.getFormData()
             .then(({ formData }) => {
@@ -406,7 +409,6 @@
                     body: JSON.stringify(formData),
                 })
                 .then(response => {
-                    // Verificar se a resposta foi bem-sucedida
                     if (!response.ok) {
                         return response.text().then(text => {
                             console.error('Erro na resposta:', text);
@@ -414,31 +416,55 @@
                         });
                     }
 
-                    // Converter a resposta para JSON
                     return response.json();
                 })
                 .then(data => {
-                    // Exibir os dados da resposta
                     console.log("Dados da resposta:", data);
 
-                    if (data.status === 'success') {
-                        window.location.href = data.redirect;
-                    } else if (data.status === 'failed') {
-                        window.location.href = data.redirect;
-                    } else {
-                        // Tratar outros casos de erro
-                        console.error('Erro:', data.message);
+                    if (data.status != 'failed') {
+                        createOrder(data);
                     }
+
                 })
                 .catch(error => {
-                    // Capturar e exibir erros
+                    $('#loadingOverlay').hide();
                     console.error('Erro ao fazer fetch:', error);
                 });
             })
             .catch((error) => {
                 errorMessageDiv.show();
+                $('#loadingOverlay').hide();
             });
     };
+
+    function createOrder(payment) {
+        const csrfToken = $('meta[name="csrf-token"]').attr('content');
+        const amount = "{{ $cart->total_amount + + $shipping['shipping_price']}}";
+        const cartId = "{{ $cart->id }}";
+
+        $.ajax({
+            url: '{{ route('order.store') }}',
+            type: 'POST',
+            data: {
+                _token: csrfToken,
+                payment: payment,
+                total_amount:amount,
+                cart_id: cartId
+            },
+            success: function(response) {
+                console.log('Pedido criado com sucesso:', response);
+                const orderNumber = response.order.order_number;
+                 window.location.href = '{{ route("order.detail", ":orderNumber") }}'.replace(':orderNumber', orderNumber);
+            },
+            error: function(xhr, status, error) {
+                console.error('Erro ao criar pedido:', error);
+                $('#loadingOverlay').hide();
+            }
+        });
+    }
+
+
+
 
 </script>
 

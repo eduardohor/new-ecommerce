@@ -15,6 +15,7 @@ class Payment extends Model
         'payment_type',
         'transaction_id',
         'amount',
-        'status'
+        'status',
+        'installments'
     ];
 }

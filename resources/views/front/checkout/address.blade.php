@@ -587,13 +587,13 @@
 
                 $('<input>').attr({
                     type: 'hidden',
-                    name: 'shipping_prazo_min',
+                    name: 'shipping_minimum_term',
                     value: prazoMin
                 }).appendTo(form);
 
                 $('<input>').attr({
                     type: 'hidden',
-                    name: 'shipping_prazo_max',
+                    name: 'shipping_deadline',
                     value: prazoMax
                 }).appendTo(form);
             }

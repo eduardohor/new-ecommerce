@@ -17,4 +17,30 @@ class Order extends Model
         'total_discount',
         'status'
     ];
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
+    }
+
+    public function shipping()
+    {
+        return $this->hasOne(Shipping::class);
+    }
+
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'order_products')
+            ->withPivot('quantity', 'price');
+    }
+
+    function generateOrderNumber()
+    {
+        return random_int(10000000, 99999999);
+    }
 }

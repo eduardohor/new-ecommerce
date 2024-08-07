@@ -44,20 +44,7 @@ class PaymentController extends Controller
             try {
                 $payment = $this->createPaymentCart($request->all());
                 Log::info('Payment Response: ' . json_encode($payment));
-
-                if ($payment->status == 'approved') {
-                    return response()->json([
-                        'status' => 'success',
-                        'redirect' => route('payment.success'), // URL para a página de sucesso
-                        'payment' => $payment
-                    ]);
-                } else {
-                    return response()->json([
-                        'status' => 'failed',
-                        'redirect' => route('payment.failed'), // URL para a página de falha
-                        'payment' => $payment
-                    ]);
-                }
+                return response()->json($payment);
             } catch (MPApiException $e) {
                 Log::error('API Error: ', ['exception' => $e]);
                 return response()->json([
@@ -101,42 +88,48 @@ class PaymentController extends Controller
             $items[] = $item;
         }
 
-        $payment = $client->create([
-            "transaction_amount" => (float) $dataPayment['transaction_amount'],
-            "token" => $dataPayment['token'],
-            "installments" => $dataPayment['installments'],
-            "payment_method_id" => $dataPayment['payment_method_id'],
-            "issuer_id" => $dataPayment['issuer_id'],
-            "payer" => [
-                "email" => $dataPayment['payer']['email'],
-                "identification" => [
-                    "type" => $dataPayment['payer']['identification']['type'],
-                    "number" => $dataPayment['payer']['identification']['number']
-                ]
-            ],
-            "additional_info" => [
-                "items" => $items,
+        try {
+            $payment = $client->create([
+                "transaction_amount" => (float) $dataPayment['transaction_amount'],
+                "token" => $dataPayment['token'],
+                "installments" => $dataPayment['installments'],
+                "payment_method_id" => $dataPayment['payment_method_id'],
+                "issuer_id" => $dataPayment['issuer_id'],
                 "payer" => [
-                    "first_name" => $user->name,
-                    "address" => [
-                        "zip_code" => $addressDefault->zip_code,
-                        "street_name" => $addressDefault->street,
-                        "street_number" => $addressDefault->number
+                    "email" => $dataPayment['payer']['email'],
+                    "identification" => [
+                        "type" => $dataPayment['payer']['identification']['type'],
+                        "number" => $dataPayment['payer']['identification']['number']
                     ]
-                ], "shipments" => [
-                    "receiver_address" => [
-                        "zip_code" => $addressShipping['zip_code'],
-                        "state_name" => $addressShipping['state'],
-                        "city_name" => $addressShipping['city'],
-                        "street_name" => $addressShipping['street'],
-                        "street_number" => $addressShipping['number']
+                ],
+                "additional_info" => [
+                    "items" => $items,
+                    "payer" => [
+                        "first_name" => $user->name,
+                        "address" => [
+                            "zip_code" => $addressDefault->zip_code,
+                            "street_name" => $addressDefault->street,
+                            "street_number" => $addressDefault->number
+                        ]
+                    ], "shipments" => [
+                        "receiver_address" => [
+                            "zip_code" => $addressShipping['zip_code'],
+                            "state_name" => $addressShipping['state'],
+                            "city_name" => $addressShipping['city'],
+                            "street_name" => $addressShipping['street'],
+                            "street_number" => $addressShipping['number']
+                        ]
                     ]
                 ]
-            ]
-        ], $request_options);
+            ], $request_options);
 
-        return $payment;
+            return $payment;
+        } catch (MPApiException $e) {
+            Log::error('API Error: ', ['exception' => $e, 'response' => $e->getResponse()]);
+            throw $e;
+        }
     }
+
 
     public function success()
     {

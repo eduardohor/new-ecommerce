@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
-            $table->string('payment_method');
-            $table->string('payment_type')->nullable();
-            $table->string('transaction_id')->unique();
+            $table->string('payment_type');
+            $table->string('transaction_id');
             $table->decimal('amount', 10, 2);
             $table->enum('status', ['pending', 'completed', 'failed'])->default('pending');
+            $table->integer('installments')->nullable();
+            $table->string('payment_method')->nullable();
             $table->timestamps();
         });
     }

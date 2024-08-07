@@ -59,8 +59,8 @@ class CheckoutController extends Controller
             'shipping_company' => 'required|string',
             'shipping_type' => 'required|string',
             'shipping_price' => 'required|numeric',
-            'shipping_prazo_min' => 'required|numeric',
-            'shipping_prazo_max' => 'required|numeric',
+            'shipping_minimum_term' => 'required|numeric',
+            'shipping_deadline' => 'required|numeric',
         ]);
 
         session()->put('shipping', $shipping);
