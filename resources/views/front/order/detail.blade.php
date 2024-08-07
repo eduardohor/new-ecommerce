@@ -43,26 +43,30 @@
     .thanks {
         font-size: 18px;
     }
+
+    .card-rounded{
+        border-top-right-radius: 16px;
+        border-top-left-radius: 16px;
+    }
 </style>
 
 
 @endsection
 
 <!-- Overlay de Carregamento -->
-{{-- <div id="loadingOverlay">
+<div id="loadingOverlay">
     <div class="spinner-border" role="status">
         <span class="visually-hidden">Carregando...</span>
     </div>
-</div> --}}
+</div>
 
 <main>
     <div class="container my-5">
-        <div class="card shadow-sm">
-            <div class="card-header bg-primary py-5 text-center">
-                <h2 class="text-white">Pedido Recebido</h2>
-            </div>
+        <div class="card shadow-sm card-rounded">
+
+            <div id="statusScreenBrick_container"></div>
+
             <div class="card-body">
-                <p class="thanks">Obrigado. Seu pedido foi recebido</p>
                 <div class="row mb-3">
                     <div class="col-md-3">
                         <p>NÚMERO DO PEDIDO <br> <span class="fw-bold">#{{ $order->order_number }}</span></p>
@@ -79,21 +83,11 @@
                     </div>
                 </div>
 
-                @if ($order->payment_type == 'Cartão de Crédito')
-                <div class="alert alert-primary" role="alert">
-                    <p> Você acabou de fazer o pagamento em <span class="fw-bold">{{ $order->payment->installments
-                            }}x</span> usando <span class="fw-bold">Cartão de crédito {{ $order->payment->payment_method
-                            }}.</span> <br></p>
-                    <p>O seu pedido será processado assim que a operadora do seu cartão de crédito confirmar o
-                        pagamento.</p>
-                </div>
-                @endif
-
                 <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th colspan="2" class="">
-                                <h4>Detalhes do Pedido</h4>
+                                <h4>Detalhes dos Produtos</h4>
                             </th>
                         </tr>
                     </thead>
@@ -115,7 +109,7 @@
                         </tr>
                         <tr>
                             <td class="fw-bold">Método de Pagamento</td>
-                            <td>{{ $order->payment_method }}</td>
+                            <td>{{ $order->payment_type }}</td>
                         </tr>
                         <tr>
                             <td class="fw-bold">Total</td>
@@ -171,6 +165,7 @@
       locale: 'pt-BR'
     });
     const paymentId = "{{ $order->payment->transaction_id }}";
+    const homeUrl = "{{ route('home') }}"
     console.log(paymentId);
     const bricksBuilder = mp.bricks();
     const renderStatusScreenBrick = async (bricksBuilder) => {
@@ -179,11 +174,21 @@
           paymentId: paymentId,
         },
         customization: {
-          visual: {
+            visual: {
+            hideStatusDetails: true,
+            hideTransactionDate: true,
             style: {
-              theme: 'bootstrap',
+                theme: 'bootstrap',
+                customVariables:{
+                    baseColor: "#0ec10f",
+                    successColor: "#0ec10f"
+                }
             }
-          }
+            },
+            backUrls: {
+                // 'error': '<http://<your domain>/error>',
+                'return': homeUrl
+            }
         },
         callbacks: {
           onReady: () => {

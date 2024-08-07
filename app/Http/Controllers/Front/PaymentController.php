@@ -40,33 +40,40 @@ class PaymentController extends Controller
 
     public function processPayment(Request $request)
     {
-        if ($request->payment_method_id != 'pix') {
-            try {
+
+        try {
+            if ($request->payment_method_id == 'pix') {
+                $payment = $this->createPaymentPix($request->all());
+            } elseif ($request->payment_method_id == 'credit_card') {
                 $payment = $this->createPaymentCart($request->all());
-                Log::info('Payment Response: ' . json_encode($payment));
-                return response()->json($payment);
-            } catch (MPApiException $e) {
-                Log::error('API Error: ', ['exception' => $e]);
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Erro na API'
-                ], 500);
-            } catch (\Exception $e) {
-                Log::error('General Error: ', ['exception' => $e]);
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Erro inesperado'
-                ], 500);
+            } else {
+                throw new \Exception('Tipo de pagamento não suportado');
             }
+
+            Log::info('Payment Response: ' . json_encode($payment));
+            return response()->json($payment);
+        } catch (MPApiException $e) {
+            Log::error('API Error: ', ['exception' => $e]);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Erro na API'
+            ], 500);
+        } catch (\Exception $e) {
+            Log::error('General Error: ', ['exception' => $e->getMessage()]);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Erro inesperado'
+            ], 500);
         }
     }
+
 
 
     public function createPaymentCart($dataPayment)
     {
         $client = new PaymentClient();
         $request_options = new RequestOptions();
-        $request_options->setCustomHeaders(["X-Idempotency-Key: <SOME_UNIQUE_VALUE>"]);
+        $request_options->setCustomHeaders(["X-Idempotency-Key: " . uniqid()]);
 
         $cart = $this->cart->find($dataPayment['cart_id']);
         $user = auth()->user();
@@ -125,11 +132,48 @@ class PaymentController extends Controller
 
             return $payment;
         } catch (MPApiException $e) {
-            Log::error('API Error: ', ['exception' => $e, 'response' => $e->getResponse()]);
+            Log::error('API Error: ', [
+                'exception' => $e->getMessage(),
+                'status_code' => $e->getCode()
+            ]);
+            throw $e;
+        } catch (\Exception $e) {
+            Log::error('General Error: ', [
+                'exception' => $e->getMessage()
+            ]);
             throw $e;
         }
     }
 
+    public function createPaymentPix($dataPayment)
+    {
+        $client = new PaymentClient();
+        $request_options = new RequestOptions();
+        $request_options->setCustomHeaders(["X-Idempotency-Key: " . uniqid()]);
+
+        try {
+            $payment = $client->create([
+                "transaction_amount" => (float) $dataPayment['transaction_amount'],
+                "payment_method_id" => $dataPayment['payment_method_id'],
+                "payer" => [
+                    "email" => $dataPayment['payer']['email'],
+                ]
+            ], $request_options);
+
+            return $payment;
+        } catch (MPApiException $e) {
+            Log::error('API Error: ', [
+                'exception' => $e->getMessage(),
+                'status_code' => $e->getCode()
+            ]);
+            throw $e;
+        } catch (\Exception $e) {
+            Log::error('General Error: ', [
+                'exception' => $e->getMessage()
+            ]);
+            throw $e;
+        }
+    }
 
     public function success()
     {

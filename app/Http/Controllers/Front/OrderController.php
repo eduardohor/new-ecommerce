@@ -73,7 +73,7 @@ class OrderController extends Controller
             ]);
 
             $order->payment()->create([
-                'payment_type' => $validatedData['payment']['payment_method']['type'] ?? 'unknown',
+                'payment_type' => $validatedData['payment']['payment_type_id'] ?? 'unknown',
                 'transaction_id' => $validatedData['payment']['id'],
                 'amount' => $validatedData['total_amount'],
                 'status' => $statusPayment,
@@ -88,18 +88,16 @@ class OrderController extends Controller
                 ]);
             }
 
-            if ($statusPayment == 'completed') {
-                $order->shipping()->create([
-                    'address_id' => $shipping['address_id'],
-                    'shipping_option' => $shipping['shipping_option'],
-                    'shipping_company' => $shipping['shipping_company'],
-                    'shipping_type' => $shipping['shipping_type'],
-                    'shipping_price' => $shipping['shipping_price'],
-                    'shipping_minimum_term' => $shipping['shipping_minimum_term'],
-                    'shipping_deadline' => $shipping['shipping_deadline'],
-                    'status' => 'pending'
-                ]);
-            }
+            $order->shipping()->create([
+                'address_id' => $shipping['address_id'],
+                'shipping_option' => $shipping['shipping_option'],
+                'shipping_company' => $shipping['shipping_company'],
+                'shipping_type' => $shipping['shipping_type'],
+                'shipping_price' => $shipping['shipping_price'],
+                'shipping_minimum_term' => $shipping['shipping_minimum_term'],
+                'shipping_deadline' => $shipping['shipping_deadline'],
+                'status' => 'pending'
+            ]);
 
             DB::commit();
 
@@ -126,6 +124,8 @@ class OrderController extends Controller
 
         if ($order->payment->payment_type === 'credit_card') {
             $order->payment_type = 'Cartão de Crédito';
+        } elseif ($order->payment->payment_type === 'bank_transfer'){
+            $order->payment_type = 'Pix';
         }
 
         $subtotal = $order->products->reduce(function ($carry, $product) {
