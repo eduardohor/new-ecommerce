@@ -483,7 +483,7 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link   {{ request()->routeIs('orders.index') || request()->routeIs('orders.show') ? 'active' : ''}}"
-                  href="{{ route('orders.show') }}">
+                  href="{{ route('orders.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-bag"></i></span>
                     <span class="nav-link-text">Pedidos</span>

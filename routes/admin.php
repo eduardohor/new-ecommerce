@@ -32,7 +32,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::delete('/produtos/edit/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 
     Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/pedidos/detalhes', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('/pedidos/{order_nuber}/detalhes', [OrderController::class, 'show'])->name('orders.show');
+    Route::post('/pedidos/atualizar-status', [OrderController::class, 'updateStatus'])->name('orders.update.status');
+    Route::post('/pedidos/atualizar-anotacoes', [OrderController::class, 'updateNotes'])->name('orders.update.notes');
 
     Route::get('/clientes', [CustomerController::class, 'index'])->name('customers.index');
   });

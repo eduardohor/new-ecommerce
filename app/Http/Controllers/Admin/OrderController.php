@@ -21,8 +21,49 @@ class OrderController extends Controller
         return view('admin.order.index', compact('orders'));
     }
 
-    public function show(): View
+    public function show($order_number): View
     {
-        return view('admin.order.show');
+        $order = $this->order->where('order_number', $order_number)->first();
+        return view('admin.order.show', compact('order'));
+    }
+
+    public function updateStatus(Request $request)
+    {
+        $validatedData = $request->validate([
+            'status' => 'required',
+            'order_id' => 'required',
+        ]);
+
+        $order = $this->order->findOrFail($validatedData['order_id']);
+
+        if (!$order) {
+            return redirect()->route('orders.index');
+        }
+
+        $order->update(['status' => $validatedData['status']]);
+
+        return redirect()
+            ->route('orders.show', $order->order_number)
+            ->with('success', 'Status do Pedido atualizado com sucesso!');
+    }
+
+    public function updateNotes(Request $request)
+    {
+        $validatedData = $request->validate([
+            'notes' => 'required',
+            'order_id' => 'required',
+        ]);
+
+        $order = $this->order->findOrFail($validatedData['order_id']);
+
+        if (!$order) {
+            return redirect()->route('orders.index');
+        }
+
+        $order->update(['notes' => $validatedData['notes']]);
+
+        return redirect()
+            ->route('orders.show', $order->order_number)
+            ->with('success', 'Anotações do Pedido atualizadas com sucesso!');
     }
 }

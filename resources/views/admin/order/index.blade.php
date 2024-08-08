@@ -102,7 +102,7 @@ Carbon::setLocale('pt_BR');
                                                     alt="" class="icon-shape icon-md">
                                             </a>
                                         </td>
-                                        <td><a href="{{ route('orders.show') }}" class="text-reset">{{
+                                        <td><a href="{{ route('orders.show', $order->order_number) }}" class="text-reset">{{
                                                 $order->order_number }}</a></td>
                                         <td>{{ $order->user->name }}</td>
 
@@ -114,7 +114,6 @@ Carbon::setLocale('pt_BR');
                                         @else
                                         <td>Outro Método de Pagamento</td>
                                         @endif
-
 
                                         <td>
                                             @if ($order->status == 'pending')
@@ -136,7 +135,7 @@ Carbon::setLocale('pt_BR');
                                                     <i class="feather-icon icon-more-vertical fs-5"></i>
                                                 </a>
                                                 <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" href="{{ route('orders.show') }}"><i
+                                                    <li><a class="dropdown-item" href="{{ route('orders.show', $order->order_number) }}"><i
                                                                 class="bi bi-eye-fill me-3"></i>Visualizar</a></li>
                                                     <li><a class="dropdown-item" href="#"><i
                                                                 class="bi bi-trash me-3"></i>Excluir</a></li>

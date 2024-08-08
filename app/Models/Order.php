@@ -15,7 +15,8 @@ class Order extends Model
         'order_number',
         'total_amount',
         'total_discount',
-        'status'
+        'status',
+        'notes'
     ];
 
     public function payment()
