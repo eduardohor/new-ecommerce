@@ -43,4 +43,31 @@ class Order extends Model
     {
         return random_int(10000000, 99999999);
     }
+
+    function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function getOrders(string $search = null, string $status = null)
+    {
+        $orders = $this->with(['user'])
+            ->where(function ($query) use ($search, $status) {
+                if ($search) {
+                    $query->where('order_number', 'LIKE', "%$search%")
+                        ->orWhere('total_amount', 'LIKE', "%$search%")
+                        ->orWhereHas('user', function ($userQuery) use ($search) {
+                            $userQuery->where('name', 'LIKE', "%$search%");
+                        });
+                }
+
+                if ($status) {
+                    $query->where('status', $status);
+                }
+            })
+            ->orderBy('updated_at', 'desc')
+            ->paginate(10);
+
+        return $orders;
+    }
 }

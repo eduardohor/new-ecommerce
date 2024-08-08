@@ -397,7 +397,7 @@
 
         window.paymentBrickController.getFormData()
             .then(({ formData }) => {
-                if (!formData.payment_method_id) {
+                if (!formData) {
                     errorMessageDiv.text('Por favor, selecione um método de pagamento.').show();
                     $('#loadingOverlay').hide();
                     return;

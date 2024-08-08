@@ -40,6 +40,11 @@ class OrderController extends Controller
 
         $status = $validatedData['payment']['status'];
         $statusPayment = '';
+        $statusOrder = 'pending';
+
+        if ($validatedData['payment']['status'] == 'approved') {
+            $statusOrder = 'processing';
+        }
 
         switch ($status) {
             case 'approved':
@@ -68,7 +73,7 @@ class OrderController extends Controller
                 'order_number' => $orderNumber,
                 'total_amount' => $validatedData['total_amount'],
                 'total_discount' => $validatedData['total_discount'] ?? 0,
-                'status' => 'pending'
+                'status' => $statusOrder
             ]);
 
             $order->payment()->create([

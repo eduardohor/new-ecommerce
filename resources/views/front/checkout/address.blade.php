@@ -86,7 +86,7 @@
                 </div>
             </div>
             <div>
-                <form action="{{ route('checkout.payment') }}" method="post">
+                <form id="formPayment" action="{{ route('checkout.payment') }}" method="post">
                     @csrf
                     <!-- row -->
                     <div class="row">
@@ -553,7 +553,7 @@
     });
 
     // Configura o evento de envio do formulário
-    $('form').on('submit', function(event) {
+    $('#formPayment').on('submit', function(event) {
         if (!validateSelection()) {
             event.preventDefault();
         } else {
