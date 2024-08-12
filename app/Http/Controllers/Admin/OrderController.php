@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -65,5 +66,15 @@ class OrderController extends Controller
         return redirect()
             ->route('orders.show', $order->order_number)
             ->with('success', 'Anotações do Pedido atualizadas com sucesso!');
+    }
+
+    public function downloadInvoice($order_number)
+    {
+        $order = $this->order->where('order_number', $order_number)->first();
+
+        $pdf = Pdf::loadView('admin.order.invoice', compact('order'));
+
+        return $pdf->stream();
+
     }
 }

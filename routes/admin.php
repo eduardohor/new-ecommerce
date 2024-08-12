@@ -35,6 +35,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/pedidos/{order_nuber}/detalhes', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/pedidos/atualizar-status', [OrderController::class, 'updateStatus'])->name('orders.update.status');
     Route::post('/pedidos/atualizar-anotacoes', [OrderController::class, 'updateNotes'])->name('orders.update.notes');
+    Route::get('/pedidos/{order_number}/invoice', [OrderController::class, 'downloadInvoice'])->name('orders.download.invoice');
 
     Route::get('/clientes', [CustomerController::class, 'index'])->name('customers.index');
   });

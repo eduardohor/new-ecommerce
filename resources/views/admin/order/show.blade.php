@@ -85,7 +85,8 @@ Carbon::setLocale('pt_BR');
                                 <div class="ms-md-3">
                                     <button type="submit" form="formUpdateStatus"
                                         class="btn btn-primary">Salvar</button>
-                                    <a href="#" class="btn btn-secondary">Baixar o Invoice</a>
+                                    <a href="{{ route('orders.download.invoice', $order->order_number) }}"
+                                        class="btn btn-secondary">Baixar o Invoice</a>
                                 </div>
                             </div>
                         </div>
