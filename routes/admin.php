@@ -38,6 +38,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/pedidos/{order_number}/invoice', [OrderController::class, 'downloadInvoice'])->name('orders.download.invoice');
 
     Route::get('/clientes', [CustomerController::class, 'index'])->name('customers.index');
+    Route::get('/clientes/cadastro', [CustomerController::class, 'create'])->name('customers.create');
+    Route::post('/clientes/cadastro', [CustomerController::class, 'store'])->name('customers.store');
+    Route::get('/clientes/{id}', [CustomerController::class, 'edit'])->name('customers.edit');
   });
 
   Route::middleware('super.admin')->group(function () {

@@ -1,6 +1,7 @@
 $(document).ready(function () {
     // Formatar Telefone
     $("#phone").inputmask("(99) 99999-9999");
+    $(".phone").inputmask("(99) 99999-9999");
 
     // Formatar CEP
     $(".cep").inputmask("99999-999");

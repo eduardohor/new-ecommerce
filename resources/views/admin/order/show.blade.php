@@ -29,6 +29,7 @@ Carbon::setLocale('pt_BR');
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}" class="text-inherit">Painel</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('orders.index') }}" class="text-inherit">Pedidos</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Pedido Detalhado</li>
                             </ol>
                         </nav>

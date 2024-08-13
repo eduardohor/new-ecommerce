@@ -24,7 +24,9 @@ class User extends Authenticatable
         'password',
         'phone',
         'is_admin',
-        'is_super_admin'
+        'is_super_admin',
+        'profile_image',
+        'birthdate'
     ];
 
     /**

@@ -1,5 +1,14 @@
 @extends('admin.layouts.dashboard')
 @section('title', 'Clientes')
+
+
+@section('links')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+  integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
+@endsection
+
+
 @section('content')
 
 @php
@@ -18,13 +27,14 @@ Carbon::setLocale('pt_BR');
                         <!-- breacrumb -->
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0">
-                                <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}" class="text-inherit">Painel</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}"
+                                        class="text-inherit">Painel</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Clientes</li>
                             </ol>
                         </nav>
                     </div>
                     <div>
-                        <a href="#!" class="btn btn-primary">Adicionar Novo Cliente</a>
+                        <a href="{{ route('customers.create') }}" class="btn btn-primary">Adicionar Novo Cliente</a>
                     </div>
                 </div>
             </div>
@@ -85,7 +95,8 @@ Carbon::setLocale('pt_BR');
                                                 <img src="{{ asset('images/avatar/avatar.png') }}" alt=""
                                                     class="avatar avatar-xs rounded-circle">
                                                 <div class="ms-2">
-                                                    <a href="#" class="text-inherit">{{ $customer->name }}</a>
+                                                    <a href="{{ route('customers.edit', $customer->id) }}"
+                                                        class="text-inherit">{{ $customer->name }}</a>
                                                 </div>
                                             </div>
                                         </td>
@@ -107,7 +118,8 @@ Carbon::setLocale('pt_BR');
                                                 <ul class="dropdown-menu">
                                                     <li><a class="dropdown-item" href="#"><i
                                                                 class="bi bi-trash me-3"></i>Excluir</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i
+                                                    <li><a class="dropdown-item"
+                                                            href="{{ route('customers.edit', $customer->id) }}"><i
                                                                 class="bi bi-pencil-square me-3 "></i>Editar</a>
                                                     </li>
                                                 </ul>
@@ -126,7 +138,8 @@ Carbon::setLocale('pt_BR');
                         </div>
 
                         <div class="border-top d-md-flex justify-content-between align-items-center p-2 p-md-6">
-                            <span class="mb-2 mb-md-0">Mostrando {{ $customers->firstItem() }} a {{ $customers->lastItem() }} de
+                            <span class="mb-2 mb-md-0">Mostrando {{ $customers->firstItem() }} a {{
+                                $customers->lastItem() }} de
                                 {{
                                 $customers->total() }} resultados</span>
                             <nav class="mt-2 mt-md-0">
@@ -143,5 +156,33 @@ Carbon::setLocale('pt_BR');
         </div>
     </div>
 </main>
+
+@endsection
+
+@section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+    integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    $(document).ready(function() {
+    let error  = "{{ session('error') }}";
+    let warning = "{{ session('warning') }}";
+    let success = "{{ session('success') }}";
+
+      if (error) {
+        toastr.error(error);
+      }
+
+      if (warning) {
+        toastr.warning(warning);
+      }
+
+      if (success) {
+        toastr.success(success);
+      }
+
+  });
+</script>
 
 @endsection

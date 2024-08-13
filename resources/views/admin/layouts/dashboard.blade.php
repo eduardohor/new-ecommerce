@@ -226,7 +226,7 @@
               </li>
               @if (auth()->user()->is_super_admin)
               <li class="nav-item ">
-                <a class="nav-link {{ request()->routeIs('users.index') || request()->routeIs('users.create') ? 'active' : ''}}"
+                <a class="nav-link {{ request()->routeIs('users.index') || request()->routeIs('users.create') || request()->routeIs('users.edit') ? 'active' : ''}}"
                   href="{{ route('users.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-person"></i></span>
@@ -236,7 +236,7 @@
               </li>
               @endif
               <li class="nav-item ">
-                <a class="nav-link {{ request()->routeIs('categories.index') || request()->routeIs('categories.create') ? "
+                <a class="nav-link {{ request()->routeIs('categories.index') || request()->routeIs('categories.create') || request()->routeIs('categories.edit')? "
                   active" : ' ' }}" href="{{ route('categories.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-list-task"></i></span>
@@ -245,7 +245,7 @@
                 </a>
               </li>
               <li class="nav-item ">
-                <a class="nav-link {{ request()->routeIs('products.index') || request()->routeIs('products.create') ? 'active' : '' }}"
+                <a class="nav-link {{ request()->routeIs('products.index') || request()->routeIs('products.create') || request()->routeIs('products.edit') ? 'active' : '' }}"
                   href="{{ route('products.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-cart"></i></span>
@@ -272,7 +272,7 @@
                 </a>
               </li> --}}
               <li class="nav-item ">
-                <a class="nav-link {{ request()->routeIs('customers.index') ? 'active' : ''}}"
+                <a class="nav-link {{ request()->routeIs('customers.index') || request()->routeIs('customers.create') || request()->routeIs('customers.edit') ? 'active' : ''}}"
                   href="{{ route('customers.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-people"></i></span>
@@ -464,7 +464,7 @@
                 </a>
               </li>
               <li class="nav-item ">
-                <a class="nav-link {{ request()->routeIs('categories.index') || request()->routeIs('categories.create') ? "
+                <a class="nav-link {{ request()->routeIs('categories.index') || request()->routeIs('categories.create') || request()->routeIs('categories.edit')? "
                   active" : ' ' }}" href="{{ route('categories.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-list-task"></i></span>
@@ -473,7 +473,7 @@
                 </a>
               </li>
               <li class="nav-item ">
-                <a class="nav-link {{ request()->routeIs('products.index') || request()->routeIs('products.index') ? 'active' : '' }}"
+                <a class="nav-link {{ request()->routeIs('products.index') || request()->routeIs('products.create') || request()->routeIs('products.edit') ? 'active' : '' }}"
                   href="{{ route('products.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-cart"></i></span>
@@ -499,7 +499,7 @@
                 </a>
               </li> --}}
               <li class="nav-item ">
-                <a class="nav-link {{ request()->routeIs('customers.index') ? 'active' : ''}}"
+                <a class="nav-link {{ request()->routeIs('customers.index') ||  request()->routeIs('customers.create') || request()->routeIs('customers.edit') ? 'active' : ''}}"
                   href="{{ route('customers.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-people"></i></span>
