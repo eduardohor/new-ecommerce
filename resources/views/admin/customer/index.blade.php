@@ -117,12 +117,16 @@ Carbon::setLocale('pt_BR');
 
                                         <td>
                                             <div class="dropdown ">
+                                                @include('admin.partials.delete_modal')
+
                                                 <a href="#" class="text-reset" data-bs-toggle="dropdown"
                                                     aria-expanded="false">
                                                     <i class="feather-icon icon-more-vertical fs-5"></i>
                                                 </a>
                                                 <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" href="#"><i
+                                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#confirm-deletion"
+                                                            onclick="showDeleteModal('{{ $customer->name }}', '{{ route('customers.destroy', $customer->id) }}')"><i
                                                                 class="bi bi-trash me-3"></i>Excluir</a></li>
                                                     <li><a class="dropdown-item"
                                                             href="{{ route('customers.edit', $customer->id) }}"><i
@@ -144,13 +148,12 @@ Carbon::setLocale('pt_BR');
                         </div>
 
                         <div class="border-top d-md-flex justify-content-between align-items-center p-2 p-md-6">
-                            <span class="mb-2 mb-md-0">Mostrando {{ $customers->firstItem() }} a {{
-                                $customers->lastItem() }} de
-                                {{
-                                $customers->total() }} resultados</span>
+                            <span class="mb-2 mb-md-0">Mostrando {{ $customers->firstItem() }} a
+                                {{ $customers->lastItem() }} de
+                                {{ $customers->total() }} resultados</span>
                             <nav class="mt-2 mt-md-0">
                                 {{ $customers->appends([
-                                'search' => request()->get('search', '')
+                                'search' => request()->get('search', ''),
                                 ])->links() }}
                             </nav>
                         </div>
@@ -174,23 +177,23 @@ Carbon::setLocale('pt_BR');
 
 <script>
     $(document).ready(function() {
-    let error  = "{{ session('error') }}";
-    let warning = "{{ session('warning') }}";
-    let success = "{{ session('success') }}";
+            let error = "{{ session('error') }}";
+            let warning = "{{ session('warning') }}";
+            let success = "{{ session('success') }}";
 
-      if (error) {
-        toastr.error(error);
-      }
+            if (error) {
+                toastr.error(error);
+            }
 
-      if (warning) {
-        toastr.warning(warning);
-      }
+            if (warning) {
+                toastr.warning(warning);
+            }
 
-      if (success) {
-        toastr.success(success);
-      }
+            if (success) {
+                toastr.success(success);
+            }
 
-  });
+        });
 </script>
 
 @endsection

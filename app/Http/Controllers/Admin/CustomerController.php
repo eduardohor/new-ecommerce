@@ -113,4 +113,31 @@ class CustomerController extends Controller
             return redirect()->route('customers.index')->with('error', 'Erro ao atualizar cliente. Por favor, tente novamente.');
         }
     }
+
+    public function destroy($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $customer = $this->customer->find($id);
+
+            if (!$customer) {
+                return redirect()->route('customers.index');
+            }
+
+            $customer->delete();
+
+            DB::commit();
+
+            return redirect()->route('customers.index')->with('success', 'Cliente excluído com sucesso!');
+        } catch (\Exception $error) {
+            DB::rollBack();
+
+            Log::error('Erro ao criar customer:', [
+                'message' => $error->getMessage()
+            ]);
+
+            return redirect()->route('customers.index')->with('error', 'Erro ao excluir cliente. Por favor, tente novamente.');
+        }
+    }
 }

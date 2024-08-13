@@ -27,8 +27,10 @@ Carbon::setLocale('pt_BR');
                         </nav>
                     </div>
                     <div>
+                        @include('admin.partials.delete_modal')
+
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                            data-bs-target="#delete">Delete</button>
+                        data-bs-target="#confirm-deletion" onclick="showDeleteModal('{{ $customer->name }}', '{{ route('customers.destroy', $customer->id) }}')">Excluir</button>
                     </div>
                 </div>
             </div>
@@ -562,8 +564,8 @@ Carbon::setLocale('pt_BR');
         </div>
     </div>
 </div>
-<!-- modal -->
-<div class="modal fade" id="delete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+<!-- modal delete customer-->
+{{-- <div class="modal fade" id="deleteCustomer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content p-6 d-flex flex-column gap-6">
             <div class="d-flex justify-content-end">
@@ -579,20 +581,23 @@ Carbon::setLocale('pt_BR');
                         </svg>
                     </div>
                     <div class="d-flex flex-column gap-2 text-center">
-                        <h3 class="mb-0 h4">Delete Customer name</h3>
-                        <p class="mb-0">are you sure you would like to to this?</p>
+                        <h3 class="mb-0 h4">Excluir {{ $customer->name }} </h3>
+                        <p class="mb-0">você tem certeza que gostaria de fazer isso?</p>
                     </div>
                     <div class="d-flex flex-row gap-2">
+                        <form action="{{ route('customers.destroy', $customer->id) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                        </form>
                         <a href="#!" class="btn btn-outline-secondary" data-bs-dismiss="modal"
-                            aria-label="Close">Cancel</a>
-                        <a href="#!" class="btn btn-danger">Confim</a>
+                            aria-label="Close">Cancelar</a>
+                        <a href="" class="btn btn-danger">Confirmar</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-</div>
+</div> --}}
 
 @endsection
 
