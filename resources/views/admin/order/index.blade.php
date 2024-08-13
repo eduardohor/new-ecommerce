@@ -19,7 +19,7 @@ Carbon::setLocale('pt_BR');
                     <!-- breacrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0">
-                            <li class="breadcrumb-item"><a href="#">Painel</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}">Painel</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Lista de Pedidos</li>
                         </ol>
                     </nav>

@@ -72,4 +72,36 @@ class User extends Authenticatable
     {
         return $this->hasOne(Address::class)->where('is_default', true);
     }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasManyThrough(Payment::class, Order::class);
+    }
+
+    public function getTotalSpentAttribute()
+    {
+        return $this->payments()
+            ->where('payments.status', 'completed')
+            ->sum('amount');
+    }
+
+    public function getCustomers(string $search = null): LengthAwarePaginator
+    {
+        $customers = $this->where(function ($query) use ($search) {
+            if ($search) {
+                $query->where('email', $search);
+                $query->orWhere('name', 'LIKE', "%$search%");
+            }
+        })
+            ->where('is_super_admin', 0)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return $customers;
+    }
 }

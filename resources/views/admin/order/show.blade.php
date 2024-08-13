@@ -28,7 +28,7 @@ Carbon::setLocale('pt_BR');
                         <!-- breacrumb -->
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0">
-                                <li class="breadcrumb-item"><a href="#" class="text-inherit">Painel</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}" class="text-inherit">Painel</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Pedido Detalhado</li>
                             </ol>
                         </nav>
@@ -227,12 +227,14 @@ Carbon::setLocale('pt_BR');
                             <div class="col-md-6 mb-4 mb-lg-0">
                                 <h6>Informação do Pagamento</h6>
                                 @if ($order->payment->payment_type == 'credit_card')
-                                <samp>Cartão de Crédito</samp>
+                                <span>Cartão de Crédito</span>
                                 @elseif ($order->payment->payment_type == 'bank_transfer')
-                                <samp>Pix</samp>
+                                <span>Pix</span>
                                 @else
-                                <samp>Outro Método de Pagamento</samp>
+                                <span>Outro Método de Pagamento</span>
                                 @endif
+                                <h6 class="mt-3">ID da transação</h6>
+                                <span>{{ $order->payment->transaction_id }}</span>
                             </div>
                             <div class="col-md-6">
                                 <h5>Anotações</h5>

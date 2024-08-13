@@ -124,6 +124,9 @@
             <h3>Informação do Pagamento</h3>
             <p>{{ $order->payment->payment_type == 'credit_card' ? 'Cartão de Crédito' : 'Pix' }}</p>
 
+            <h3>ID da transação</h3>
+            <p>{{ $order->payment->transaction_id }}</p>
+
             <h3>Anotações</h3>
             <p>{{ $order->notes }}</p>
         </div>

@@ -74,7 +74,7 @@ class OrderController extends Controller
 
         $pdf = Pdf::loadView('admin.order.invoice', compact('order'));
 
-        return $pdf->download();
+        return $pdf->download('fatura_' . $order_number . ".pdf");
 
     }
 }

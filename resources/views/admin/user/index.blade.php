@@ -40,7 +40,7 @@
                         <div class="row justify-content-between">
                             <div class="col-md-4 col-12">
                                 <form action="{{ route('users.index') }}" class="d-flex" method="GET">
-                                    <input class="form-control" type="search" placeholder="Pesquisar Clientes"
+                                    <input class="form-control" type="search" placeholder="Pesquisar Usuários"
                                         name="search">
                                     <button class="btn btn-primary ms-3" type="submit">Pesquisar</button>
                                 </form>
