@@ -63,7 +63,16 @@ class CustomerController extends Controller
     {
         $customer = $this->customer->find($id);
 
-        return view('admin.customer.edit', compact('customer'));
+        if (!$customer) {
+            return redirect()->route('customers.index');
+        }
+
+        $addresses = $customer->addresses()->paginate(5);
+
+        $payments = $customer->payments()->paginate(5);
+
+
+        return view('admin.customer.edit', compact('customer', 'addresses', 'payments'));
     }
 
     public function update(CustomerRequest $request, $id)

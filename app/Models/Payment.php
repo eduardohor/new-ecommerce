@@ -18,4 +18,9 @@ class Payment extends Model
         'status',
         'installments'
     ];
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }

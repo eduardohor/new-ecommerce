@@ -37,7 +37,8 @@ Carbon::setLocale('pt_BR');
             <div class="col-lg-8 col-12">
                 <div class="card card-lg border-0">
                     <div class="card-body d-flex flex-column gap-8 p-7">
-                        <form action="{{ route('customers.update', $customer->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('customers.update', $customer->id) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div
@@ -161,7 +162,7 @@ Carbon::setLocale('pt_BR');
                         <button class="nav-link active" id="address-tab" data-bs-toggle="tab"
                             data-bs-target="#address-tab-pane" type="button" role="tab" aria-controls="address-tab-pane"
                             aria-selected="true">
-                            Endereços
+                            Endereço
                         </button>
                     </li>
                     <!-- nav item -->
@@ -170,7 +171,7 @@ Carbon::setLocale('pt_BR');
                         <button class="nav-link" id="payment-tab" data-bs-toggle="tab"
                             data-bs-target="#payment-tab-pane" type="button" role="tab" aria-controls="payment-tab-pane"
                             aria-selected="false">
-                            Pagamentos
+                            Pagamento
                         </button>
                     </li>
                 </ul>
@@ -183,11 +184,11 @@ Carbon::setLocale('pt_BR');
                             <div class="p-6">
                                 <div class="d-flex justify-content-between flex-row align-items-center">
                                     <div>
-                                        <h3 class="mb-0 h6">Addresses</h3>
+                                        <h3 class="mb-0 h6">Endereços</h3>
                                     </div>
                                     <div>
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#address">New Address</button>
+                                            data-bs-target="#address">Novo Endereço</button>
                                     </div>
                                 </div>
                             </div>
@@ -204,10 +205,10 @@ Carbon::setLocale('pt_BR');
                                                         <label class="form-check-label" for="addressOne"></label>
                                                     </div>
                                                 </th>
-                                                <th>Street</th>
-                                                <th>State</th>
-                                                <th>City</th>
-                                                <th>Country</th>
+                                                <th>Rua</th>
+                                                <th>Estado</th>
+                                                <th>Cidade</th>
+                                                <th>CEP</th>
 
                                                 <th>
                                                     <div class="dropdown">
@@ -234,6 +235,7 @@ Carbon::setLocale('pt_BR');
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @forelse ($addresses as $address)
                                             <tr>
                                                 <td>
                                                     <div class="form-check">
@@ -243,11 +245,11 @@ Carbon::setLocale('pt_BR');
                                                     </div>
                                                 </td>
 
-                                                <td>123 Elm St.</td>
+                                                <td>{{ $address->number }}, {{ $address->street }}</td>
 
-                                                <td>IL</td>
-                                                <td>Springfield</td>
-                                                <td>USA</td>
+                                                <td>{{ $address->state }}</td>
+                                                <td>{{ $address->city }}</td>
+                                                <td class="cep">{{ $address->zip_code }}</td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <a href="#" class="text-reset" data-bs-toggle="dropdown"
@@ -271,21 +273,22 @@ Carbon::setLocale('pt_BR');
                                                     </div>
                                                 </td>
                                             </tr>
+                                            @empty
+                                            <tr>
+                                                <td colspan="6">Nenhum endereço encontrado</td>
+                                            </tr>
+
+                                            @endforelse
+
                                         </tbody>
                                     </table>
                                 </div>
 
                                 <div class="border-top d-md-flex justify-content-between align-items-center p-6">
-                                    <span>Showing 1 result</span>
+                                    <span>Mostrando {{ $addresses->firstItem() }} a {{ $addresses->lastItem() }} de {{
+                                        $addresses->total() }} resultados</span>
                                     <nav class="mt-2 mt-md-0">
-                                        <ul class="pagination mb-0">
-                                            <li class="page-item disabled"><a class="page-link" href="#!">Previous</a>
-                                            </li>
-                                            <li class="page-item"><a class="page-link active" href="#!">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                                            <li class="page-item"><a class="page-link" href="#!">Next</a></li>
-                                        </ul>
+                                        {{ $addresses->links() }}
                                     </nav>
                                 </div>
                             </div>
@@ -298,11 +301,11 @@ Carbon::setLocale('pt_BR');
                             <div class="p-6">
                                 <div class="d-flex justify-content-between flex-row align-items-center">
                                     <div>
-                                        <h3 class="mb-0 h6">Payments</h3>
+                                        <h3 class="mb-0 h6">Pagamentos</h3>
                                     </div>
                                     <div>
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#payment">New Payment</button>
+                                            data-bs-target="#payment">Novo Pagamento</button>
                                     </div>
                                 </div>
                             </div>
@@ -319,11 +322,11 @@ Carbon::setLocale('pt_BR');
                                                         <label class="form-check-label" for="paymentOne"></label>
                                                     </div>
                                                 </th>
-                                                <th>Order ID</th>
-                                                <th>Transaction Id</th>
-                                                <th>Date</th>
-                                                <th>Amount</th>
-                                                <th>Method</th>
+                                                <th>Nº Pedido</th>
+                                                <th>Id da Transação</th>
+                                                <th>Data</th>
+                                                <th>Valor</th>
+                                                <th>Método</th>
                                                 <th>Status</th>
                                                 <th>
                                                     <div class="dropdown">
@@ -350,6 +353,7 @@ Carbon::setLocale('pt_BR');
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @forelse ($payments as $payment)
                                             <tr>
                                                 <td>
                                                     <div class="form-check">
@@ -359,15 +363,33 @@ Carbon::setLocale('pt_BR');
                                                     </div>
                                                 </td>
 
-                                                <td>#101</td>
+                                                <td>#{{ $payment->order->order_number }}</td>
+                                                <td>{{ $payment->transaction_id }}</td>
+                                                <td>{{ $payment->created_at->translatedFormat('d M Y') }}</td>
+                                                <td>R${{ number_format($payment->amount, 2, ',', '.') }}</td>
+                                                @if ($payment->payment_type == 'credit_card')
+                                                <td>Cartão de Crédito</td>
+                                                @elseif($payment->payment_type == 'bank_transfer')
+                                                <td>Pix</td>
+                                                @endif
 
-                                                <td>TXN001</td>
-                                                <td>17 May, 2023 at 3:18pm</td>
-                                                <td>$34.00</td>
-                                                <td>Credit Card</td>
-                                                <td><span
-                                                        class="badge bg-light-success text-dark-success">Completed</span>
+                                                @if ($payment->status == 'completed')
+                                                <td>
+                                                    <span
+                                                        class="badge bg-light-success text-dark-success">Completo</span>
                                                 </td>
+                                                @elseif ($payment->status == 'pending')
+                                                <td>
+                                                    <span
+                                                        class="badge bg-light-warning text-dark-warning">Pendente</span>
+                                                </td>
+                                                @elseif ($payment->status == 'failed')
+                                                <td>
+                                                    <span class="badge bg-light-danger text-dark-danger">Falhou</span>
+                                                </td>
+
+                                                @endif
+
                                                 <td>
                                                     <div class="dropdown">
                                                         <a href="#" class="text-reset" data-bs-toggle="dropdown"
@@ -391,102 +413,22 @@ Carbon::setLocale('pt_BR');
                                                     </div>
                                                 </td>
                                             </tr>
+                                            @empty
                                             <tr>
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            id="paymentThree" />
-                                                        <label class="form-check-label" for="paymentThree"></label>
-                                                    </div>
-                                                </td>
-
-                                                <td>#102</td>
-
-                                                <td>TXN002</td>
-                                                <td>17 May, 2023 at 3:18pm</td>
-                                                <td>$34.00</td>
-                                                <td>PayPal</td>
-                                                <td><span
-                                                        class="badge bg-light-warning text-dark-warning">Pending</span>
-                                                </td>
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <a href="#" class="text-reset" data-bs-toggle="dropdown"
-                                                            aria-expanded="false">
-                                                            <i class="feather-icon icon-more-vertical fs-5"></i>
-                                                        </a>
-                                                        <ul class="dropdown-menu">
-                                                            <li>
-                                                                <a class="dropdown-item" href="#">
-                                                                    <i class="bi bi-trash me-3"></i>
-                                                                    Delete
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item" href="#">
-                                                                    <i class="bi bi-pencil-square me-3"></i>
-                                                                    Edit
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
+                                                <td colspan="8">Nenhum pagamento encontrado</td>
                                             </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            id="paymentFour" />
-                                                        <label class="form-check-label" for="paymentFour"></label>
-                                                    </div>
-                                                </td>
 
-                                                <td>#103</td>
+                                            @endforelse
 
-                                                <td>TXN003</td>
-                                                <td>17 May, 2023 at 3:18pm</td>
-                                                <td>$34.00</td>
-                                                <td>Debit Card</td>
-                                                <td><span class="badge bg-light-danger text-dark-danger">Failed</span>
-                                                </td>
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <a href="#" class="text-reset" data-bs-toggle="dropdown"
-                                                            aria-expanded="false">
-                                                            <i class="feather-icon icon-more-vertical fs-5"></i>
-                                                        </a>
-                                                        <ul class="dropdown-menu">
-                                                            <li>
-                                                                <a class="dropdown-item" href="#">
-                                                                    <i class="bi bi-trash me-3"></i>
-                                                                    Delete
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item" href="#">
-                                                                    <i class="bi bi-pencil-square me-3"></i>
-                                                                    Edit
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
 
                                 <div class="border-top d-md-flex justify-content-between align-items-center p-6">
-                                    <span>Showing 1 result</span>
+                                    <span>Mostrando {{ $payments->firstItem() }} a {{ $payments->lastItem() }} de {{
+                                        $payments->total() }} resultados</span>
                                     <nav class="mt-2 mt-md-0">
-                                        <ul class="pagination mb-0">
-                                            <li class="page-item disabled"><a class="page-link" href="#!">Previous</a>
-                                            </li>
-                                            <li class="page-item"><a class="page-link active" href="#!">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                                            <li class="page-item"><a class="page-link" href="#!">Next</a></li>
-                                        </ul>
+                                        {{ $payments->links() }}
                                     </nav>
                                 </div>
                             </div>
