@@ -36,7 +36,7 @@
 
                                 <div class="file-upload btn btn-light ms-md-4">
                                     <input type="file" class="file-input opacity-0" name="profile_image"
-                                        @error('profile_image') autofocus @enderror required/>
+                                        @error('profile_image') autofocus @enderror/>
                                     Carregar Foto
                                 </div>
 

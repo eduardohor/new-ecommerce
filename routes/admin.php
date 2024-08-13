@@ -41,6 +41,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/clientes/cadastro', [CustomerController::class, 'create'])->name('customers.create');
     Route::post('/clientes/cadastro', [CustomerController::class, 'store'])->name('customers.store');
     Route::get('/clientes/{id}', [CustomerController::class, 'edit'])->name('customers.edit');
+    Route::put('/clientes/{id}', [CustomerController::class, 'update'])->name('customers.update');
+
   });
 
   Route::middleware('super.admin')->group(function () {

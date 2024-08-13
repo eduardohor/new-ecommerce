@@ -4,8 +4,8 @@
 
 @section('links')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
-  integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
-  crossorigin="anonymous" referrerpolicy="no-referrer" />
+    integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endsection
 
 
@@ -92,8 +92,14 @@ Carbon::setLocale('pt_BR');
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center">
+                                                @if ($customer->profile_image)
+                                                <img src="{{ asset('storage/' . $customer->profile_image) }}" alt=""
+                                                    class="avatar avatar-xs rounded-circle">
+                                                @else
                                                 <img src="{{ asset('images/avatar/avatar.png') }}" alt=""
                                                     class="avatar avatar-xs rounded-circle">
+                                                @endif
+
                                                 <div class="ms-2">
                                                     <a href="{{ route('customers.edit', $customer->id) }}"
                                                         class="text-inherit">{{ $customer->name }}</a>
@@ -105,7 +111,7 @@ Carbon::setLocale('pt_BR');
                                         <td>{{ $customer->created_at->translatedFormat('d M Y') }}</td>
 
 
-                                        <td>{{ $customer->phone }}</td>
+                                        <td class="phone">{{ $customer->phone }}</td>
                                         <td>R${{ number_format($customer->total_spent, 2, ',', '.') }}</td>
 
 
@@ -163,6 +169,8 @@ Carbon::setLocale('pt_BR');
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
     integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="{{ asset('libs/inputmask/dist/jquery.inputmask.min.js') }}"></script>
+<script src="{{ asset('js/custom.js') }}"></script>
 
 <script>
     $(document).ready(function() {

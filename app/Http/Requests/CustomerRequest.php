@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Carbon\Carbon;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CustomerRequest extends FormRequest
@@ -42,7 +43,11 @@ class CustomerRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users', 'email')->ignore($this->route('id')), // Ignora o e-mail do próprio usuário
+            ],
             'phone' => 'max:15',
             'profile_image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:1024', // 1MB max
         ];
