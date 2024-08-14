@@ -39,7 +39,9 @@
         <div class="offset-lg-1 col-lg-10  py-8 py-xl-0">
           <div class=" mb-10 mb-xxl-0">
             <!-- img -->
-            <a href="{{ route('home') }}"> <img src="{{ asset('images/logo/freshcart-logo.svg') }}" alt=""></a>
+            <a href="{{ route('home') }}">
+                <img src="{{ $storeInfo && $storeInfo->logo ? asset('storage/' . $storeInfo->logo) : asset('images/logo/freshcart-logo.svg') }}" alt="Logo">
+            </a>
           </div>
           <div class="row justify-content-center align-items-center">
             <!-- content -->

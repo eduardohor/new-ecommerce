@@ -206,7 +206,7 @@
         <div class="navbar-vertical">
           <div class="px-4 py-5">
             <a href="{{ route('home') }}" class="navbar-brand">
-              <img src="{{ asset('images/logo/freshcart-logo.svg') }}" alt="">
+              <img src="{{ $storeInfo && $storeInfo->logo ? asset('storage/' . $storeInfo->logo) : asset('images/logo/freshcart-logo.svg') }}" alt="Logo">
             </a>
           </div>
           <div class="navbar-vertical-content flex-grow-1" data-simplebar="">
@@ -420,7 +420,7 @@
         <div class="navbar-vertical">
           <div class="px-4 py-5 d-flex justify-content-between align-items-center">
             <a href="{{ route('home') }}" class="navbar-brand">
-              <img src="{{ asset('images/logo/freshcart-logo.svg') }}" alt="">
+                <img src="{{ $storeInfo && $storeInfo->logo ? asset('storage/' . $storeInfo->logo) : asset('images/logo/freshcart-logo.svg') }}" alt="Logo">
             </a>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>

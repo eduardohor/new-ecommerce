@@ -53,9 +53,9 @@ Carbon::setLocale('pt_BR');
                             <div
                                 class="d-flex flex-column flex-md-row align-items-center mb-4 file-input-wrapper gap-2">
                                 <div>
-                                    <img class="image avatar avatar-lg rounded-3"
-                                        src="{{ $storeInfo && $storeInfo->logo ? asset('storage/' . $storeInfo->logo) : asset('images/docs/placeholder-img.jpg') }}"
-                                        alt="Image" />
+                                    <img class="image"
+                                        src="{{ $storeInfo && $storeInfo->logo ? asset('storage/' . $storeInfo->logo) : asset('images/docs/bg-logo.png') }}"
+                                        alt="Image" style="width:170px; height=40px"/>
                                 </div>
 
                                 <div class="file-upload btn btn-light ms-md-4">
@@ -63,7 +63,7 @@ Carbon::setLocale('pt_BR');
                                         @enderror />
                                     Carregar Logo
                                 </div>
-                                <span class="ms-2">JPG, GIF or PNG. 2MB Max.</span>
+                                <span class="ms-2 text-danger text-center">JPG, GIF ou PNG. 2MB Max. Dimensões(170x40)</span>
                             </div>
                             @error('logo')
                             <span class="text-danger ms-3">{{ $message }}</span>

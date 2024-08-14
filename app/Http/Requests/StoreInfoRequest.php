@@ -23,7 +23,7 @@ class StoreInfoRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'logo' => 'nullable|image|max:2048',
+            'logo' => 'nullable|image|max:2048|dimensions:width=170,height=40',
             'address' => 'nullable|string|max:255',
             'zip_code' => 'required|max:10',
             'city' => 'nullable|string|max:255',
@@ -45,6 +45,7 @@ class StoreInfoRequest extends FormRequest
 
             'logo.image' => 'O campo logo deve ser uma imagem válida.',
             'logo.max' => 'O campo logo não pode exceder 2MB.',
+            'logo.dimensions' => 'A imagem deve ter exatamente 170 pixels de largura e 40 pixels de altura.',
 
             'address.string' => 'O campo endereço deve ser um texto.',
             'address.max' => 'O campo endereço não pode exceder 255 caracteres.',
