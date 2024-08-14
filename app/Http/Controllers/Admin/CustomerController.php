@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddressRequest;
 use App\Http\Requests\CustomerRequest;
+use App\Http\Requests\PaymentRequest;
 use App\Models\Address;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,11 +19,13 @@ class CustomerController extends Controller
 {
     protected $customer;
     protected $address;
+    protected $order;
 
-    public function __construct(User $customer, Address $address)
+    public function __construct(User $customer, Address $address, Order $order)
     {
         $this->customer = $customer;
         $this->address = $address;
+        $this->order = $order;
     }
 
     public function index(Request $request): View
@@ -227,6 +231,51 @@ class CustomerController extends Controller
             ]);
 
             return redirect()->route('customers.index')->with('error', 'Erro ao excluir endereço. Por favor, tente novamente.');
+        }
+    }
+
+    public function storePayment(PaymentRequest $request, $id)
+    {
+        $data = $request->all();
+        $customer = $this->customer->find($id);
+
+        if (!$customer) {
+            return redirect()->route('customers.index')->with('error', 'Cliente não encontrado.');
+        }
+
+        $order = $this->order->where('order_number', $data['order_number'])->first();
+
+        if (!$order) {
+            return redirect()->route('customers.edit', $customer->id)->with('error', 'Pedido não encontrado.');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $order->payment()->create($data);
+
+            // $customer->payments()->create([
+            //     'order_id' => $order->id,
+            //     'payment_method' => $data['payment_method'],
+            //     'payment_type'=> $data['payment_type'],
+            //     'transaction_id' => $data['transaction_id'],
+            //     'amount' => $data['amount'],
+            //     'status' => $data['status'],
+            //     'installments' => $data['installments'],
+            // ]);
+
+            DB::commit();
+
+            return redirect()->route('customers.edit', $customer->id)
+                ->with('success', 'Pagamento cadastrado com sucesso!');
+        } catch (\Exception $error) {
+            DB::rollBack();
+
+            Log::error('Erro ao criar pagamento:', [
+                'message' => $error->getMessage()
+            ]);
+
+            return redirect()->route('customers.index')->with('error', 'Erro ao cadastrar pagamento. Por favor, tente novamente.');
         }
     }
 }

@@ -175,6 +175,15 @@ Carbon::setLocale('pt_BR');
         'submitButtonText' => 'Cadastrar'
         ])
 
+        <!-- Modal de Cadastro de Pagamento-->
+        {{-- @include('admin.partials.modal-payment', [
+        'modalId' => 'payment',
+        'modalTitle' => 'Cadastrar Pagamento',
+        'formAction' => route('customers.store.payment', $customer->id),
+        'formId' => 'formPayment',
+        'submitButtonText' => 'Cadastrar'
+        ]) --}}
+
         <div class="row">
             <div class="col-md-12 text-center">
                 <ul class="nav nav-pills justify-content-center mb-6 bg-white border d-inline-flex rounded-3 p-2"
@@ -320,6 +329,7 @@ Carbon::setLocale('pt_BR');
                             </div>
                         </div>
                     </div>
+
                     <!-- tab pane -->
                     <div class="tab-pane fade" id="payment-tab-pane" role="tabpanel" aria-labelledby="payment-tab"
                         tabindex="0">
@@ -329,10 +339,10 @@ Carbon::setLocale('pt_BR');
                                     <div>
                                         <h3 class="mb-0 h6">Pagamentos</h3>
                                     </div>
-                                    <div>
+                                    {{-- <div>
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                             data-bs-target="#payment">Novo Pagamento</button>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                             <div class="card-body p-0">
@@ -354,28 +364,6 @@ Carbon::setLocale('pt_BR');
                                                 <th>Valor</th>
                                                 <th>Método</th>
                                                 <th>Status</th>
-                                                <th>
-                                                    <div class="dropdown">
-                                                        <a href="#" class="text-reset" data-bs-toggle="dropdown"
-                                                            aria-expanded="false">
-                                                            <i class="feather-icon icon-more-vertical fs-5"></i>
-                                                        </a>
-                                                        <ul class="dropdown-menu">
-                                                            <li>
-                                                                <a class="dropdown-item" href="#">
-                                                                    <i class="bi bi-trash me-3"></i>
-                                                                    Delete
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item" href="#">
-                                                                    <i class="bi bi-pencil-square me-3"></i>
-                                                                    Edit
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -413,31 +401,7 @@ Carbon::setLocale('pt_BR');
                                                 <td>
                                                     <span class="badge bg-light-danger text-dark-danger">Falhou</span>
                                                 </td>
-
                                                 @endif
-
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <a href="#" class="text-reset" data-bs-toggle="dropdown"
-                                                            aria-expanded="false">
-                                                            <i class="feather-icon icon-more-vertical fs-5"></i>
-                                                        </a>
-                                                        <ul class="dropdown-menu">
-                                                            <li>
-                                                                <a class="dropdown-item" href="#">
-                                                                    <i class="bi bi-trash me-3"></i>
-                                                                    Delete
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item" href="#">
-                                                                    <i class="bi bi-pencil-square me-3"></i>
-                                                                    Edit
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
                                             </tr>
                                             @empty
                                             <tr>
@@ -478,72 +442,6 @@ Carbon::setLocale('pt_BR');
 ])
 @endforeach
 
-<!-- Modal -->
-<div class="modal fade" id="payment" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="paymentLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content p-6 d-flex flex-column gap-6">
-            <div class="d-flex flex-row align-items-center justify-content-between">
-                <h5 class="modal-title" id="paymentLabel">Create payment</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-0">
-                <form class="row needs-validation g-3" novalidate>
-                    <div class="col-lg-6 col-12">
-                        <!-- input -->
-                        <label for="customerpayment" class="form-label">Order*</label>
-                        <input type="text" class="form-control" id="customerpayment" placeholder="Order Id" required />
-                        <div class="invalid-feedback">Please enter order id</div>
-                    </div>
-
-                    <div class="col-lg-6 col-12">
-                        <!-- input -->
-                        <label for="customerTransction" class="form-label">Transaction Id</label>
-                        <input type="number" class="form-control" id="customerTransction" placeholder="Transaction Id"
-                            required />
-                        <div class="invalid-feedback">Please enter transaction id</div>
-                    </div>
-
-                    <div class="col-lg-6 col-12">
-                        <!-- input -->
-                        <label for="customerAmount" class="form-label">Amount*</label>
-                        <input type="text" class="form-control" id="customerAmount" placeholder=" Amount" required />
-                        <div class="invalid-feedback">Please enter city</div>
-                    </div>
-
-                    <div class="col-lg-6 col-12">
-                        <label for="customerStatus" class="form-label">Status*</label>
-                        <select class="form-select" id="customerStatus" required>
-                            <option selected disabled value="">Status</option>
-                            <option value="Complete">Complete</option>
-                            <option value="Failed">Failed</option>
-                            <option value="Pending">Pending</option>
-                        </select>
-                        <div class="invalid-feedback">Please select a valid status.</div>
-                    </div>
-                    <div class="d-flex flex-column gap-2">
-                        <span class="fw-medium text-dark mb-0">Method*</span>
-                        <div class="d-flex flex-column flex-md-row gap-2">
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off"
-                                checked />
-                            <label class="btn btn-outline-primary" for="btnradio1">Credit Card</label>
-
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" />
-                            <label class="btn btn-outline-secondary" for="btnradio2">Bank Transfer</label>
-
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" />
-                            <label class="btn btn-outline-secondary" for="btnradio3">PayPal</label>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="d-flex flex-row gap-3">
-                <button type="button" class="btn btn-primary">Create</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 @endsection
 

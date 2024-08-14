@@ -46,6 +46,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/clientes/{id}/endereco', [CustomerController::class, 'storeAddress'])->name('customers.store.address');
     Route::put('/clientes/endereco/{id}', [CustomerController::class, 'updateAddress'])->name('customers.update.address');
     Route::delete('/clientes/endereco/{id}', [CustomerController::class, 'destroyAddress'])->name('customers.destroy.address');
+    Route::post('/clientes/{id}/pagamento', [CustomerController::class, 'storePayment'])->name('customers.store.payment');
+
 
   });
 
