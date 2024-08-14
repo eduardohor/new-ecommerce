@@ -350,27 +350,11 @@
               </li> --}}
 
               <li class="nav-item mt-6 mb-3">
-                <span class="nav-label">Configurações do Site</span> <span class="badge bg-light-info text-dark-info">Em
-                  breve</span>
+                <span class="nav-label">Configurações do Site</span>
               </li>
               <li class="nav-item ">
-                <a class="nav-link disabled" href="#!">
-                  <div class="d-flex align-items-center">
-                    <span class="nav-link-icon"> <i class="bi bi-newspaper"></i></span>
-                    <span class="nav-link-text">Blog</span>
-                  </div>
-                </a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link disabled" href="#!">
-                  <div class="d-flex align-items-center">
-                    <span class="nav-link-icon"> <i class="bi bi-images"></i></span>
-                    <span class="nav-link-text">Meios de Comunicação</span>
-                  </div>
-                </a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link disabled" href="#!">
+                <a class="nav-link {{ request()->routeIs('store.info.show') ? 'active' : ''}}"
+                    href="{{ route('store.info.show') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-gear"></i></span>
                     <span class="nav-link-text">Configurações da Loja</span>
@@ -378,7 +362,7 @@
                 </a>
               </li>
 
-              <li class="nav-item mt-6 mb-3">
+              {{-- <li class="nav-item mt-6 mb-3">
                 <span class="nav-label">Suporte</span> <span class="badge bg-light-info text-dark-info">Em breve</span>
               </li>
               <li class="nav-item ">
@@ -424,7 +408,7 @@
                     <span class="nav-link-text">Google Play Store</span>
                   </div>
                 </a>
-              </li>
+              </li> --}}
 
 
             </ul>
@@ -516,33 +500,17 @@
                 </a>
               </li> --}}
               <li class="nav-item mt-6 mb-3">
-                <span class="nav-label">Configurações do Site</span> <span class="badge bg-light-info text-dark-info">Em
-                  breve</span>
+                <span class="nav-label">Configurações do Site</span>
               </li>
-              <li class="nav-item ">
-                <a class="nav-link disabled" href="#!">
-                  <div class="d-flex align-items-center">
-                    <span class="nav-link-icon"> <i class="bi bi-newspaper"></i></span>
-                    <span class="nav-link-text">Blog</span>
-                  </div>
-                </a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link disabled" href="#">
-                  <div class="d-flex align-items-center">
-                    <span class="nav-link-icon"> <i class="bi bi-images"></i></span>
-                    <span class="nav-link-text">Meios de Comunicação</span>
-                  </div>
-                </a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link disabled" href="#!">
+               <li class="nav-item ">
+                <a class="nav-link" href="#!">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-gear"></i></span>
                     <span class="nav-link-text">Configurações da Loja</span>
                   </div>
                 </a>
               </li>
+              {{--
               <li class="nav-item mt-6 mb-3">
                 <span class="nav-label">Suporte</span> <span class="badge bg-light-info text-dark-info">Em breve</span>
               </li>
@@ -639,7 +607,7 @@
                     </div>
                   </li>
                 </ul>
-              </li>
+              </li> --}}
 
 
             </ul>

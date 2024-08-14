@@ -96,32 +96,32 @@
 <script>
     //Buscar endereco por cep
 $('#cep').blur(function() {
-        var cep = $(this).val().replace(/\D/g, '');
-        if (cep != "") {
-            var validacep = /^[0-9]{8}$/;
-            if (validacep.test(cep)) {
-                fetch("https://viacep.com.br/ws/" + cep + "/json/")
-                    .then(response => response.json())
-                    .then(dados => {
-                        if (!dados.erro) {
-                            $('#state').val(dados.uf);
-                            $('#neighborhood').val(dados.bairro);
-                            $('#complement').val(dados.complemento);
-                            $('#city').val(dados.localidade);
-                            $('#street').val(dados.logradouro);
-                        } else {
-                            alert("CEP não encontrado.");
-                        }
-                    })
-                    .catch(error => {
-                        alert("Erro ao buscar o CEP. Tente novamente mais tarde.");
-                        console.error("Erro:", error);
-                    });
-            } else {
-                alert("Formato de CEP inválido.");
-            }
+    var cep = $(this).val().replace(/\D/g, '');
+    if (cep != "") {
+        var validacep = /^[0-9]{8}$/;
+        if (validacep.test(cep)) {
+            fetch("https://viacep.com.br/ws/" + cep + "/json/")
+                .then(response => response.json())
+                .then(dados => {
+                    if (!dados.erro) {
+                        $('#state').val(dados.uf);
+                        $('#neighborhood').val(dados.bairro);
+                        $('#complement').val(dados.complemento);
+                        $('#city').val(dados.localidade);
+                        $('#street').val(dados.logradouro);
+                    } else {
+                        alert("CEP não encontrado.");
+                    }
+                })
+                .catch(error => {
+                    alert("Erro ao buscar o CEP. Tente novamente mais tarde.");
+                    console.error("Erro:", error);
+                });
+        } else {
+            alert("Formato de CEP inválido.");
         }
-    });
+    }
+});
 
 
 </script>
