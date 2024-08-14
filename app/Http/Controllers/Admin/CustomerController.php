@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddressRequest;
 use App\Http\Requests\CustomerRequest;
+use App\Models\Address;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,10 +16,12 @@ use Illuminate\View\View;
 class CustomerController extends Controller
 {
     protected $customer;
+    protected $address;
 
-    public function __construct(User $customer)
+    public function __construct(User $customer, Address $address)
     {
         $this->customer = $customer;
+        $this->address = $address;
     }
 
     public function index(Request $request): View
@@ -64,12 +68,12 @@ class CustomerController extends Controller
         $customer = $this->customer->find($id);
 
         if (!$customer) {
-            return redirect()->route('customers.index');
+            return redirect()->route('customers.index')->with('error', 'Cliente não encontrado.');
         }
 
-        $addresses = $customer->addresses()->paginate(5);
+        $addresses = $customer->addresses()->orderByDesc('updated_at')->paginate(5);
 
-        $payments = $customer->payments()->paginate(5);
+        $payments = $customer->payments()->orderByDesc('updated_at')->paginate(5);
 
 
         return view('admin.customer.edit', compact('customer', 'addresses', 'payments'));
@@ -79,14 +83,14 @@ class CustomerController extends Controller
     {
         $data = $request->all();
 
+        $customer = $this->customer->find($id);
+
+        if (!$customer) {
+            return redirect()->route('customers.index')->with('error', 'Cliente não encontrado.');
+        }
+
         try {
             DB::beginTransaction();
-
-            $customer = $this->customer->find($id);
-
-            if (!$customer) {
-                return redirect()->route('customers.index');
-            }
 
             if ($request->hasFile('profile_image')) {
 
@@ -116,14 +120,13 @@ class CustomerController extends Controller
 
     public function destroy($id)
     {
+        $customer = $this->customer->find($id);
+
+        if (!$customer) {
+            return redirect()->route('customers.index')->with('error', 'Cliente não encontrado.');
+        }
         try {
             DB::beginTransaction();
-
-            $customer = $this->customer->find($id);
-
-            if (!$customer) {
-                return redirect()->route('customers.index');
-            }
 
             $customer->delete();
 
@@ -138,6 +141,92 @@ class CustomerController extends Controller
             ]);
 
             return redirect()->route('customers.index')->with('error', 'Erro ao excluir cliente. Por favor, tente novamente.');
+        }
+    }
+
+    public function storeAddress(AddressRequest $request, $id)
+    {
+        $data = $request->all();
+        $customer = $this->customer->find($id);
+
+        if (!$customer) {
+            return redirect()->route('customers.index')->with('error', 'Cliente não encontrado.');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $customer->addresses()->create($data);
+
+            DB::commit();
+
+            return redirect()->route('customers.edit', $customer->id)
+                ->with('success', 'Endereço cadastrado com sucesso!');
+        } catch (\Exception $error) {
+            DB::rollBack();
+
+            Log::error('Erro ao criar customer:', [
+                'message' => $error->getMessage()
+            ]);
+
+            return redirect()->route('customers.index')->with('error', 'Erro ao cadastrar endereço. Por favor, tente novamente.');
+        }
+    }
+
+    public function updateAddress(AddressRequest $request, $id)
+    {
+        $data = $request->all();
+        $address = $this->address->find($id);
+
+        if (!$address) {
+            return redirect()->route('customers.index')->with('error', 'Endereço não encontrado.');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $address->update($data);
+
+            DB::commit();
+
+            return redirect()->route('customers.edit', $address->user_id)
+                ->with('success', 'Endereço atualizado com sucesso!');
+        } catch (\Exception $error) {
+            DB::rollBack();
+
+            Log::error('Erro ao atualizar endereço:', [
+                'message' => $error->getMessage()
+            ]);
+
+            return redirect()->route('customers.index')->with('error', 'Erro ao atualizar endereço. Por favor, tente novamente.');
+        }
+    }
+
+    public function destroyAddress($id)
+    {
+        $address = $this->address->find($id);
+
+        if (!$address) {
+            return redirect()->route('customers.index')->with('error', 'Endereço não encontrado.');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $address->delete();
+
+            DB::commit();
+
+            return redirect()->route('customers.edit', $address->user_id)
+                ->with('success', 'Endereço excluído com sucesso!');
+        } catch (\Exception $error) {
+            DB::rollBack();
+
+            Log::error('Erro ao excluir endereço:', [
+                'message' => $error->getMessage()
+            ]);
+
+            return redirect()->route('customers.index')->with('error', 'Erro ao excluir endereço. Por favor, tente novamente.');
         }
     }
 }

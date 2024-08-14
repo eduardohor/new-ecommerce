@@ -43,6 +43,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/clientes/{id}', [CustomerController::class, 'edit'])->name('customers.edit');
     Route::put('/clientes/{id}', [CustomerController::class, 'update'])->name('customers.update');
     Route::delete('/clientes/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+    Route::post('/clientes/{id}/endereco', [CustomerController::class, 'storeAddress'])->name('customers.store.address');
+    Route::put('/clientes/endereco/{id}', [CustomerController::class, 'updateAddress'])->name('customers.update.address');
+    Route::delete('/clientes/endereco/{id}', [CustomerController::class, 'destroyAddress'])->name('customers.destroy.address');
 
   });
 

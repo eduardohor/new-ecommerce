@@ -177,23 +177,23 @@ Carbon::setLocale('pt_BR');
 
 <script>
     $(document).ready(function() {
-            let error = "{{ session('error') }}";
-            let warning = "{{ session('warning') }}";
-            let success = "{{ session('success') }}";
+        let error = "{{ session('error') }}";
+        let warning = "{{ session('warning') }}";
+        let success = "{{ session('success') }}";
 
-            if (error) {
-                toastr.error(error);
-            }
+        if (error) {
+            toastr.error(error);
+        }
 
-            if (warning) {
-                toastr.warning(warning);
-            }
+        if (warning) {
+            toastr.warning(warning);
+        }
 
-            if (success) {
-                toastr.success(success);
-            }
+        if (success) {
+            toastr.success(success);
+        }
 
-        });
+    });
 </script>
 
 @endsection

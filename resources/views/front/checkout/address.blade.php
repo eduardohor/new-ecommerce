@@ -418,7 +418,6 @@
                                 $('#street').val(dados.logradouro);
                             } else {
                                 alert("CEP não encontrado.");
-                                $('#cep').val('')
                             }
                         })
                         .catch(error => {

@@ -1,5 +1,15 @@
 @extends('admin.layouts.dashboard')
 @section('title', 'Clientes')
+
+
+
+@section('links')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+    integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+@endsection
+
+
 @section('content')
 
 @php
@@ -30,7 +40,8 @@ Carbon::setLocale('pt_BR');
                         @include('admin.partials.delete_modal')
 
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                        data-bs-target="#confirm-deletion" onclick="showDeleteModal('{{ $customer->name }}', '{{ route('customers.destroy', $customer->id) }}')">Excluir</button>
+                            data-bs-target="#confirm-deletion"
+                            onclick="showDeleteModal('{{ $customer->name }}', '{{ route('customers.destroy', $customer->id) }}')">Excluir</button>
                     </div>
                 </div>
             </div>
@@ -154,6 +165,16 @@ Carbon::setLocale('pt_BR');
                 </div>
             </div>
         </div>
+
+        <!-- Modal de Cadastro de Endereço-->
+        @include('admin.partials.modal-address', [
+        'modalId' => 'address',
+        'modalTitle' => 'Cadastrar Endereço',
+        'formAction' => route('customers.store.address', $customer->id),
+        'formId' => 'formAddress',
+        'submitButtonText' => 'Cadastrar'
+        ])
+
         <div class="row">
             <div class="col-md-12 text-center">
                 <ul class="nav nav-pills justify-content-center mb-6 bg-white border d-inline-flex rounded-3 p-2"
@@ -177,6 +198,7 @@ Carbon::setLocale('pt_BR');
                         </button>
                     </li>
                 </ul>
+
                 <!-- tab content -->
                 <div class="tab-content" id="myTabContent">
                     <!-- tab pane -->
@@ -260,15 +282,18 @@ Carbon::setLocale('pt_BR');
                                                         </a>
                                                         <ul class="dropdown-menu">
                                                             <li>
-                                                                <a class="dropdown-item" href="#">
+                                                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                                    data-bs-target="#confirm-deletion"
+                                                                    onclick="showDeleteModal('{{ $address->name }}', '{{ route('customers.destroy.address', $address->id) }}')">
                                                                     <i class="bi bi-trash me-3"></i>
-                                                                    Delete
+                                                                    Excluir
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <a class="dropdown-item" href="#">
+                                                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                                    data-bs-target="#addressEdit_{{ $address->id }}">
                                                                     <i class="bi bi-pencil-square me-3"></i>
-                                                                    Edit
+                                                                    Editar
                                                                 </a>
                                                             </li>
                                                         </ul>
@@ -279,7 +304,6 @@ Carbon::setLocale('pt_BR');
                                             <tr>
                                                 <td colspan="6">Nenhum endereço encontrado</td>
                                             </tr>
-
                                             @endforelse
 
                                         </tbody>
@@ -441,63 +465,19 @@ Carbon::setLocale('pt_BR');
         </div>
     </div>
 </main>
-<!-- Modal -->
-<div class="modal fade" id="address" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="addressLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content p-6 d-flex flex-column gap-6">
-            <div class="d-flex flex-row align-items-center justify-content-between">
-                <h5 class="modal-title" id="addressLabel">Create address</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-0">
-                <form class="row needs-validation g-3" novalidate>
-                    <div class="col-lg-6 col-12">
-                        <!-- input -->
-                        <label for="customerEditAdd" class="form-label">Street</label>
-                        <input type="text" class="form-control" id="customerEditAdd" placeholder="Street Address"
-                            required />
-                        <div class="invalid-feedback">Please enter address</div>
-                    </div>
 
-                    <div class="col-lg-6 col-12">
-                        <!-- input -->
-                        <label for="customerZip" class="form-label">Zip Code</label>
-                        <input type="text" class="form-control" id="customerZip" placeholder="Enter Zip" required />
-                        <div class="invalid-feedback">Please enter zip</div>
-                    </div>
+<!-- Modal de Edição -->
+@foreach($customer->addresses as $address)
+@include('admin.partials.modal-address', [
+'modalId' => 'addressEdit_' . $address->id,
+'modalTitle' => 'Editar Endereço',
+'formAction' => route('customers.update.address', $address->id),
+'formId' => 'formAddressEdit_' . $address->id,
+'submitButtonText' => 'Salvar',
+'address' => $address
+])
+@endforeach
 
-                    <div class="col-lg-6 col-12">
-                        <!-- input -->
-                        <label for="customerCity" class="form-label">City</label>
-                        <input type="text" class="form-control" id="customerCity" placeholder=" City" required />
-                        <div class="invalid-feedback">Please enter city</div>
-                    </div>
-                    <div class="col-lg-6 col-12">
-                        <!-- input -->
-                        <label for="customerCity" class="form-label">State</label>
-                        <input type="text" class="form-control" id="customerState" placeholder=" State" required />
-                        <div class="invalid-feedback">Please enter state</div>
-                    </div>
-                    <div class="col-lg-8 col-12">
-                        <label for="customerCountry" class="form-label">Country</label>
-                        <select class="form-select" id="customerCountry" required>
-                            <option selected disabled value="">Country</option>
-                            <option value="India">India</option>
-                            <option value="UK">UK</option>
-                            <option value="USA">USA</option>
-                        </select>
-                        <div class="invalid-feedback">Please select a valid state.</div>
-                    </div>
-                </form>
-            </div>
-            <div class="d-flex flex-row gap-3">
-                <button type="button" class="btn btn-primary">Create</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
 <!-- Modal -->
 <div class="modal fade" id="payment" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="paymentLabel" aria-hidden="true">
@@ -564,40 +544,6 @@ Carbon::setLocale('pt_BR');
         </div>
     </div>
 </div>
-<!-- modal delete customer-->
-{{-- <div class="modal fade" id="deleteCustomer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content p-6 d-flex flex-column gap-6">
-            <div class="d-flex justify-content-end">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-0">
-                <div class="d-flex flex-column align-items-center d-flex flex-column gap-6">
-                    <div class="bg-danger rounded-circle icon-xl bg-light-danger text-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                            class="bi bi-trash3-fill text-danger" viewBox="0 0 16 16">
-                            <path
-                                d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
-                        </svg>
-                    </div>
-                    <div class="d-flex flex-column gap-2 text-center">
-                        <h3 class="mb-0 h4">Excluir {{ $customer->name }} </h3>
-                        <p class="mb-0">você tem certeza que gostaria de fazer isso?</p>
-                    </div>
-                    <div class="d-flex flex-row gap-2">
-                        <form action="{{ route('customers.destroy', $customer->id) }}" method="post">
-                            @csrf
-                            @method('DELETE')
-                        </form>
-                        <a href="#!" class="btn btn-outline-secondary" data-bs-dismiss="modal"
-                            aria-label="Close">Cancelar</a>
-                        <a href="" class="btn btn-danger">Confirmar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> --}}
 
 @endsection
 
@@ -610,10 +556,33 @@ Carbon::setLocale('pt_BR');
 <script src="{{ asset('js/theme.min.js') }}"></script>
 <script src="{{ asset('libs/inputmask/dist/jquery.inputmask.min.js') }}"></script>
 <script src="{{ asset('js/custom.js') }}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+    integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script>
-    // Opções do Flatpickr
-    flatpickr(".flatpickr", {
-      locale: "pt",  // Definir o idioma como "pt" para português
+    $(document).ready(function() {
+        let error = "{{ session('error') }}";
+        let warning = "{{ session('warning') }}";
+        let success = "{{ session('success') }}";
+
+        if (error) {
+            toastr.error(error);
+        }
+
+        if (warning) {
+            toastr.warning(warning);
+        }
+
+        if (success) {
+            toastr.success(success);
+        }
+
+        // Opções do Flatpickr
+        flatpickr(".flatpickr", {
+            locale: "pt",  // Definir o idioma como "pt" para português
+        });
 
     });
 </script>
