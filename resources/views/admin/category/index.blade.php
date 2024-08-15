@@ -94,7 +94,7 @@
                       </div>
                     </td>
                     <td>
-                      <a href="#!"> <img src="{{ asset('storage/' . $category->image)  }}" alt=""
+                      <a href="{{ route('categories.edit', $category->id) }}"> <img src="{{ asset('storage/' . $category->image)  }}" alt=""
                           class="icon-shape icon-sm"></a>
                     </td>
                     <td><a href="#" class="text-reset">{{ $category->name }}</a></td>
@@ -168,7 +168,7 @@
     var error  = "{{ session('error') }}";
     var warning = "{{ session('warning') }}";
     var status = "{{ session('status') }}";
-   
+
       // Configuração do Toastr
       toastr.options = {
         "positionClass": "toast-top-right",
@@ -187,7 +187,7 @@
       if (error) {
         toastr.error(error);
       }
-       
+
       if (warning) {
         toastr.warning(warning);
       }
@@ -204,7 +204,7 @@
         case 'category-deleted':
         toastr.success("Categoria Excluída com Sucesso!");
           break;
-      
+
         default:
           break;
       }

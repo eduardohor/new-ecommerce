@@ -86,8 +86,10 @@
 
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <img src="{{ asset('images/avatar/avatar.png') }}" alt=""
-                                                    class="avatar avatar-xs rounded-circle">
+                                                <a href="{{ route('users.edit', $user->id) }}">
+                                                    <img src="{{ asset('images/avatar/avatar.png') }}" alt=""
+                                                        class="avatar avatar-xs rounded-circle">
+                                                </a>
                                                 <div class="ms-2">
                                                     <a href="{{ route('users.edit', $user->id) }}"
                                                         class="text-inherit">{{ $user->name }}</a>

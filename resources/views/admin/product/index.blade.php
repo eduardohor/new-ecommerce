@@ -96,7 +96,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <a href="#!">
+                                            <a href="{{ route('products.edit', $product->id) }}">
                                                 <img src="{{ asset('storage/' . $product->productImages->first()->image_path) }}"
                                                     alt="Imagem do Produto" class="icon-shape icon-md">
                                             </a>

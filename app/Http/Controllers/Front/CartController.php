@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\CartProduct;
 use App\Models\Product;
+use App\Models\StoreInfo;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,12 +21,14 @@ class CartController extends Controller
     private $product;
     private $cart;
     private $cartProduct;
+    private $storeInfo;
 
-    public function __construct(Product $product, Cart $cart, CartProduct $cartProduct)
+    public function __construct(Product $product, Cart $cart, CartProduct $cartProduct, StoreInfo $storeInfo)
     {
         $this->product = $product;
         $this->cart = $cart;
         $this->cartProduct = $cartProduct;
+        $this->storeInfo = $storeInfo;
     }
 
     public function show(): View
@@ -190,6 +193,14 @@ class CartController extends Controller
 
         $cart = $this->cart->find($request->cart_id);
 
+        $storeInfo = $this->storeInfo->first();
+
+        $postalCode = '96020360';
+
+        if ($storeInfo) {
+            $postalCode = $storeInfo->zip_code;
+        }
+
         $products = [];
 
         foreach ($cart->cartProducts as $cartProduct) {
@@ -207,7 +218,7 @@ class CartController extends Controller
 
         $body = [
             'from' => [
-                'postal_code' => '96020360',
+                'postal_code' => $postalCode,
             ],
             'to' => [
                 'postal_code' => $data['cep'],

@@ -10,6 +10,7 @@ use App\Http\Controllers\Front\OrderController;
 use App\Http\Controllers\Front\PaymentController;
 use App\Http\Controllers\Front\ProductController;
 use App\Http\Controllers\Front\ProfileController;
+use App\Http\Controllers\Front\ShippingController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -26,7 +27,8 @@ Route::get('/produto/{slug}', [ProductController::class, 'show'])->name('product
 Route::get('/carrinho', [CartController::class, 'show'])->name('cart.show');
 Route::post('/adicionar-ao-carrinho', [CartController::class, 'addProductToCart'])->name('cart.add-product-to-cart');
 Route::post('/remover-do-carrinho', [CartController::class, 'deleteProductToCart'])->name('cart.delete-product-to-cart');
-Route::post('/calcular-frete', [CartController::class, 'calculateShipping'])->name('calculate-shipping');
+
+Route::post('/calcular-frete', [ShippingController::class, 'calculateShipping'])->name('calculate-shipping');
 
 Route::middleware('auth')->group(function () {
     Route::get('/checkout-endereco', [CheckoutController::class, 'address'])->name('checkout.address');
