@@ -52,7 +52,8 @@ Route::middleware('auth')->group(function () {
         Route::delete('/perfil', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
         Route::get('/enderecos', [AddressController::class, 'index'])->name('address.index');
-        Route::post('/enderecos-criar', [AddressController::class, 'store'])->name('address.store');
+        Route::post('/enderecos', [AddressController::class, 'store'])->name('address.store');
+        Route::put('/enderecos/{id}', [AddressController::class, 'update'])->name('address.update');
 
     });
 });

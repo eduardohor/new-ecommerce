@@ -5,6 +5,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
     integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    .address-default{
+        pointer-events: none;
+        cursor: default;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -12,7 +19,7 @@
     <div class="py-6 p-md-6 p-lg-10">
         <div class="d-flex justify-content-between mb-6">
             <!-- heading -->
-            <h2 class="mb-0">Endereço</h2>
+            <h2 class="mb-0">Endereços</h2>
             <!-- button -->
             <a href="#" class="btn btn-outline-primary" data-bs-toggle="modal"
                 data-bs-target="#addAddressModal">Adicionar um novo endereço</a>
@@ -39,12 +46,12 @@
                             {{ $address->state }}</p>
                         <!-- btn -->
                         @if ($address->is_default)
-                        <a href="#" class="btn btn-info btn-sm">Endereço padrão</a>
+                        <a class="btn btn-info btn-sm address-default">Endereço padrão</a>
                         @else
                         <a href="#" class="link-primary">Definir como padrão</a>
                         @endif
                         <div class="mt-4">
-                            <a href="#" class="text-inherit">Editar </a>
+                            <a href="#" class="text-inherit" data-bs-toggle="modal" data-bs-target="#updateAddressModal{{ $address->id }}">Editar</a>
                             <a href="#" class="text-danger ms-3" data-bs-toggle="modal"
                                 data-bs-target="#deleteModal">Excluir
                             </a>
@@ -52,6 +59,8 @@
                     </div>
                 </div>
             </div>
+            @include('front.partials.modal-update-address', ['address' => $address])
+
             @empty
             <p>Nenhum endereço cadastrado</p>
             @endforelse

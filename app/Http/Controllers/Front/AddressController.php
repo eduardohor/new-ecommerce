@@ -73,4 +73,51 @@ class AddressController extends Controller
             return redirect()->back()->with('error', 'Ocorreu um erro ao cadastrar o endereço. Tente novamente.');
         }
     }
+
+    public function update(AddressRequest $request, $id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $user = auth()->user();
+            $address = $this->address->findOrFail($id);
+            $addresses = $this->address->where('user_id', $user->id)->get();
+
+            if ($address->user_id !== $user->id) {
+                return redirect()->back()->with('error', 'Você não tem permissão para atualizar este endereço.');
+            }
+
+            // Desmarcar o endereço padrão existente, se houver
+            if ($request->filled('is_default') && $request->is_default) {
+                foreach ($addresses as $addr) {
+                    if ($addr->is_default && $addr->id !== $address->id) {
+                        $addr->is_default = false;
+                        $addr->save();
+                    }
+                }
+            }
+
+            $address->update([
+                'name' => $request->name,
+                'street' => $request->street,
+                'city' => $request->city,
+                'state' => $request->state,
+                'zip_code' => $request->zip_code,
+                'number' => $request->number,
+                'complement' => $request->complement,
+                'neighborhood' => $request->neighborhood,
+                'is_default' => $request->is_default ? true : false,
+            ]);
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Endereço atualizado com sucesso!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::error($e->getMessage());
+
+            return redirect()->back()->with('error', 'Ocorreu um erro ao atualizar o endereço. Tente novamente.');
+        }
+    }
 }
