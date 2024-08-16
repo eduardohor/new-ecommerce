@@ -22,7 +22,13 @@ class AddressController extends Controller
 
     public function index(): View
     {
-        return view('front.address.index');
+        $userId = auth()->user()->id;
+        $addresses = $this->address->where('user_id', $userId)
+            ->orderByDesc('is_default')
+            ->get();
+
+
+        return view('front.address.index', compact('addresses'));
     }
 
     public function store(AddressRequest $request)

@@ -53,15 +53,15 @@
               <ul class="nav flex-column nav-pills nav-pills-dark">
                 <!-- nav item -->
                 <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}"
+                      href="{{ route('profile.edit') }}">
+                      <i class="feather-icon icon-settings me-2"></i>Perfil</a>
+                  </li>
+                <!-- nav item -->
+                <li class="nav-item">
                   <a class="nav-link {{ request()->routeIs('orders.index.customer') ? 'active' : '' }}"
                     href="{{ route('orders.index.customer') }}">
                     <i class="feather-icon icon-shopping-bag me-2"></i>Seus Pedidos</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a class="nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}"
-                    href="{{ route('profile.edit') }}">
-                    <i class="feather-icon icon-settings me-2"></i>Perfil</a>
                 </li>
                 <!-- nav item -->
                 <li class="nav-item">
@@ -70,17 +70,17 @@
                     <i class="feather-icon icon-map-pin me-2"></i>Endereço</a>
                 </li>
                 <!-- nav item -->
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                   <a class="nav-link {{ request()->routeIs('payment.index') ? 'active' : '' }}"
                     href="{{ route('payment.index') }}">
                     <i class="feather-icon icon-credit-card me-2"></i>Forma de Pagamento</a>
-                </li>
+                </li> --}}
                 <!-- nav item -->
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                   <a class="nav-link {{ request()->routeIs('notification.index') ? 'active' : '' }}"
                     href="{{ route('notification.index') }}">
                     <i class="feather-icon icon-bell me-2"></i>Notificação</a>
-                </li>
+                </li> --}}
                 <!-- nav item -->
                 <li class="nav-item">
                   <hr>
@@ -117,28 +117,28 @@
       <ul class="nav flex-column nav-pills nav-pills-dark">
         <!-- nav item -->
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{ route('orders.index.customer') }}"><i
+            <a class="nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}" href="{{ route('profile.edit') }}"><i
+                class="feather-icon icon-settings me-2"></i>Perfil</a>
+          </li>
+        <!-- nav item -->
+        <li class="nav-item">
+          <a class="nav-link {{ request()->routeIs('orders.index.customer') ? 'active' : '' }}" aria-current="page" href="{{ route('orders.index.customer') }}"><i
               class="feather-icon icon-shopping-bag me-2"></i>Seus Pedidos</a>
         </li>
         <!-- nav item -->
         <li class="nav-item">
-          <a class="nav-link " href="{{ route('profile.edit') }}"><i
-              class="feather-icon icon-settings me-2"></i>Perfil</a>
+          <a class="nav-link {{ request()->routeIs('address.index') ? 'active' : '' }}" href="{{ route('address.index') }}"><i class="feather-icon icon-map-pin me-2"></i>Endereço</a>
         </li>
         <!-- nav item -->
-        <li class="nav-item">
-          <a class="nav-link" href="account-address.html"><i class="feather-icon icon-map-pin me-2"></i>Endereço</a>
-        </li>
-        <!-- nav item -->
-        <li class="nav-item">
+        {{-- <li class="nav-item">
           <a class="nav-link" href="account-payment-method.html"><i class="feather-icon icon-credit-card me-2"></i>Forma
             de Pagamento</a>
-        </li>
+        </li> --}}
         <!-- nav item -->
-        <li class="nav-item">
+        {{-- <li class="nav-item">
           <a class="nav-link" href="account-notification.html"><i
               class="feather-icon icon-bell me-2"></i>Notificação</a>
-        </li>
+        </li> --}}
 
       </ul>
       <hr class="my-6">

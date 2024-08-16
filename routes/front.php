@@ -35,21 +35,24 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout-pagamento', [CheckoutController::class, 'processCheckout'])->name('checkout.process');
     Route::get('/checkout-pagamento', [CheckoutController::class, 'showPaymentPage'])->name('checkout.payment');
 
-    Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index.customer');
-
-    Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/perfil', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/perfil', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::get('/enderecos', [AddressController::class, 'index'])->name('address.index');
-    Route::post('/enderecos-criar', [AddressController::class, 'store'])->name('address.store');
-
-    Route::get('/pagamentos', [PaymentController::class, 'index'])->name('payment.index');
+    // Route::get('/pagamentos', [PaymentController::class, 'index'])->name('payment.index');
     Route::post('/pagamentos/processo', [PaymentController::class, 'processPayment'])->name('payment.process');
     Route::get('/pagamentos/sucesso/{order_id}', [PaymentController::class, 'showPaymentSuccess'])->name('payment.success');
     Route::get('/pagamentos/falha/{transaction_id}', [PaymentController::class, 'showPaymentFailed'])->name('payment.failed');
 
     Route::post('/pedidos', [OrderController::class, 'store'])->name('order.store');
 
-    Route::get('/notificacoes', [NotificationController::class, 'index'])->name('notification.index');
+    // Route::get('/notificacoes', [NotificationController::class, 'index'])->name('notification.index');
+
+    Route::prefix('minha-conta')->group(function(){
+        Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index.customer');
+
+        Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/perfil', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/perfil', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+        Route::get('/enderecos', [AddressController::class, 'index'])->name('address.index');
+        Route::post('/enderecos-criar', [AddressController::class, 'store'])->name('address.store');
+
+    });
 });
