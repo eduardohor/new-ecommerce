@@ -120,4 +120,68 @@ class AddressController extends Controller
             return redirect()->back()->with('error', 'Ocorreu um erro ao atualizar o endereço. Tente novamente.');
         }
     }
+
+    public function destroy($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $user = auth()->user();
+            $address = $this->address->findOrFail($id);
+
+            if ($address->user_id !== $user->id) {
+                return redirect()->back()->with('error', 'Você não tem permissão para excluir este endereço.');
+            }
+
+            $address->delete();
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Endereço excluído com sucesso!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::error($e->getMessage());
+
+            return redirect()->back()->with('error', 'Ocorreu um erro ao excluir o endereço. Tente novamente.');
+        }
+    }
+
+    public function setDefault($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $user = auth()->user();
+            $address = $this->address->findOrFail($id);
+            $addresses = $this->address->where('user_id', $user->id)->get();
+
+            // Verifique se o endereço pertence ao usuário
+            if ($address->user_id !== $user->id) {
+                return redirect()->back()->with('error', 'Você não tem permissão para definir este endereço como padrão.');
+            }
+
+            // Desmarcar o endereço padrão existente, se houver
+            foreach ($addresses as $addr) {
+                if ($addr->is_default && $addr->id !== $address->id) {
+                    $addr->is_default = false;
+                    $addr->save();
+                }
+            }
+
+            // Defina o endereço atual como padrão
+            $address->is_default = true;
+            $address->save();
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Endereço definido como padrão com sucesso!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::error($e->getMessage());
+
+            return redirect()->back()->with('error', 'Ocorreu um erro ao definir o endereço como padrão. Tente novamente.');
+        }
+    }
 }

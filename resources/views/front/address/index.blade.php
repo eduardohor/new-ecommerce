@@ -7,7 +7,7 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <style>
-    .address-default{
+    .address-default {
         pointer-events: none;
         cursor: default;
     }
@@ -30,11 +30,10 @@
             @forelse ($addresses as $address)
             <div class="col-lg-5 col-xxl-4 col-12 mb-4">
                 <!-- form -->
-                <div class="card">
-                    <div class="card-body p-6">
+                <div class="card d-flex flex-column h-100">
+                    <div class="card-body d-flex flex-column flex-grow-1">
                         <div class="form-check mb-4">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio" {{
-                                $address->is_default ? 'checked' : ''}}>
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="homeRadio" {{ $address->is_default ? 'checked' : '' }}>
                             <label class="form-check-label text-dark fw-semi-bold" for="homeRadio">
                                 {{ $address->name }}
                             </label>
@@ -46,56 +45,32 @@
                             {{ $address->state }}</p>
                         <!-- btn -->
                         @if ($address->is_default)
-                        <a class="btn btn-info btn-sm address-default">Endereço padrão</a>
+                        <a class="btn btn-info btn-sm address-default mb-3">Endereço padrão</a>
                         @else
-                        <a href="#" class="link-primary">Definir como padrão</a>
+                        <form action="{{ route('address.setDefault', $address->id) }}" method="POST"
+                            onsubmit="return confirm('Você tem certeza que deseja definir este endereço como padrão?');">
+                            @csrf
+                            <button type="submit" class="btn link-primary p-0">Definir como Padrão</button>
+                        </form>
                         @endif
-                        <div class="mt-4">
-                            <a href="#" class="text-inherit" data-bs-toggle="modal" data-bs-target="#updateAddressModal{{ $address->id }}">Editar</a>
+                        <!-- Links no final do cartão -->
+                        <div class="mt-auto">
+                            <a href="#" class="text-inherit" data-bs-toggle="modal"
+                                data-bs-target="#updateAddressModal{{ $address->id }}">Editar</a>
                             <a href="#" class="text-danger ms-3" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal">Excluir
+                                data-bs-target="#deleteModal{{ $address->id }}">Excluir
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
             @include('front.partials.modal-update-address', ['address' => $address])
+            @include('front.partials.modal-delete-address', ['address' => $address])
 
             @empty
             <p>Nenhum endereço cadastrado</p>
             @endforelse
 
-        </div>
-    </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <!-- modal content -->
-        <div class="modal-content">
-            <!-- modal header -->
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Excluir endereço</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <!-- modal body -->
-            <div class="modal-body">
-                <h6>Tem certeza de que deseja excluir este endereço?</h6>
-                <p class="mb-6">Jitu Chauhan<br>
-
-                    4450 North Avenue Oakland, <br>
-
-                    Nebraska, United States,<br>
-
-                    402-776-1106</p>
-            </div>
-            <!-- modal footer -->
-            <div class="modal-footer">
-                <!-- btn -->
-                <button type="button" class="btn btn-outline-gray-400" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-danger">Excluir</button>
-            </div>
         </div>
     </div>
 </div>

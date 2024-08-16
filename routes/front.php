@@ -54,6 +54,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/enderecos', [AddressController::class, 'index'])->name('address.index');
         Route::post('/enderecos', [AddressController::class, 'store'])->name('address.store');
         Route::put('/enderecos/{id}', [AddressController::class, 'update'])->name('address.update');
+        Route::delete('/enderecos/{id}', [AddressController::class, 'destroy'])->name('address.destroy');
+        Route::post('/address/{id}/set-default', [AddressController::class, 'setDefault'])->name('address.setDefault');
 
     });
 });
