@@ -21,6 +21,9 @@
   <link rel="stylesheet" href="{{ asset('css/theme.min.css') }}">
   <!-- Google tag (gtag.js) -->
 
+  @yield('head')
+
+
   <!-- End Tag -->
 </head>
 

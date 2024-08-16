@@ -24,7 +24,7 @@ class AddressController extends Controller
     {
         $userId = auth()->user()->id;
         $addresses = $this->address->where('user_id', $userId)
-            ->orderByDesc('is_default')
+            ->orderByDesc('created_at')
             ->get();
 
 

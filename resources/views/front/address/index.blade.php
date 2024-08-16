@@ -1,6 +1,12 @@
 @extends('front/layouts/account')
 @section('title', 'Endereços')
 
+@section('head')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+    integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+@endsection
+
 @section('content')
 <div class="col-lg-9 col-md-8 col-12">
     <div class="py-6 p-md-6 p-lg-10">
@@ -11,6 +17,7 @@
             <a href="#" class="btn btn-outline-primary" data-bs-toggle="modal"
                 data-bs-target="#addAddressModal">Adicionar um novo endereço</a>
         </div>
+        @include('front.partials.modal-add-address')
         <div class="row">
             <!-- col -->
             @forelse ($addresses as $address)
@@ -83,102 +90,42 @@
         </div>
     </div>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <!-- modal content -->
-        <div class="modal-content">
-            <!-- modal body -->
-            <div class="modal-body p-6">
-                <div class="d-flex justify-content-between mb-5">
-                    <div>
-                        <!-- heading -->
-                        <h5 class="mb-1" id="addAddressModalLabel">Novo endereço de entrega</h5>
-                        <p class="small mb-0">Adicione um novo endereço de entrega para a entrega do seu pedido.</p>
-                    </div>
-                    <div>
-                        <!-- button -->
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                </div>
-                <!-- row -->
-                <div class="row g-3">
-                    <!-- col -->
-                    <div class="col-12">
-                        <!-- input -->
-                        <input type="text" class="form-control" placeholder="Primeiro nome" aria-label="First name"
-                            required="">
-                    </div>
-                    <!-- col -->
-                    <div class="col-12">
-                        <!-- input -->
-                        <input type="text" class="form-control" placeholder="Sobrenome" aria-label="Last name"
-                            required="">
-                    </div>
-                    <!-- col -->
-                    <div class="col-12">
-                        <!-- input -->
-                        <input type="text" class="form-control" placeholder="Endereço Linha 1">
-                    </div>
-                    <!-- col -->
-                    <div class="col-12">
-                        <!-- input -->
-                        <input type="text" class="form-control" placeholder="Endereço Linha 2">
-                    </div>
-                    <!-- col -->
-                    <div class="col-12">
-                        <!-- input -->
-                        <input type="text" class="form-control" placeholder="Cidade">
-                    </div>
-                    <!-- col -->
-                    {{-- <div class="col-12">
-                        <!-- form select -->
-                        <select class="form-select">
-                            <option selected=""> India</option>
-                            <option value="1">UK</option>
-                            <option value="2">USA</option>
-                            <option value="3">UAE</option>
-                        </select>
-                    </div> --}}
-                    <!-- col -->
-                    <div class="col-12">
-                        <!-- form select -->
-                        <select class="form-select">
-                            <option selected="">São Paulo</option>
-                            <option value="1">Rio de Janeiro</option>
-                            <option value="2">Maranhão</option>
-                            <option value="3">Piauí</option>
-                        </select>
-                    </div>
-                    <!-- col -->
-                    <div class="col-12">
-                        <!-- input -->
-                        <input type="text" class="form-control" placeholder="CEP">
-                    </div>
-                    <!-- col -->
-                    {{-- <div class="col-12">
-                        <!-- input -->
-                        <input type="text" class="form-control" placeholder="Business Name">
-                    </div> --}}
-                    <!-- col -->
-                    <div class="col-12">
-                        <!-- form check -->
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                Definir como padrão
-                            </label>
-                        </div>
-                    </div>
-                    <!-- col -->
-                    <div class="col-12 text-end">
-                        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancelar</button>
-                        <button class="btn btn-primary" type="button">Salvar Endereço</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+@endsection
+
+
+@section('scripts')
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+    integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    var error = "{{ session('error') }}";
+    var success = "{{ session('success') }}";
+
+    // Configuração do Toastr
+    toastr.options = {
+        "positionClass": "toast-top-right",
+        "closeButton": true,
+        "progressBar": true,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "6000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
+    if (error) {
+        toastr.error(error);
+    }
+
+    if (success) {
+        toastr.success(success);
+    }
+</script>
 
 @endsection

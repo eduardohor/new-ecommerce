@@ -40,7 +40,7 @@ class CheckoutController extends Controller
     {
         $user = auth()->user();
 
-        $addresses = $this->address->where('user_id', $user->id)->get();
+        $addresses = $this->address->where('user_id', $user->id)->orderByDesc('created_at')->get();
 
         $cart = $this->cart->where(['user_id' => $user->id, 'status' => 'open'])->first();
 
