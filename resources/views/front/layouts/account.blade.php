@@ -62,7 +62,7 @@
                   </li>
                 <!-- nav item -->
                 <li class="nav-item">
-                  <a class="nav-link {{ request()->routeIs('orders.index.customer') ? 'active' : '' }}"
+                  <a class="nav-link {{ request()->routeIs('orders.index.customer') || request()->routeIs('orders.show.customer') ? 'active' : '' }}"
                     href="{{ route('orders.index.customer') }}">
                     <i class="feather-icon icon-shopping-bag me-2"></i>Seus Pedidos</a>
                 </li>
@@ -125,7 +125,7 @@
           </li>
         <!-- nav item -->
         <li class="nav-item">
-          <a class="nav-link {{ request()->routeIs('orders.index.customer') ? 'active' : '' }}" aria-current="page" href="{{ route('orders.index.customer') }}"><i
+          <a class="nav-link {{ request()->routeIs('orders.index.customer') || request()->routeIs('orders.show.customer') ? 'active' : '' }}" aria-current="page" href="{{ route('orders.index.customer') }}"><i
               class="feather-icon icon-shopping-bag me-2"></i>Seus Pedidos</a>
         </li>
         <!-- nav item -->

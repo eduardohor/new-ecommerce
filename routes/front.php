@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('minha-conta')->group(function(){
         Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index.customer');
+        Route::get('/pedidos/{order_number}', [OrderController::class, 'show'])->name('orders.show.customer');
 
         Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/perfil', [ProfileController::class, 'update'])->name('profile.update');

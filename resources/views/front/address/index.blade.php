@@ -50,7 +50,7 @@
                         <form action="{{ route('address.setDefault', $address->id) }}" method="POST"
                             onsubmit="return confirm('Você tem certeza que deseja definir este endereço como padrão?');">
                             @csrf
-                            <button type="submit" class="btn link-primary p-0">Definir como Padrão</button>
+                            <button type="submit" class="btn link-primary p-0 mb-3">Definir como Padrão</button>
                         </form>
                         @endif
                         <!-- Links no final do cartão -->

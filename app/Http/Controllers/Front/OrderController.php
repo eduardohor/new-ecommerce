@@ -23,7 +23,10 @@ class OrderController extends Controller
 
     public function index(): View
     {
-        return view('front.order.index');
+        $userId = auth()->user()->id;
+        $orders = $this->order->where('user_id', $userId)->orderByDesc('created_at')->get();
+
+        return view('front.order.index', compact('orders'));
     }
 
     public function store(Request $request)
@@ -116,5 +119,16 @@ class OrderController extends Controller
 
             return response()->json(['message' => 'Erro ao criar pedido, tente novamente mais tarde.'], 500);
         }
+    }
+
+    public function show($order_number)
+    {
+        $order = $this->order->where('order_number', $order_number)->first();
+
+        if (!$order) {
+            return redirect()->route('orders.index.customers');
+        }
+
+        return view('front.order.show', compact('order'));
     }
 }
