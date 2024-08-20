@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -70,5 +71,50 @@ class Order extends Model
             ->paginate(10);
 
         return $orders;
+    }
+
+    public function getStatistics()
+    {
+        $today = Carbon::today();
+        $twoDaysAgo = Carbon::now()->subDays(2);
+        $startOfMonth = Carbon::now()->startOfMonth();
+        $startOfYear = Carbon::now()->startOfYear();
+
+        $totalEarningsYear = $this->where('created_at', '>=', $startOfYear)
+            ->sum('total_amount');
+
+        $totalOrders = $this->count();
+
+        $totalOrdersToday = $this->whereDate('created_at', $today)->count();
+
+        $totalCustomers = User::count();
+
+        $totalCustomersLastTwoDays = User::where('created_at', '>=', $twoDaysAgo)->count();
+
+        return [
+            'total_earnings_year' => $totalEarningsYear,
+            'total_orders' => $totalOrders,
+            'total_orders_today' => $totalOrdersToday,
+            'total_customers' => $totalCustomers,
+            'total_customers_last_two_days' => $totalCustomersLastTwoDays,
+        ];
+    }
+
+
+    public function getYearsWithOrders()
+    {
+        return $this->selectRaw('YEAR(created_at) as year')
+            ->groupBy('year')
+            ->orderBy('year', 'desc')
+            ->pluck('year');
+    }
+
+    public function getMonthlyRevenueByYear($year)
+    {
+        return $this->selectRaw('MONTH(created_at) as month, SUM(total_amount) as revenue')
+            ->whereYear('created_at', $year)
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
     }
 }
