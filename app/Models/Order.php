@@ -113,6 +113,7 @@ class Order extends Model
     {
         return $this->selectRaw('MONTH(created_at) as month, SUM(total_amount) as revenue')
             ->whereYear('created_at', $year)
+            ->where('status', '<>', 'cancelled')
             ->groupBy('month')
             ->orderBy('month')
             ->get();

@@ -1,6 +1,13 @@
 @extends('admin.layouts.dashboard')
 @section('title', 'Painel')
 @section('content')
+
+@php
+use Carbon\Carbon;
+
+Carbon::setLocale('pt_BR');
+@endphp
+
 <!-- main wrapper -->
 <main class="main-content-wrapper">
     <section class="container">
@@ -42,7 +49,7 @@
                         <div class="lh-1">
                             <h1 class=" mb-2 fw-bold fs-2">R${{ number_format($statistics['total_earnings_year'], 2,
                                 ',', '.')}}</h1>
-                            <span>Receita mensal</span>
+                            <span>Receita anual</span>
                         </div>
                     </div>
                 </div>
@@ -121,11 +128,12 @@
                             <div>
                                 <!-- select option -->
                                 <select id="yearSelect">
-                                    @foreach ($years as $year)
+                                    @forelse ($years as $year)
                                     <option value="{{ $year }}" {{ $year==$selectedYear ? 'selected' : '' }}>
                                         {{ $year }}
                                     </option>
-                                    @endforeach
+                                    @empty
+                                    @endforelse
                                 </select>
                             </div>
 
@@ -145,28 +153,30 @@
                         <div id="totalSale" class="mt-6 d-flex justify-content-center"></div>
                         <div class="mt-4">
                             <!-- list -->
-                            <ul class="list-unstyled mb-0">
-                                <li class="mb-2"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"
-                                        fill="currentColor" class="bi bi-circle-fill text-primary" viewBox="0 0 16 16">
+                            <ul id="sales-list" class="list-unstyled mb-0">
+                                @php
+                                $colors = [
+                                'Pedidos Pendentes' => 'text-warning',
+                                'Pedidos Processando' => 'text-info',
+                                'Pedidos Completos' => 'text-success',
+                                'Pedidos Cancelados' => 'text-danger'
+                                ];
+                                @endphp
+
+                                @foreach ($orderValues as $status => $value)
+                                <li class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" fill="currentColor"
+                                        class="bi bi-circle-fill {{ $colors[$status] }}" viewBox="0 0 16 16">
                                         <circle cx="8" cy="8" r="8" />
-                                    </svg> <span class="ms-1"><span class="text-dark">Remessas
-                                            R$32,98</span> (2%)</span></li>
-                                <li class="mb-2"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"
-                                        fill="currentColor" class="bi bi-circle-fill text-warning" viewBox="0 0 16 16">
-                                        <circle cx="8" cy="8" r="8" />
-                                    </svg> <span class="ms-1"><span class="text-dark">Reembolsos R$11.00</span>
-                                        (11%)</span></li>
-                                <li class="mb-2"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"
-                                        fill="currentColor" class="bi bi-circle-fill text-danger" viewBox="0 0 16 16">
-                                        <circle cx="8" cy="8" r="8" />
-                                    </svg> <span class="ms-1"><span class="text-dark">Pedidos R$14,87</span>
-                                        (1%)</span></li>
-                                <li><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" fill="currentColor"
-                                        class="bi bi-circle-fill text-info" viewBox="0 0 16 16">
-                                        <circle cx="8" cy="8" r="8" />
-                                    </svg> <span class="ms-1"><span class="text-dark">Renda R$3.271</span>
-                                        (86%)</span></li>
+                                    </svg>
+                                    <span class="ms-1">
+                                        <span class="text-dark">{{ $status }} R${{ number_format($value, 2, ',', '.')
+                                            }}</span>
+                                    </span>
+                                </li>
+                                @endforeach
                             </ul>
+
                         </div>
                     </div>
                 </div>
@@ -302,7 +312,7 @@
                                 <thead class="bg-light">
                                     <tr>
                                         <th scope="col">Número do Pedido</th>
-                                        <th scope="col">Nome do Produo</th>
+                                        <th scope="col">Nome do Cliente</th>
                                         <th scope="col">Data do Pedido</th>
                                         <th scope="col">Preço</th>
                                         <th scope="col">Status</th>
@@ -310,56 +320,32 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @forelse ($orders as $order)
                                     <tr>
-
-                                        <td>#FC0005</td>
-                                        <td>Haldiram's Sev Bhujia</td>
-                                        <td>28 de Março 2023</td>
-                                        <td>R$18.00</td>
                                         <td>
-                                            <span class="badge bg-light-primary text-dark-primary">Enviado</span>
+                                            <a href="{{ route('orders.show', $order->order_number) }}">
+                                                #{{ $order->order_number }}
+                                            </a>
                                         </td>
-                                    </tr>
-                                    <tr>
-
-                                        <td>#FC0004</td>
-                                        <td>NutriChoice Digestive</td>
-                                        <td>24 de Março 2023</td>
-                                        <td>R$24.00</td>
+                                        <td>{{ $order->user->name }}</td>
+                                        <td>{{ $order->created_at->translatedFormat('d M Y') }}</td>
+                                        <td>R${{ number_format($order->total_amount, 2, ',', '.') }}</td>
                                         <td>
+                                            @if ($order->status == 'pending')
                                             <span class="badge bg-light-warning text-dark-warning">Pendente</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-
-                                        <td>#FC0003</td>
-                                        <td>Onion Flavour Potato</td>
-                                        <td>8 de Fevereiro de 2023</td>
-                                        <td>R$9.00</td>
-                                        <td>
+                                            @elseif($order->status == 'processing')
+                                            <span class="badge bg-light-info text-dark-info">Processando</span>
+                                            @elseif($order->status == 'completed')
+                                            <span class="badge bg-light-primary text-dark-primary">Concluído</span>
+                                            @elseif($order->status == 'cancelled')
                                             <span class="badge bg-light-danger text-dark-danger">Cancelado</span>
+                                            @endif
                                         </td>
                                     </tr>
-                                    <tr>
+                                    @empty
 
-                                        <td>#FC0002</td>
-                                        <td>Blueberry Greek Yogurt</td>
-                                        <td>20 de Janeiro de 2023</td>
-                                        <td>R$12.00</td>
-                                        <td>
-                                            <span class="badge bg-light-warning text-dark-warning">Pendente</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
+                                    @endforelse
 
-                                        <td>#FC0001</td>
-                                        <td>Slurrp Millet Chocolate</td>
-                                        <td>14 de Janeiro de 2023</td>
-                                        <td>R$8.00</td>
-                                        <td>
-                                            <span class="badge bg-light-info text-dark-info">Em processamento</span>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -376,19 +362,24 @@
 @section('scripts')
 
 <script>
-    window.revenues = @json($revenues)
+
 </script>
+
 
 <script src="{{ asset('libs/apexcharts/dist/apexcharts.min.js') }}"></script>
 <script src="{{ asset('js/vendors/chart.js') }}"></script>
 
 <script>
+    window.revenues = @json($revenues);
+    window.orderQuantities = @json($orderQuantities);
+
     $(document).ready(function() {
+
         $('#yearSelect').on('change', function() {
             const selectedYear = $(this).val();
 
             $.ajax({
-                url: "{{ route('dashboard.index') }}",
+                url: "{{ route('dashboard.revenues') }}",
                 type: 'GET',
                 data: { year: selectedYear },
                 dataType: 'json',
@@ -412,7 +403,60 @@
             } else {
                 console.error('Gráfico de receita não encontrado');
             }
+
+
+            if (window.totalSaleChart) {
+                var saleValues = [
+                    newData.orderValues['Pedidos Pendentes'],
+                    newData.orderValues['Pedidos Processando'],
+                    newData.orderValues['Pedidos Completos'],
+                    newData.orderValues['Pedidos Cancelados']
+                ];
+
+                var saleQuantities = [
+                    newData.orderQuantities['Pedidos Pendentes'],
+                    newData.orderQuantities['Pedidos Processando'],
+                    newData.orderQuantities['Pedidos Completos'],
+                    newData.orderQuantities['Pedidos Cancelados']
+                ];
+
+                window.totalSaleChart.updateSeries(saleQuantities);
+            } else {
+                console.error('Gráfico de vendas totais não encontrado');
+            }
+
+            updateSalesList(newData)
+
         }
+
+        function updateSalesList(newData) {
+            $('#sales-list').empty();
+
+            // Define as cores dos indicadores
+            const colors = ['text-warning', 'text-info', 'text-success', 'text-danger'];
+
+            console.log(newData.orderValues)
+
+            $.each(newData.orderValues, function(key, value) {
+                // Cria o item da lista
+                const listItem = `
+                    <li class="mb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"
+                            fill="currentColor" class="bi bi-circle-fill ${colors[Object.keys(newData.orderValues).indexOf(key) % colors.length]}" viewBox="0 0 16 16">
+                            <circle cx="8" cy="8" r="8" />
+                        </svg>
+                        <span class="ms-1">
+                            <span class="text-dark">${key} R$${value}</span>
+                        </span>
+                    </li>
+                `;
+
+                // Adiciona o item à lista
+                $('#sales-list').append(listItem);
+            });
+        }
+
+
     });
 </script>
 

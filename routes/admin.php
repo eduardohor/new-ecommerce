@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('admin')->middleware('auth')->group(function () {
   Route::middleware('admin')->group(function () {
     Route::get('/painel', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('/painel/receitas', [DashboardController::class, 'getRevenues'])->name('dashboard.revenues');
 
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit.admin');
     Route::patch('/perfil', [ProfileController::class, 'update'])->name('profile.update.admin');

@@ -98,11 +98,33 @@ $(document).ready(function () {
     }
 
     if ($("#totalSale").length) {
+        var orderQuantities = window.orderQuantities;
+
+        var series = [];
+        var labels = [];
+
+        var categories = [
+            'Pedidos Pendentes',
+            'Pedidos Processando',
+            'Pedidos Completos',
+            'Pedidos Cancelados'
+        ];
+
+        categories.forEach(function(category, index) {
+            if (orderQuantities.hasOwnProperty(category)) {
+                series.push(orderQuantities[category]);
+                labels.push(category);
+            }
+        });
+
         var options = {
-            series: [6000, 2000, 1000, 600],
-            labels: ["Remessas", "Reembolsos", "Pedidos", "Renda"],
-            colors: ["#0aad0a", "#ffc107", "#db3030", "#016bf8"],
-            chart: { type: "donut", height: 280 },
+            series: series,
+            labels: labels,
+            colors: ["#ffc107", "#016bf8", "#0aad0a", "#db3030"],
+            chart: {
+                type: "donut",
+                height: 280
+            },
             legend: { show: false },
             dataLabels: { enabled: false },
             plotOptions: {
@@ -136,7 +158,7 @@ $(document).ready(function () {
                             },
                             total: {
                                 show: true,
-                                label: "Vendas Totais",
+                                label: "Pedido Totais",
                                 fontSize: "16px",
                                 fontFamily: '"Inter", "sans-serif"',
                                 fontWeight: 400,
@@ -170,5 +192,6 @@ $(document).ready(function () {
         var totalSaleChart = new ApexCharts($("#totalSale")[0], options);
         totalSaleChart.render();
         window.totalSaleChart = totalSaleChart;
+
     }
 });
