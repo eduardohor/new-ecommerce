@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\WelcomeEmail;
+use App\Mail\WelcomeMail;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -33,6 +33,6 @@ class WelcomeEmailJob implements ShouldQueue
         $user = User::find($this->userId);
 
         Mail::to($user->email)
-            ->send(new WelcomeEmail($user));
+            ->send(new WelcomeMail($user));
     }
 }

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\PasswordResetEmailJob;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -34,16 +37,9 @@ class PasswordResetLinkController extends Controller
             'email.exists' => 'Não conseguimos encontrar um usuário com esse endereço de e-mail.',
         ]);
 
-        // We will send the password reset link to this user. Once we have attempted
-        // to send the link, we will examine the response then see the message we
-        // need to show to the user. Finally, we'll send out a proper response.
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
+        PasswordResetEmailJob::dispatch($request->email)->onQueue('default');
 
-        return $status == Password::RESET_LINK_SENT
-            ? back()->with('status', 'Enviamos por e-mail seu link de redefinição de senha.')
-            : back()->withInput($request->only('email'))
-            ->withErrors(['email' => __($status)]);
+        return redirect()->back()->with('status', 'Enviamos por e-mail seu link de redefinição de senha.');
+
     }
 }
