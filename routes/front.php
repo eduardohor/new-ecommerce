@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [StoreController::class, 'home'])->name('home');
+Route::get('/email', [StoreController::class, 'email'])->name('email');
 Route::get('/loja', [StoreController::class, 'store'])->name('store');
 Route::get('/lista-de-desejos', [StoreController::class, 'wishlist'])->name('wishlist');
 Route::get('/pagina-nao-encontrada', [StoreController::class, 'pageNotFound'])->name('page-not-found');

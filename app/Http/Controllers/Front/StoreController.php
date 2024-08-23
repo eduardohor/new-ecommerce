@@ -65,4 +65,9 @@ class StoreController extends Controller
 
         $product->recordView();
     }
+
+    public function email()
+    {
+        return view('emails.welcome-html');
+    }
 }
