@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\OrderSuccessEmailJob;
 use App\Models\Cart;
 use App\Models\Order;
 use Illuminate\Contracts\View\View;
@@ -111,6 +112,8 @@ class OrderController extends Controller
             $cart->delete();
 
             DB::commit();
+
+            OrderSuccessEmailJob::dispatch($user->email, $order->order_number)->onQueue('default');
 
             return response()->json(['message' => 'Pedido criado com sucesso!', 'order' => $order, 'payment' => $order->payment], 201);
         } catch (\Exception $e) {
