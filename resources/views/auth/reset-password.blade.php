@@ -31,7 +31,7 @@
               <div class="col-12">
                 <!-- input -->
                 <input type="email" class="form-control" id="inputEmail4" placeholder="Email" name="email"
-                  value="{{ old('email', $request->email) }}" required autofocus autocomplete="username">
+                  value="{{ old('email', $request->email) }}" required autofocus autocomplete="username" readonly>
                 @error('email')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
