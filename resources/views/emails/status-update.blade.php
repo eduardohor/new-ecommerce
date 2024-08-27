@@ -45,6 +45,17 @@
             </td>
         </tr>
 
+        <!-- Contatos -->
+        <tr>
+            <td style="padding: 20px; background-color: #f7f7f7; border-radius: 8px;">
+                <h3 style="color: #333333; text-align: center;">Contatos</h3>
+                <p style="color: #555555; font-size: 14px; text-align: center;">
+                    <strong>Email:</strong> {{ $storeInfo->email }}<br>
+                    <strong>Telefone:</strong> {{ $storeInfo->contact_number }}<br>
+                </p>
+            </td>
+        </tr>
+
         <!-- Footer -->
         <tr>
             <td align="center" style="padding: 20px 0;">
