@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\StatusUpdateEmailJob;
 use App\Models\Order;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -42,6 +43,10 @@ class OrderController extends Controller
         }
 
         $order->update(['status' => $validatedData['status']]);
+
+        $emailUser = $order->user->email;
+
+        StatusUpdateEmailJob::dispatch($emailUser, $order->id)->onQueue('default');
 
         return redirect()
             ->route('orders.show', $order->order_number)

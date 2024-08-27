@@ -68,6 +68,6 @@ class StoreController extends Controller
 
     public function email()
     {
-        return view('emails.order-success');
+        return view('emails.status-update');
     }
 }

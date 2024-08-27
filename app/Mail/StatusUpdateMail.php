@@ -3,19 +3,20 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class PasswordResetMail extends Mailable
+class StatusUpdateMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(public $user, public $resetUrl)
+    public function __construct(public $order)
     {
         //
     }
@@ -26,7 +27,7 @@ class PasswordResetMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Redefinição de senha',
+            subject: 'Status de Pedido Atualizado',
         );
     }
 
@@ -36,7 +37,7 @@ class PasswordResetMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.password-reset',
+            view: 'emails.status-update',
         );
     }
 
