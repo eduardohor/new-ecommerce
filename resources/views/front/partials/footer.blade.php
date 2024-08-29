@@ -15,9 +15,14 @@
                 <h4 class="mb-4">Contatos</h4>
                 <!-- list -->
                 <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#!" class="nav-link"><i class="bi bi-geo-alt-fill"></i> {{ $storeInfo->state }}, {{ $storeInfo->city }}</a></li>
-                    <li class="nav-item mb-2"><a href="#!" class="nav-link"><i class="bi bi-telephone-fill"></i> {{ $storeInfo->contact_number }}</a></li>
-                    <li class="nav-item mb-2"><a href="#1" class="nav-link"><i class="bi bi-envelope-fill"></i> {{ $storeInfo->email }}</a></li>
+                    @if ($storeInfo)
+                    <li class="nav-item mb-2"><a href="#!" class="nav-link"><i class="bi bi-geo-alt-fill"></i> {{
+                            $storeInfo->state }}, {{ $storeInfo->city }}</a></li>
+                    <li class="nav-item mb-2"><a href="#!" class="nav-link"><i class="bi bi-telephone-fill"></i> {{
+                            $storeInfo->contact_number }}</a></li>
+                    <li class="nav-item mb-2"><a href="#1" class="nav-link"><i class="bi bi-envelope-fill"></i> {{
+                            $storeInfo->email }}</a></li>
+                    @endif
                 </ul>
             </div>
             <div class="col-md-4">
@@ -45,11 +50,13 @@
 
         <div class="border-top py-4">
             <div class="row align-items-center">
-                <div class="col-md-6"><span class="small text-muted">{{ config('app.name') }}©  <span id="copyright"></span>
-                            <script>
-                                document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
-                            </script>
-                        | </span> Todos os direitos reservados.</span>
+                <div class="col-md-6"><span class="small text-muted">{{ config('app.name') }}© <span
+                            id="copyright"></span>
+                        <script>
+                            document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
+                        </script>
+                        |
+                    </span> Todos os direitos reservados.</span>
                 </div>
                 <div class="col-md-6">
                     <ul class="list-inline text-md-end mb-0 small mt-3 mt-md-0">

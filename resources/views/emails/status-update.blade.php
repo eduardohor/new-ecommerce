@@ -46,6 +46,7 @@
         </tr>
 
         <!-- Contatos -->
+        @if (@storeInfo)
         <tr>
             <td style="padding: 20px; background-color: #f7f7f7; border-radius: 8px;">
                 <h3 style="color: #333333; text-align: center;">Contatos</h3>
@@ -55,6 +56,7 @@
                 </p>
             </td>
         </tr>
+        @endif
 
         <!-- Footer -->
         <tr>
