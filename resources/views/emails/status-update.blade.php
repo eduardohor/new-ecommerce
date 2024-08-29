@@ -1,7 +1,7 @@
 <body style="font-family: Arial, sans-serif; background-color: #f7f7f7; margin: 0; padding: 20px;">
 
     <div style="text-align:center; margin: 20px 0;">
-        <img src="{{ url('images/logo/freshcart-logo.svg') }}" alt="{{ config('app.name') }} Logo"
+        <img src="{{ $storeInfo && $storeInfo->logo ? url('storage/' . $storeInfo->logo) : url('images/logo/freshcart-logo.svg') }}"
             style="width: 100%; max-width: 250px; margin-bottom: 20px;">
     </div>
 
@@ -59,7 +59,7 @@
         <!-- Footer -->
         <tr>
             <td align="center" style="padding: 20px 0;">
-                <p style="color: #777777; font-size: 12px;">Obrigado por comprar na {{ config('app.name') }}! Qualquer
+                <p style="color: #777777; font-size: 12px;">Obrigado por comprar na {{ $storeInfo->name ?? config('app.name') }}! Qualquer
                     dúvida, entre em
                     contato conosco.</p>
             </td>
