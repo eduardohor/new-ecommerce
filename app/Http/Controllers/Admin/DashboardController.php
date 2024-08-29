@@ -84,7 +84,7 @@ class DashboardController extends Controller
     {
         $statusMap = [
             'pending' => 'Pedidos Pendentes',
-            'processing' => 'Pedidos Pendentes',
+            'processing' => 'Pedidos Processando',
             'completed' => 'Pedidos Completos',
             'cancelled' => 'Pedidos Cancelados',
         ];

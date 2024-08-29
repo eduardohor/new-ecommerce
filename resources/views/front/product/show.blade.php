@@ -111,13 +111,13 @@
                         <form action="{{ route('cart.add-product-to-cart') }}" method="post">
                             @csrf
                             <div class="mb-5">
-                                <button type="button" class="btn btn-outline-secondary">
+                                {{-- <button type="button" class="btn btn-outline-secondary">
                                     @if ($product->weight >= 1)
                                     {{ $product->weight }}kg
                                     @else
                                     {{ $product->weight * 1000 }}g
                                     @endif
-                                </button>
+                                </button> --}}
                                 {{--
                                 <!-- btn --> <button type="button" class="btn btn-outline-secondary">500g</button>
                                 <!-- btn --> <button type="button" class="btn btn-outline-secondary">1kg</button>
@@ -180,12 +180,12 @@
                                         <td>{{ $product->category->name }}</td>
 
                                     </tr>
-                                    <tr>
+                                    {{-- <tr>
                                         <td>Envio:</td>
                                         <td><small>01 dia de envio.<span class="text-muted">(Retirada gratuita
                                                     hoje)</span></small></td>
 
-                                    </tr>
+                                    </tr> --}}
 
 
                                 </tbody>

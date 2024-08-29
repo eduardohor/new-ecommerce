@@ -11,7 +11,7 @@
 
 
 <main>
-    <a href="{{ route('email') }}">email</a>
+    {{-- <a href="{{ route('email') }}">email</a> --}}
     <section class="mt-8">
         <div class="container">
             <div class="hero-slider ">
