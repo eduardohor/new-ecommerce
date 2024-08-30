@@ -1,12 +1,12 @@
 <div style="text-align:center; margin: 20px 0;">
-    <img src="{{ url('images/logo/freshcart-logo.svg') }}" alt="{{ config('app.name') }} Logo"
+    <img src="{{ $storeInfo && $storeInfo->logo ? asset('storage/' . $storeInfo->logo) : asset('images/logo/freshcart-logo.svg') }}" alt="{{ config('app.name') }} Logo"
         style="width: 100%; max-width: 250px; margin-bottom: 20px;">
 </div>
 
 <div
     style="font-family: Arial, sans-serif; color: #002b00; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 600px;">
     <div style="text-align:center">
-        <img src="{{ url('images/svg-graphics/welcome.svg') }}" alt="Welcome" style="width: 50%; max-width: 150px;">
+        <img src="{{ asset('images/svg-graphics/welcome.svg') }}" alt="Welcome" style="width: 50%; max-width: 150px;">
     </div>
     <h1 style="color: #002b00; margin: 0; text-align:center; margin: 20px 0; font-size: 28px;">Bem-vindo(a) à {{
         config('app.name') }}!</h1>
@@ -18,7 +18,7 @@
             descobrir como podemos ajudar você a alcançar seus objetivos? Se precisar de qualquer ajuda, nossa equipe de
             suporte estará à disposição.</p>
         <p style="text-align: center; margin-top: 30px;">
-            <a href="{{ url('/') }}" target="_blank"
+            <a href="{{ asset('/') }}" target="_blank"
                 style="display: inline-block; padding: 12px 24px; font-size: 16px; color: #fff; background-color: #0AAD0A; text-decoration: none; border-radius: 4px;">Explore
                 Agora</a>
         </p>

@@ -50,7 +50,7 @@
 
         <div class="border-top py-4">
             <div class="row align-items-center">
-                <div class="col-md-6"><span class="small text-muted">{{ config('app.name') }}© <span
+                <div class="col-md-6"><span class="small text-muted">{{ $storeInfo && $storeInfo->name ? $storeInfo->name : config('app.name') }}© <span
                             id="copyright"></span>
                         <script>
                             document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))

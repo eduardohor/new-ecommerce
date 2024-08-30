@@ -1,7 +1,7 @@
 <body style="font-family: Arial, sans-serif; background-color: #f7f7f7; margin: 0; padding: 20px;">
 
     <div style="text-align:center; margin: 20px 0;">
-        <img src="{{ $storeInfo && $storeInfo->logo ? url('storage/' . $storeInfo->logo) : url('images/logo/freshcart-logo.svg') }}"
+        <img src="{{ $storeInfo && $storeInfo->logo ? asset('storage/' . $storeInfo->logo) : asset('images/logo/freshcart-logo.svg') }}"
             style="width: 100%; max-width: 250px; margin-bottom: 20px;">
     </div>
 
@@ -46,7 +46,7 @@
         </tr>
 
         <!-- Contatos -->
-        @if (@storeInfo)
+        @if($storeInfo)
         <tr>
             <td style="padding: 20px; background-color: #f7f7f7; border-radius: 8px;">
                 <h3 style="color: #333333; text-align: center;">Contatos</h3>
@@ -61,7 +61,7 @@
         <!-- Footer -->
         <tr>
             <td align="center" style="padding: 20px 0;">
-                <p style="color: #777777; font-size: 12px;">Obrigado por comprar na {{ $storeInfo->name ?? config('app.name') }}! Qualquer
+                <p style="color: #777777; font-size: 12px;">Obrigado por comprar na {{ $storeInfo && $storeInfo->name ?? config('app.name') }}! Qualquer
                     dúvida, entre em
                     contato conosco.</p>
             </td>
