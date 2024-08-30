@@ -127,7 +127,7 @@ Carbon::setLocale('pt_BR');
         <!-- Footer -->
         <tr>
             <td align="center" style="padding: 20px 0;">
-                <p style="color: #777777; font-size: 12px;">Obrigado por comprar na {{ $sstoreInfo && $storeInfo->name ?? config('app.name') }}! Qualquer dúvida, entre em
+                <p style="color: #777777; font-size: 12px;">Obrigado por comprar na {{ $storeInfo && $storeInfo->name ?? config('app.name') }}! Qualquer dúvida, entre em
                     contato conosco.</p>
             </td>
         </tr>

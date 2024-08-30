@@ -1,6 +1,6 @@
 <div style="text-align:center; margin: 20px 0;">
-    <img src="{{ $storeInfo && $storeInfo->logo ? asset('storage/' . $storeInfo->logo) : asset('images/logo/freshcart-logo.svg') }}" alt="{{ config('app.name') }} Logo"
-        style="width: 100%; max-width: 250px; margin-bottom: 20px;">
+    <img src="{{ $storeInfo && $storeInfo->logo ? asset('storage/' . $storeInfo->logo) : asset('images/logo/freshcart-logo.svg') }}"
+        alt="{{ config('app.name') }} Logo" style="width: 100%; max-width: 250px; margin-bottom: 20px;">
 </div>
 
 <div
@@ -9,11 +9,12 @@
         <img src="{{ asset('images/svg-graphics/welcome.svg') }}" alt="Welcome" style="width: 50%; max-width: 150px;">
     </div>
     <h1 style="color: #002b00; margin: 0; text-align:center; margin: 20px 0; font-size: 28px;">Bem-vindo(a) à {{
-        config('app.name') }}!</h1>
+        $storeInfo && $storeInfo->name ? $storeInfo->name : config('app.name')) }}!</h1>
     <div style="padding: 20px;">
         <p style="font-size: 16px; margin-bottom: 20px;">Olá, {{ $user->name }},</p>
         <p style="font-size: 16px; line-height: 1.6;">Estamos muito felizes em ter você conosco! A partir de agora, você
-            terá acesso a todas as funcionalidades exclusivas que a {{ config('app.name') }} tem a oferecer.</p>
+            terá acesso a todas as funcionalidades exclusivas que a {{ $storeInfo && $storeInfo->name ? $storeInfo->name
+            : config('app.name') }} tem a oferecer.</p>
         <p style="font-size: 16px; line-height: 1.6;">Para começar, que tal explorar alguns dos nossos recursos e
             descobrir como podemos ajudar você a alcançar seus objetivos? Se precisar de qualquer ajuda, nossa equipe de
             suporte estará à disposição.</p>
@@ -23,10 +24,12 @@
                 Agora</a>
         </p>
         <p style="font-size: 16px; line-height: 1.6; margin-top: 30px;">Aproveite sua jornada com a {{
-            config('app.name') }}. Estamos aqui para apoiar você em cada passo do caminho!</p>
+            $storeInfo && $storeInfo->name ? $storeInfo->name : config('app.name') }}. Estamos aqui para apoiar você em
+            cada passo do caminho!</p>
     </div>
 </div>
 
 <div style="margin: 0 auto; text-align:center; padding: 20px 0;">
-    <p style="font-size: 14px; color: #555;">{{ config('app.name') }}© 2024. Todos os direitos reservados.</p>
+    <p style="font-size: 14px; color: #555;">{{ $storeInfo && $storeInfo->name ? $storeInfo->name : config('app.name')
+        }}© 2024. Todos os direitos reservados.</p>
 </div>
