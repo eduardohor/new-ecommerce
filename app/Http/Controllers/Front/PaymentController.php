@@ -81,7 +81,6 @@ class PaymentController extends Controller
 
         $cart = $this->cart->find($dataPayment['cart_id']);
         $user = auth()->user();
-        $addressDefault = $user->addresses->where('is_default', 1)->first();
         $shipping = session('shipping');
         $addressShipping = Address::find($shipping['address_id']);
 
@@ -118,9 +117,9 @@ class PaymentController extends Controller
                     "payer" => [
                         "first_name" => $user->name,
                         "address" => [
-                            "zip_code" => $addressDefault->zip_code,
-                            "street_name" => $addressDefault->street,
-                            "street_number" => $addressDefault->number
+                            "zip_code" => $addressShipping->zip_code,
+                            "street_name" => $addressShipping->street,
+                            "street_number" => $addressShipping->number
                         ]
                     ], "shipments" => [
                         "receiver_address" => [
