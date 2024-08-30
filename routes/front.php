@@ -24,6 +24,7 @@ Route::get('/adicionar-view-produto/{productId}', [StoreController::class, 'addV
 Route::get('categoria/{slug}', [CategoryController::class, 'categoryProducts'])->name('category-products');
 
 Route::get('/produto/{slug}', [ProductController::class, 'show'])->name('product.show');
+Route::get('/pesquisar-produtos', [ProductController::class, 'search'])->name('product.search');
 
 Route::get('/carrinho', [CartController::class, 'show'])->name('cart.show');
 Route::post('/adicionar-ao-carrinho', [CartController::class, 'addProductToCart'])->name('cart.add-product-to-cart');

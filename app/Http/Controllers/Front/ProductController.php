@@ -35,4 +35,19 @@ class ProductController extends Controller
 
         return view('front.product.show', compact('product', 'relatedProducts'));
     }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        if (strlen($query) >= 3) {
+            $products = $this->product->with('productImages')
+                ->where('title', 'like', "%{$query}%")
+                ->get();
+
+            return response()->json($products);
+        }
+
+        return response()->json([]);
+    }
 }
