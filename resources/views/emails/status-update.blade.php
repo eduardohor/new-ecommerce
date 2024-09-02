@@ -9,7 +9,7 @@
         style="max-width: 600px; background-color: #ffffff; border-radius: 8px; padding: 20px;">
         <tr>
             <td align="center" style="padding: 20px 0;">
-                <h2 style="color: #333333;">Atualização no Status do Pedido #{{ $order->order_number }}</h2>
+                    <h2 style="color: #333333;">Atualização no Status do Pedido Nº {{ $order->order_number }}</h2>
                 <p style="color: #777777; font-size: 14px;">O status do seu pedido foi alterado para
                     @if ($order->status == 'pending')
                     <strong>Pendente</strong>
@@ -60,10 +60,8 @@
 
         <!-- Footer -->
         <tr>
-            <td align="center" style="padding: 20px 0;">
-                <p style="color: #777777; font-size: 12px;">Obrigado por comprar na {{ $storeInfo && $storeInfo->name ?? config('app.name') }}! Qualquer
-                    dúvida, entre em
-                    contato conosco.</p>
+            <td align="center" style="padding: 20px; background-color: #333; color: #ffffff; border-radius: 0 0 8px 8px;">
+                <p style="margin: 0; font-size: 14px;">Obrigado por comprar na {{ $storeInfo->name ?? config('app.name') }}! Estamos à disposição para qualquer dúvida.</p>
             </td>
         </tr>
     </table>

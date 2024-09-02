@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\OrderSuccessMail;
+use App\Mail\ConfirmPaymentMail;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -10,10 +10,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
-class OrderSuccessEmailJob implements ShouldQueue
+class ConfirmPaymentEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -31,8 +30,7 @@ class OrderSuccessEmailJob implements ShouldQueue
     public function handle(): void
     {
         $order = Order::where('order_number', $this->order_number)->first();
-
-        Mail::to($this->email)->send(new OrderSuccessMail($order));
+        Mail::to($this->email)->send(new ConfirmPaymentMail($order));
 
     }
 }

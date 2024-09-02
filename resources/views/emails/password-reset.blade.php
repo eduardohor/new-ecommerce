@@ -23,5 +23,5 @@
     </div>
 </div>
 <div style="margin: 0 auto; text-align:center; padding: 10px 0;">
-    <p style="font-size: 14px;">{{ $storeInfo && $storeInfo->name ? $storeInfo->name : config('app.name') }}© 2024. Todos os direitos reservados.</p>
+    <p style="font-size: 14px;">{{$storeInfo->name ?? config('app.name') }}© 2024. Todos os direitos reservados.</p>
 </div>

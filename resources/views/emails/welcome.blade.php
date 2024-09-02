@@ -30,6 +30,6 @@
 </div>
 
 <div style="margin: 0 auto; text-align:center; padding: 20px 0;">
-    <p style="font-size: 14px; color: #555;">{{ $storeInfo && $storeInfo->name ? $storeInfo->name : config('app.name')
+    <p style="font-size: 14px; color: #555;">{{ $storeInfo->name ?? config('app.name')
         }}© 2024. Todos os direitos reservados.</p>
 </div>

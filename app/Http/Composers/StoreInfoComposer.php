@@ -17,7 +17,6 @@ class StoreInfoComposer
     public function compose(View $view)
     {
         $storeInfo = $this->storeInfo->first();
-        $storeInfo = null;
         $view->with('storeInfo', $storeInfo);
     }
 }
