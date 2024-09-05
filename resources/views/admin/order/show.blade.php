@@ -28,8 +28,10 @@ Carbon::setLocale('pt_BR');
                         <!-- breacrumb -->
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0">
-                                <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}" class="text-inherit">Painel</a></li>
-                                <li class="breadcrumb-item"><a href="{{ route('orders.index') }}" class="text-inherit">Pedidos</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}"
+                                        class="text-inherit">Painel</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('orders.index') }}"
+                                        class="text-inherit">Pedidos</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Pedido Detalhado</li>
                             </ol>
                         </nav>
@@ -85,7 +87,9 @@ Carbon::setLocale('pt_BR');
                                 <!-- button -->
                                 <div class="ms-md-3">
                                     <button type="submit" form="formUpdateStatus"
-                                        class="btn btn-primary">Salvar</button>
+                                        class="btn btn-primary" data-toggle="tooltip"
+                                        data-placement="top"
+                                        title="Ao alterar o status do pedido enviará um e-mail ao cliente com a informação do novo status.">Salvar</button>
                                     <a href="{{ route('orders.download.invoice', $order->order_number) }}"
                                         class="btn btn-secondary">Baixar o Invoice</a>
                                 </div>
@@ -226,7 +230,7 @@ Carbon::setLocale('pt_BR');
                     <div class="card-body p-6">
                         <div class="row">
                             <div class="col-md-6 mb-4 mb-lg-0">
-                                <h6>Informação do Pagamento</h6>
+                                <h6>Forma de Pagamento</h6>
                                 @if ($order->payment->payment_type == 'credit_card')
                                 <span>Cartão de Crédito</span>
                                 @elseif ($order->payment->payment_type == 'bank_transfer')
@@ -234,8 +238,20 @@ Carbon::setLocale('pt_BR');
                                 @else
                                 <span>Outro Método de Pagamento</span>
                                 @endif
+
+                                <h6 class="mt-3">Status do Pagamento</h6>
+                                @if ($order->payment->status == 'pending')
+                                <span>Pendente</span>
+                                @elseif ($order->payment->status == 'completed')
+                                <span>Completo</span>
+                                @elseif ($order->payment->status == 'failed')
+                                <span>Falhou</span>
+                                @endif
+
                                 <h6 class="mt-3">ID da transação</h6>
                                 <span>{{ $order->payment->transaction_id }}</span>
+
+
                             </div>
                             <div class="col-md-6">
                                 <h5>Anotações</h5>
@@ -246,6 +262,18 @@ Carbon::setLocale('pt_BR');
                                         placeholder="Escrever anotações sobre o pedido"
                                         name="notes">{{ $order->notes }}</textarea>
                                     <button type="submit" class="btn btn-primary">Salvar Anotações</button>
+                                </form>
+
+                                <h5 class="mt-6">
+                                    Adicionar Código de Rastreio <i class="bi bi-info-circle" data-toggle="tooltip"
+                                        data-placement="top"
+                                        title="Adicionar e salvar o código de rastreio enviará um e-mail ao cliente com a informação do código."></i>
+                                </h5>
+                                <form action="{{ route('orders.add.tracking.code') }}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                    <input type="text" class="form-control mb-3" name="tracking_number" value="{{ $order->shipping->tracking_number }}" placeholder="Código de Rastreio">
+                                    <button type="submit" class="btn btn-primary">Adicionar e Enviar</button>
                                 </form>
                             </div>
                         </div>
@@ -271,6 +299,10 @@ Carbon::setLocale('pt_BR');
     @if(session('success'))
         toastr.success("{{ session('success') }}");
     @endif
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 </script>
 
 

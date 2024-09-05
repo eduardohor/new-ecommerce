@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\StatusUpdateEmailJob;
+use App\Jobs\TrackingNumberEmailJob;
 use App\Models\Order;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -80,6 +81,32 @@ class OrderController extends Controller
         $pdf = Pdf::loadView('admin.order.invoice', compact('order'));
 
         return $pdf->download('fatura_' . $order_number . ".pdf");
+    }
 
+    public function addTrackingCode(Request $request)
+    {
+        $validatedData = $request->validate([
+            'tracking_number' => 'required',
+            'order_id' => 'required',
+        ]);
+
+        $order = $this->order->findOrFail($validatedData['order_id']);
+
+        if (!$order) {
+            return redirect()->route('orders.index');
+        }
+
+        $order->shipping->update([
+            'tracking_number' => $validatedData['tracking_number'],
+            'status' => 'shipped',
+        ]);
+
+        $emailUser = $order->user->email;
+
+        TrackingNumberEmailJob::dispatch($emailUser, $order->order_number)->onQueue('default');
+
+        return redirect()
+            ->route('orders.show', $order->order_number)
+            ->with('success', 'Código de rastreio adicionado com sucesso!');
     }
 }

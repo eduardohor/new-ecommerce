@@ -53,7 +53,7 @@ class WebhookController extends Controller
 
                         $order = $payment->order;
                         $emailUser = $order->user->email;
-                        $payment->status = 'completed';
+                        $payment->status = $response->status;
                         $payment->save();
 
                         if ($payment->status == 'completed') {
