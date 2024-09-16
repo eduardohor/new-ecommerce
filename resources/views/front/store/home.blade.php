@@ -246,8 +246,14 @@
                                         data-bs-target="#productViewModal"
                                         onclick="showProductViewModal({{ $popularProduct }})"><i class="bi bi-eye"
                                             data-bs-toggle="tooltip" data-bs-html="true" title="Olhada Rápida"></i></a>
-                                    <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true"
-                                        title="Lista de Favoritos"><i class="bi bi-heart"></i></a>
+                                    <a href="#!" class="btn-action toggle-favorite" data-bs-toggle="tooltip"
+                                        data-bs-html="true" data-product-id="{{ $popularProduct->id }}"
+                                        data-favorited="{{ Auth::user()->favorites()->where('product_id', $popularProduct->id)->exists() ? 'true' : 'false' }}"
+                                        title="Lista de Favoritos">
+                                        <i
+                                            class="bi {{ Auth::user()->favorites()->where('product_id', $popularProduct->id)->exists() ? 'bi-heart-fill text-success' : 'bi-heart' }}"></i>
+                                    </a>
+
                                     {{-- <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true"
                                         title="Comparar"><i class="bi bi-arrow-left-right"></i></a> --}}
                                 </div>
@@ -347,8 +353,14 @@
                                             onclick="showProductViewModal({{ $topSellingProduct }})"><i
                                                 class="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true"
                                                 title="Olhada Rápida"></i></a>
-                                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true"
-                                            title="Lista de Favoritos"><i class="bi bi-heart"></i></a>
+                                        <!-- Favoritos -->
+                                        <a href="#!" class="btn-action toggle-favorite" data-bs-toggle="tooltip"
+                                            data-bs-html="true" data-product-id="{{ $topSellingProduct->id }}"
+                                            data-favorited="{{ Auth::user()->favorites()->where('product_id', $topSellingProduct->id)->exists() ? 'true' : 'false' }}"
+                                            title="Lista de Favoritos">
+                                            <i
+                                                class="bi {{ Auth::user()->favorites()->where('product_id', $topSellingProduct->id)->exists() ? 'bi-heart-fill text-success' : 'bi-heart' }}"></i>
+                                        </a>
                                         {{-- <a href="#!" class="btn-action" data-bs-toggle="tooltip"
                                             data-bs-html="true" title="Comparar"><i
                                                 class="bi bi-arrow-left-right"></i></a> --}}
@@ -472,6 +484,45 @@
 {{-- <script src="{{ asset('js/vendors/tns-slider.js') }}"></script> --}}
 <script src="{{ asset('js/vendors/increment-value.js') }}"></script>
 <script src="{{ asset('js/vendors/zoom.js') }}"></script>
+
+<script>
+    $(document).ready(function() {
+    $('.toggle-favorite').on('click', function(e) {
+        e.preventDefault();
+
+        let $this = $(this);
+        let productId = $this.data('product-id');
+        let favorited = $this.data('favorited');
+        let icon = $this.find('i');
+
+        let url = favorited ? `/favoritos/remove/${productId}` : `/favoritos/add/${productId}`;
+
+        $.ajax({
+            url: url,
+            method: 'POST',
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            success: function(response) {
+                if (response.success) {
+                    $this.data('favorited', !favorited);
+
+                    if (!favorited) {
+                        icon.removeClass('bi-heart').addClass('bi-heart-fill text-success');
+                    } else {
+                        icon.removeClass('bi-heart-fill text-success').addClass('bi-heart');
+                    }
+                }
+            },
+            error: function(xhr) {
+                console.error('Erro ao adicionar/remover favorito:', xhr);
+            }
+        });
+    });
+});
+
+
+</script>
 
 @endsection
 

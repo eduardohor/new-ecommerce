@@ -4,6 +4,7 @@ use App\Http\Controllers\Front\CategoryController;
 use App\Http\Controllers\Front\AddressController;
 use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\CheckoutController;
+use App\Http\Controllers\Front\FavoriteController;
 use App\Http\Controllers\Front\StoreController;
 use App\Http\Controllers\Front\NotificationController;
 use App\Http\Controllers\Front\OrderController;
@@ -46,6 +47,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/pagamentos/falha/{transaction_id}', [PaymentController::class, 'showPaymentFailed'])->name('payment.failed');
 
     Route::post('/pedidos', [OrderController::class, 'store'])->name('order.store');
+
+    Route::post('/favoritos/add/{productId}', [FavoriteController::class, 'add'])->name('favorites.add');
+    Route::post('/favoritos/remove/{productId}', [FavoriteController::class, 'remove'])->name('favorites.remove');
 
     // Route::get('/notificacoes', [NotificationController::class, 'index'])->name('notification.index');
 

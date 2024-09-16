@@ -64,13 +64,13 @@
                                         Adicionar
                                     </button>
                                 </div>
-                                <div class="col-md-4 col-5">
+                                {{-- <div class="col-md-4 col-5">
                                     <!-- btn -->
                                     <a class="btn btn-light" href="#" data-bs-toggle="tooltip" data-bs-html="true"
                                         aria-label="Compare"><i class="bi bi-arrow-left-right"></i></a>
                                     <a class="btn btn-light" href="#!" data-bs-toggle="tooltip" data-bs-html="true"
                                         aria-label="Wishlist"><i class="feather-icon icon-heart"></i></a>
-                                </div>
+                                </div> --}}
                             </div>
                             <hr class="my-6">
                             <div>
