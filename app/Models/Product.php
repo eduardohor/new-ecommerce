@@ -50,6 +50,12 @@ class Product extends Model
         return $this->belongsToMany(Cart::class, 'cart_products');
     }
 
+    public function favoritedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'favorites');
+    }
+
+
     public function getProducts(string $search = null)
     {
         $products = $this->with('category', 'productImages')
@@ -159,6 +165,6 @@ class Product extends Model
     public function orders()
     {
         return $this->belongsToMany(Order::class, 'order_products')
-                    ->withPivot('quantity', 'price');
+            ->withPivot('quantity', 'price');
     }
 }

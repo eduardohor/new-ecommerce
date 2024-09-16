@@ -85,6 +85,12 @@ class User extends Authenticatable
         return $this->hasManyThrough(Payment::class, Order::class);
     }
 
+    public function favorites()
+    {
+        return $this->belongsToMany(Product::class, 'favorites');
+    }
+
+
     public function getTotalSpentAttribute()
     {
         return $this->payments()
