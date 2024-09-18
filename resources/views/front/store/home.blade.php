@@ -248,11 +248,12 @@
                                             data-bs-toggle="tooltip" data-bs-html="true" title="Olhada Rápida"></i></a>
                                     <a href="#!" class="btn-action toggle-favorite" data-bs-toggle="tooltip"
                                         data-bs-html="true" data-product-id="{{ $popularProduct->id }}"
-                                        data-favorited="{{ Auth::user()->favorites()->where('product_id', $popularProduct->id)->exists() ? 'true' : 'false' }}"
+                                        data-favorited="{{ auth()->check() && auth()->user()->favorites()->where('product_id', $popularProduct->id)->exists() ? 'true' : 'false' }}"
                                         title="Lista de Favoritos">
                                         <i
-                                            class="bi {{ Auth::user()->favorites()->where('product_id', $popularProduct->id)->exists() ? 'bi-heart-fill text-success' : 'bi-heart' }}"></i>
+                                            class="bi {{ auth()->check() && auth()->user()->favorites()->where('product_id', $popularProduct->id)->exists() ? 'bi-heart-fill text-success' : 'bi-heart' }}"></i>
                                     </a>
+
 
                                     {{-- <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true"
                                         title="Comparar"><i class="bi bi-arrow-left-right"></i></a> --}}
@@ -356,10 +357,10 @@
                                         <!-- Favoritos -->
                                         <a href="#!" class="btn-action toggle-favorite" data-bs-toggle="tooltip"
                                             data-bs-html="true" data-product-id="{{ $topSellingProduct->id }}"
-                                            data-favorited="{{ Auth::user()->favorites()->where('product_id', $topSellingProduct->id)->exists() ? 'true' : 'false' }}"
+                                            data-favorited="{{ auth()->check() && auth()->user()->favorites()->where('product_id', $topSellingProduct->id)->exists() ? 'true' : 'false' }}"
                                             title="Lista de Favoritos">
                                             <i
-                                                class="bi {{ Auth::user()->favorites()->where('product_id', $topSellingProduct->id)->exists() ? 'bi-heart-fill text-success' : 'bi-heart' }}"></i>
+                                                class="bi {{ auth()->check() && auth()->user()->favorites()->where('product_id', $topSellingProduct->id)->exists() ? 'bi-heart-fill text-success' : 'bi-heart' }}"></i>
                                         </a>
                                         {{-- <a href="#!" class="btn-action" data-bs-toggle="tooltip"
                                             data-bs-html="true" title="Comparar"><i
@@ -512,10 +513,15 @@
                     } else {
                         icon.removeClass('bi-heart-fill text-success').addClass('bi-heart');
                     }
+                    location.reload();
                 }
             },
             error: function(xhr) {
-                console.error('Erro ao adicionar/remover favorito:', xhr);
+                if (xhr.status === 401) {
+                    window.location.href = "{{ route('login') }}";
+                } else {
+                    console.error('Erro ao adicionar/remover favorito:', xhr);
+                }
             }
         });
     });

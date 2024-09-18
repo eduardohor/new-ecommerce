@@ -45,7 +45,11 @@ class StoreController extends Controller
 
     public function wishlist(): View
     {
-        return view('front.store.wishlist');
+        $user = auth()->user();
+
+        $favorites = $user->favorites()->with('productImages')->get();
+
+        return view('front.store.wishlist', compact('favorites'));
     }
 
     public function pageNotFound(): View

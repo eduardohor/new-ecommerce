@@ -201,8 +201,9 @@
                                     </svg>
                                     <span
                                         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
-                                        5
-                                        <span class="visually-hidden">mensagens não lidas</span>
+                                        {{ $favoritesProvider }}
+
+                                        {{-- <span class="visually-hidden">mensagens não lidas</span> --}}
                                     </span>
                                 </a>
                             </div>
