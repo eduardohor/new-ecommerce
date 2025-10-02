@@ -237,7 +237,7 @@
                                                 <span>{{ $cartProduct->quantity }}</span>
                                             </div>
                                             <div class="col-3 text-lg-end text-start text-md-end col-md-3">
-                                                @if ($cartProduct->product->sale_price > 0)
+                                                @if ($cartProduct->product->hasActiveSale())
                                                 <span class="fw-bold text-danger">R$ {{
                                                     number_format($cartProduct->product->sale_price, 2, ',', '.')
                                                     }}</span>

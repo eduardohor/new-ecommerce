@@ -177,20 +177,29 @@
       modal.find('#in_stock').text("Em estoque").removeClass('text-danger');
     }
 
+    // Verifica se tem oferta ativa (sale_price > 0 E sale_end_date no futuro)
     var hasSalePrice = parseFloat(product.sale_price) > 0;
-    modal.find('#sale_price').toggle(hasSalePrice).text(formatPrice(product.sale_price));
+    var hasActiveSale = false;
 
-    modal.find('#regular_price').toggleClass('text-decoration-line-through text-muted', hasSalePrice)
-                              .toggleClass('fw-bold text-dark', !hasSalePrice);
+    if (hasSalePrice && product.sale_end_date) {
+      var saleEndDate = new Date(product.sale_end_date);
+      var now = new Date();
+      hasActiveSale = saleEndDate > now;
+    }
+
+    modal.find('#sale_price').toggle(hasActiveSale).text(formatPrice(product.sale_price));
+
+    modal.find('#regular_price').toggleClass('text-decoration-line-through text-muted', hasActiveSale)
+                              .toggleClass('fw-bold text-dark', !hasActiveSale);
 
     var discountPercentage = 0;
-    if (hasSalePrice) {
+    if (hasActiveSale) {
       var regularPrice = parseFloat(product.regular_price);
       var salePrice = parseFloat(product.sale_price);
       discountPercentage = ((regularPrice - salePrice) / regularPrice) * 100;
     }
 
-    modal.find('#discount').toggle(hasSalePrice).text(Math.round(discountPercentage) + '% de desconto');
+    modal.find('#discount').toggle(hasActiveSale).text(Math.round(discountPercentage) + '% de desconto');
   }
 
   // Função para mostrar o modal e inicializar o slider

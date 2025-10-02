@@ -95,12 +95,25 @@
                                                 <h5 class="fs-6 mb-0">
                                                     <a href="#" class="text-inherit">{{ $favorite->title }}</a>
                                                 </h5>
-                                                <small>R${{ number_format($favorite->regular_price, 2, ',', '.')
-                                                    }}</small>
+                                                <small>
+                                                    @if($favorite->hasActiveSale())
+                                                        <span class="text-danger fw-bold">R${{ number_format($favorite->sale_price, 2, ',', '.') }}</span>
+                                                        <del class="text-muted">R${{ number_format($favorite->regular_price, 2, ',', '.') }}</del>
+                                                    @else
+                                                        R${{ number_format($favorite->regular_price, 2, ',', '.') }}
+                                                    @endif
+                                                </small>
+                                                <!-- Contador de oferta -->
+                                                @include('front.partials.product-countdown', ['product' => $favorite, 'class' => 'text-danger small d-block'])
                                             </div>
                                         </td>
-                                        <td class="align-middle">R${{ number_format($favorite->regular_price, 2, ',',
-                                            '.') }}</td>
+                                        <td class="align-middle">
+                                            @if($favorite->hasActiveSale())
+                                                <span class="text-danger fw-bold">R${{ number_format($favorite->sale_price, 2, ',', '.') }}</span>
+                                            @else
+                                                R${{ number_format($favorite->regular_price, 2, ',', '.') }}
+                                            @endif
+                                        </td>
                                         <td class="align-middle">
                                             <span class="badge {{ $favorite->in_stock ? 'bg-success' : 'bg-danger' }}">
                                                 {{ $favorite->in_stock ? 'Em Estoque' : 'Fora de Estoque' }}

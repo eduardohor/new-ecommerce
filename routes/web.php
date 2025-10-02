@@ -25,6 +25,6 @@ require __DIR__ . '/front.php';
 
 require __DIR__ . '/admin.php';
 
-Route::get('/teste', function(){
-    return view('front.checkout.test');
-});
+// Route::get('/teste', function(){
+//     return view('front.checkout.test');
+// });

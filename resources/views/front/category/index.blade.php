@@ -363,7 +363,7 @@
 
                                     <div class="text-center position-relative ">
                                         <div class="position-absolute top-0 start-0">
-                                            @if($product->sale_price > 0)
+                                            @if($product->hasActiveSale())
                                             @php
                                             $regularPrice = $product->regular_price;
                                             $salePrice = $product->sale_price;
@@ -418,7 +418,7 @@
                                     </div> --}}
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <div>
-                                            @if($product->sale_price > 0)
+                                            @if($product->hasActiveSale())
                                             <span class="text-dark">{{ 'R$' . number_format($product->sale_price, 2,
                                                 ',', '.')
                                                 }}</span>
@@ -426,7 +426,7 @@
 
                                             @if($product->regular_price > 0)
                                             <span
-                                                class="{{ $product->sale_price > 0 ? 'text-decoration-line-through text-muted' : 'text-dark' }}">
+                                                class="{{ $product->hasActiveSale() ? 'text-decoration-line-through text-muted' : 'text-dark' }}">
                                                 {{ 'R$' . number_format($product->regular_price, 2, ',', '.') }}
                                             </span>
                                             @endif
@@ -441,6 +441,7 @@
                                             </form>
                                         </div>
                                     </div>
+                                    @include('front.partials.product-countdown', ['product' => $product, 'class' => 'text-danger small mt-2'])
                                 </div>
                             </div>
                         </div>

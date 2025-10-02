@@ -245,6 +245,15 @@
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+                            <div class="mb-3">
+                                <label class="form-label">Data de Término da Oferta</label>
+                                <input type="datetime-local" class="form-control" name="sale_end_date"
+                                    value="{{ old('sale_end_date') }}" @error('sale_end_date') autofocus @enderror>
+                                <small class="text-muted">Deixe vazio para oferta sem prazo de validade</small>
+                                @error('sale_end_date')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
                     </div>
                     <div class="card mb-6 card-lg">

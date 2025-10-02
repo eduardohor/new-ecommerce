@@ -37,6 +37,20 @@ class CartController extends Controller
 
         $cart = $this->getCart($user);
 
+        if ($cart) {
+            foreach ($cart->cartProducts as $cartProduct) {
+                $product = $cartProduct->product;
+                $currentPrice = $product->hasActiveSale() ? $product->sale_price : $product->regular_price;
+
+                if ($cartProduct->price != $currentPrice) {
+                    $cartProduct->price = $currentPrice;
+                    $cartProduct->save();
+                }
+            }
+
+            $this->updateCartTotalAmount($cart);
+        }
+
         return view('front.cart.show', compact('cart'));
     }
 
@@ -48,7 +62,8 @@ class CartController extends Controller
             $user = Auth::user();
             $product = $this->product->find($request->product_id);
             $quantity = $request->quantity;
-            $price = $product->sale_price > 0 ? $product->sale_price : $product->regular_price;
+            // Verifica se a oferta está ativa antes de aplicar o preço promocional
+            $price = $product->hasActiveSale() ? $product->sale_price : $product->regular_price;
 
             $cart = $this->getOrCreateCart($user);
 

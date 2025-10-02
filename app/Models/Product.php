@@ -26,8 +26,13 @@ class Product extends Model
         'status',
         'regular_price',
         'sale_price',
+        'sale_end_date',
         'meta_title',
         'meta_description',
+    ];
+
+    protected $casts = [
+        'sale_end_date' => 'datetime',
     ];
 
     public function productImages()
@@ -166,5 +171,23 @@ class Product extends Model
     {
         return $this->belongsToMany(Order::class, 'order_products')
             ->withPivot('quantity', 'price');
+    }
+
+    /**
+     * Verifica se o produto tem uma oferta ativa
+     */
+    public function hasActiveSale()
+    {
+        return $this->sale_price > 0
+               && $this->sale_end_date
+               && $this->sale_end_date->greaterThan(now());
+    }
+
+    /**
+     * Retorna o preço final do produto (com ou sem oferta)
+     */
+    public function getFinalPrice()
+    {
+        return $this->hasActiveSale() ? $this->sale_price : $this->regular_price;
     }
 }

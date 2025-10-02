@@ -75,6 +75,7 @@ class ProductController extends Controller
                 'status' => $data['status'],
                 'regular_price' => $data['regular_price'],
                 'sale_price' => $data['sale_price'],
+                'sale_end_date' => $data['sale_end_date'] ?? null,
                 'meta_title' => $data['meta_title'],
                 'meta_description' => $data['meta_description']
             ]);
@@ -156,6 +157,7 @@ class ProductController extends Controller
                 'status' => $data['status'],
                 'regular_price' => $data['regular_price'],
                 'sale_price' => $data['sale_price'],
+                'sale_end_date' => $data['sale_end_date'] ?? null,
                 'meta_title' => $data['meta_title'],
                 'meta_description' => $data['meta_description']
             ]);

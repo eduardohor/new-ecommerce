@@ -73,6 +73,10 @@
                                                 </a>
                                                 <span><small class="text-muted">Código do Produto:
                                                         {{ $cartProduct->product->product_code }}</small></span>
+
+                                                <!-- Contador de oferta -->
+                                                @include('front.partials.product-countdown', ['product' => $cartProduct->product, 'class' => 'text-danger small'])
+
                                                 <!-- text -->
                                                 <div class="mt-2 small lh-1">
                                                     <form action="{{ route('cart.delete-product-to-cart') }}"
@@ -137,7 +141,7 @@
                                             </div>
                                             <!-- price -->
                                             <div class=" col-2 text-lg-end text-start text-md-end col-md-2">
-                                                @if ($cartProduct->product->sale_price > 0)
+                                                @if ($cartProduct->product->hasActiveSale())
                                                     <span class="fw-bold text-danger">R$
                                                         {{ number_format($cartProduct->product->sale_price, 2, ',', '.') }}</span>
                                                     <div class="text-decoration-line-through text-muted small">R$
@@ -146,11 +150,10 @@
                                                 @else
                                                     <span class="fw-bold">R$
                                                         {{ number_format($cartProduct->product->regular_price, 2, ',', '.') }}</span>
-
+                                                @endif
                                             </div>
-                                @endif
-                        </div>
-                        </li>
+                                        </div>
+                                    </li>
             @endforeach
 
             </ul>
@@ -318,6 +321,14 @@
                 method: "POST",
                 data: formData,
                 success: function(response) {
+
+                    if (response.data && response.data.message === 'Unauthenticated.') {
+                        $("#mensagemErro").show();
+                        $("#loadingIndicator").hide();
+                        $("#calcularButton").attr("disabled", false);
+                        return;
+                    }
+
                     var allErrors = response.data.every(function(frete) {
                         return frete.error !== undefined;
                     });

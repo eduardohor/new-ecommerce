@@ -226,7 +226,7 @@
 
                             <div class="text-center position-relative ">
                                 <div class="position-absolute top-0 start-0">
-                                    @if($popularProduct->sale_price > 0)
+                                    @if($popularProduct->hasActiveSale())
                                     @php
                                     $regularPrice = $popularProduct->regular_price;
                                     $salePrice = $popularProduct->sale_price;
@@ -279,14 +279,14 @@
                             </div> --}}
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <div>
-                                    @if($popularProduct->sale_price > 0)
+                                    @if($popularProduct->hasActiveSale())
                                     <span class="text-dark">{{ 'R$' . number_format($popularProduct->sale_price, 2, ',',
                                         '.') }}</span>
                                     @endif
 
                                     @if($popularProduct->regular_price > 0)
                                     <span
-                                        class="{{ $popularProduct->sale_price > 0 ? 'text-decoration-line-through text-muted' : 'text-dark' }}">
+                                        class="{{ $popularProduct->hasActiveSale() ? 'text-decoration-line-through text-muted' : 'text-dark' }}">
                                         {{ 'R$' . number_format($popularProduct->regular_price, 2, ',', '.') }}
                                     </span>
                                     @endif
@@ -301,6 +301,7 @@
                                     </form>
                                 </div>
                             </div>
+                            @include('front.partials.product-countdown', ['product' => $popularProduct, 'class' => 'text-danger small mt-2'])
                         </div>
                     </div>
                 </div>
@@ -377,13 +378,13 @@
 
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <div>
-                                        @if ($topSellingProduct->sale_price > 0)
+                                        @if ($topSellingProduct->hasActiveSale())
                                         <span class="text-dark">{{ 'R$' . number_format($topSellingProduct->sale_price,
                                             2, ',', '.')
                                             }}</span>
                                         @endif
                                         <span
-                                            class="{{ $topSellingProduct->sale_price > 0 ? 'text-decoration-line-through text-muted' : 'text-dark' }}">{{
+                                            class="{{ $topSellingProduct->hasActiveSale() ? 'text-decoration-line-through text-muted' : 'text-dark' }}">{{
                                             'R$' . number_format($topSellingProduct->regular_price, 2, ',', '.')
                                             }}</span>
                                     </div>
@@ -408,9 +409,11 @@
                                         <button type="submit" class="btn btn-primary ">Adicionar ao carrinho </button>
                                     </form>
                                 </div>
+                                @if($topSellingProduct->hasActiveSale())
                                 <div class="d-flex justify-content-start text-center mt-3">
-                                    <div class="deals-countdown w-100" data-countdown="2024/01/30 00:00:00"></div>
+                                    <div class="deals-countdown w-100" data-countdown="{{ $topSellingProduct->sale_end_date->format('Y/m/d H:i:s') }}"></div>
                                 </div>
+                                @endif
                             </div>
                         </div>
                     </div>

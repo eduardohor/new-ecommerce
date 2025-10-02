@@ -83,18 +83,18 @@
 
                         <div class="fs-4">
                             <!-- price -->
-                            @if($product->sale_price > 0)
+                            @if($product->hasActiveSale())
                             <span class="text-dark">{{ 'R$' . number_format($product->sale_price, 2, ',', '.') }}</span>
                             @endif
 
                             @if($product->regular_price > 0)
                             <span
-                                class="{{ $product->sale_price > 0 ? 'text-decoration-line-through text-muted' : 'text-dark' }}">
+                                class="{{ $product->hasActiveSale() ? 'text-decoration-line-through text-muted' : 'text-dark' }}">
                                 {{ 'R$' . number_format($product->regular_price, 2, ',', '.') }}
                             </span>
                             @endif
 
-                            @if($product->sale_price > 0)
+                            @if($product->hasActiveSale())
                             @php
                             $regularPrice = $product->regular_price;
                             $salePrice = $product->sale_price;
@@ -106,6 +106,18 @@
                             @endif
 
                         </div>
+
+                        <!-- Contador Regressivo -->
+                        @if($product->hasActiveSale())
+                        <div class="alert alert-warning mt-3" role="alert">
+                            <i class="bi bi-clock-fill me-2"></i>
+                            <strong>Oferta termina em:</strong>
+                            <div id="countdown-{{ $product->id }}"
+                                 data-end-date="{{ $product->sale_end_date->toIso8601String() }}"
+                                 class="d-inline-block fw-bold ms-2">
+                            </div>
+                        </div>
+                        @endif
                         <!-- hr -->
                         <hr class="my-6">
                         <form action="{{ route('cart.add-product-to-cart') }}" method="post">
@@ -734,7 +746,7 @@
 
                             <div class="text-center position-relative ">
                                 <div class="position-absolute top-0 start-0">
-                                    @if($relatedProduct->sale_price > 0)
+                                    @if($relatedProduct->hasActiveSale())
                                     @php
                                     $regularPrice = $relatedProduct->regular_price;
                                     $salePrice = $relatedProduct->sale_price;
@@ -786,14 +798,14 @@
                             </div> --}}
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <div>
-                                    @if($relatedProduct->sale_price > 0)
+                                    @if($relatedProduct->hasActiveSale())
                                     <span class="text-dark">{{ 'R$' . number_format($relatedProduct->sale_price, 2, ',',
                                         '.') }}</span>
                                     @endif
 
                                     @if($relatedProduct->regular_price > 0)
                                     <span
-                                        class="{{ $relatedProduct->sale_price > 0 ? 'text-decoration-line-through text-muted' : 'text-dark' }}">
+                                        class="{{ $relatedProduct->hasActiveSale() ? 'text-decoration-line-through text-muted' : 'text-dark' }}">
                                         {{ 'R$' . number_format($relatedProduct->regular_price, 2, ',', '.') }}
                                     </span>
                                     @endif
@@ -808,6 +820,7 @@
                                     </form>
                                 </div>
                             </div>
+                            @include('front.partials.product-countdown', ['product' => $relatedProduct, 'class' => 'text-danger small mt-2'])
                         </div>
                     </div>
                 </div>
@@ -845,48 +858,82 @@
 
 <script>
     $(document).ready(function() {
-    $('.toggle-favorite').on('click', function(e) {
-        e.preventDefault();
+        // Toggle de favoritos
+        $('.toggle-favorite').on('click', function(e) {
+            e.preventDefault();
 
-        let $this = $(this);
-        let productId = $this.data('product-id');
-        let favorited = $this.data('favorited');
-        let icon = $this.find('i');
+            let $this = $(this);
+            let productId = $this.data('product-id');
+            let favorited = $this.data('favorited');
+            let icon = $this.find('i');
 
-        let url = favorited ? `/favoritos/remove/${productId}` : `/favoritos/add/${productId}`;
+            let url = favorited ? `/favoritos/remove/${productId}` : `/favoritos/add/${productId}`;
 
-        $.ajax({
-            url: url,
-            method: 'POST',
-            headers: {
-                "X-CSRF-TOKEN": "{{ csrf_token() }}"
-            },
-            success: function(response) {
-                if (response.success) {
-                    $this.data('favorited', !favorited);
+            $.ajax({
+                url: url,
+                method: 'POST',
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $this.data('favorited', !favorited);
 
-                    if (!favorited) {
-                        icon.removeClass('bi-heart').addClass('bi-heart-fill text-success');
-                    } else {
-                        icon.removeClass('bi-heart-fill text-success').addClass('bi-heart');
+                        if (!favorited) {
+                            icon.removeClass('bi-heart').addClass('bi-heart-fill text-success');
+                        } else {
+                            icon.removeClass('bi-heart-fill text-success').addClass('bi-heart');
+                        }
+
+                        location.reload();
                     }
-
-                    location.reload();
-
+                },
+                error: function(xhr) {
+                    if (xhr.status === 401) {
+                        window.location.href = "{{ route('login') }}";
+                    } else {
+                        console.error('Erro ao adicionar/remover favorito:', xhr);
+                    }
                 }
-            },
-            error: function(xhr) {
-                if (xhr.status === 401) {
-                    window.location.href = "{{ route('login') }}";
-                } else {
-                    console.error('Erro ao adicionar/remover favorito:', xhr);
+            });
+        });
+
+        // Contador Regressivo para Ofertas
+        $('[id^="countdown-"]').each(function() {
+            let $element = $(this);
+            let endDate = new Date($element.data('end-date')).getTime();
+
+            function updateCountdown() {
+                let now = new Date().getTime();
+                let distance = endDate - now;
+
+                if (distance < 0) {
+                    $element.html("OFERTA ENCERRADA");
+                    $element.addClass('text-danger');
+                    clearInterval(timer);
+                    // Recarregar a página para atualizar o preço
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
+                    return;
                 }
+
+                let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                let timeString = '';
+                if (days > 0) timeString += days + 'd ';
+                timeString += ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
+
+                $element.html(timeString);
             }
+
+            updateCountdown();
+            let timer = setInterval(updateCountdown, 1000);
         });
     });
-});
-
-
 </script>
 
 @endsection

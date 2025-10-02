@@ -68,6 +68,7 @@ class ProductRequest extends FormRequest
             'status' => 'required|in:ativo,desabilitado',
             'regular_price' => 'required|numeric',
             'sale_price' => 'nullable|numeric',
+            'sale_end_date' => 'nullable|date|after_or_equal:now',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
         ];
@@ -133,6 +134,9 @@ class ProductRequest extends FormRequest
             'regular_price.numeric' => 'O campo preço regular deve ser um número.',
 
             'sale_price.numeric' => 'O campo preço de venda deve ser um número.',
+
+            'sale_end_date.date' => 'O campo data de término deve ser uma data válida.',
+            'sale_end_date.after_or_equal' => 'A data de término deve ser agora ou futura.',
 
             'meta_title.string' => 'O campo meta título deve ser uma string.',
             'meta_title.max' => 'O campo meta título não pode ter mais de 255 caracteres.',
