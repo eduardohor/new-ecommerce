@@ -9,11 +9,13 @@ class ShippingService
 {
     protected $tokenMelhorEnvio;
     protected $baseUrl;
+    protected $userAgent;
 
     public function __construct()
     {
         $this->tokenMelhorEnvio = config('melhorenvio.token');
-        $this->baseUrl = 'https://sandbox.melhorenvio.com.br/api/v2/me/shipment/calculate';
+        $this->baseUrl = config('melhorenvio.base_url');
+        $this->userAgent = config('melhorenvio.user_agent');
     }
 
     public function calculateShipping($postalCodeFrom, $postalCodeTo, $products)
@@ -32,10 +34,13 @@ class ShippingService
             $response = Http::withHeaders([
                 'Accept' => 'application/json',
                 'Authorization' => "Bearer {$this->tokenMelhorEnvio}",
-                'Content-Type' => 'application/json'
+                'Content-Type' => 'application/json',
+                'User-Agent' => $this->userAgent
             ])->withOptions([
                 'verify' => false,
-            ])->post($this->baseUrl, $body)->json();
+            ])->post($this->baseUrl . '/api/v2/me/shipment/calculate', $body)->json();
+
+            Log::info('Resposta do Melhor Envio: ', $response);
 
             return $response;
         } catch (\Exception $e) {
