@@ -15,7 +15,6 @@ class ShippingService
     {
         $this->tokenMelhorEnvio = config('melhorenvio.token');
         $this->baseUrl = config('melhorenvio.base_url');
-        $this->userAgent = config('melhorenvio.user_agent');
     }
 
     public function calculateShipping($postalCodeFrom, $postalCodeTo, $products)
@@ -35,12 +34,9 @@ class ShippingService
                 'Accept' => 'application/json',
                 'Authorization' => "Bearer {$this->tokenMelhorEnvio}",
                 'Content-Type' => 'application/json',
-                'User-Agent' => $this->userAgent
             ])->withOptions([
                 'verify' => false,
             ])->post($this->baseUrl . '/api/v2/me/shipment/calculate', $body)->json();
-
-            Log::info('Resposta do Melhor Envio: ', $response);
 
             return $response;
         } catch (\Exception $e) {

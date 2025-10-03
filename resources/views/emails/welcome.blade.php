@@ -9,7 +9,7 @@
         <img src="{{ asset('images/svg-graphics/welcome.svg') }}" alt="Welcome" style="width: 50%; max-width: 150px;">
     </div>
     <h1 style="color: #002b00; margin: 0; text-align:center; margin: 20px 0; font-size: 28px;">Bem-vindo(a) à {{
-        $storeInfo && $storeInfo->name ? $storeInfo->name : config('app.name')) }}!</h1>
+        $storeInfo && $storeInfo->name ? $storeInfo->name : config('app.name') }}!</h1>
     <div style="padding: 20px;">
         <p style="font-size: 16px; margin-bottom: 20px;">Olá, {{ $user->name }},</p>
         <p style="font-size: 16px; line-height: 1.6;">Estamos muito felizes em ter você conosco! A partir de agora, você
@@ -30,6 +30,5 @@
 </div>
 
 <div style="margin: 0 auto; text-align:center; padding: 20px 0;">
-    <p style="font-size: 14px; color: #555;">{{ $storeInfo->name ?? config('app.name')
-        }}© 2024. Todos os direitos reservados.</p>
+    <p style="font-size: 14px; color: #555;">{{ $storeInfo->name ?? config('app.name') }}© 2024. Todos os direitos reservados.</p>
 </div>
