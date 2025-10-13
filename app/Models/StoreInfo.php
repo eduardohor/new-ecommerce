@@ -17,6 +17,10 @@ class StoreInfo extends Model
         'city',
         'state',
         'email',
-        'contact_number'
+        'contact_number',
+        'cnpj',
+        'facebook_url',
+        'x_url',
+        'instagram_url'
     ];
 }

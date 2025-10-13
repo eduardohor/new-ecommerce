@@ -3,6 +3,9 @@ $(document).ready(function () {
     $("#phone").inputmask("(99) 99999-9999");
     $(".phone").inputmask("(99) 99999-9999");
 
+    // Formatar CNPJ
+    $(".cnpj").inputmask("99.999.999/9999-99");
+
     // Formatar CEP
     $(".cep").inputmask("99999-999");
 

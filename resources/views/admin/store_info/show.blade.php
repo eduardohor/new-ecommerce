@@ -70,7 +70,7 @@ Carbon::setLocale('pt_BR');
                             @enderror
 
                             <div class="d-flex flex-column gap-4">
-                                <h3 class="mb-0 mt-5 h6">Informações do Cliente</h3>
+                                <h3 class="mb-0 mt-5 h6">Informações da Loja</h3>
                                 <div class="row g-3">
                                     <div class="col-lg-6 col-12">
                                         <div>
@@ -113,6 +113,21 @@ Carbon::setLocale('pt_BR');
                                                 value="{{ old('contact_number', $storeInfo->contact_number ?? '') }}"
                                                 required />
                                             @error('contact_number')
+                                            <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <div>
+                                            <label for="cnpj" class="form-label">
+                                                CNPJ
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" class="form-control cnpj" id="cnpj" name="cnpj"
+                                                placeholder="00.000.000/0000-00"
+                                                value="{{ old('cnpj', $storeInfo->cnpj ?? '') }}" required />
+                                            @error('cnpj')
                                             <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -169,12 +184,46 @@ Carbon::setLocale('pt_BR');
                                         @enderror
                                     </div>
 
-                                    <div class="col-12">
+                                    <div class="col-lg-6 col-12">
                                         <label class="form-label" for="address">Endereço</label>
                                         <input type="text" class="form-control" id="address" name="address"
                                             placeholder="Endereço Completo"
                                             value="{{ old('address', $storeInfo->address ?? '') }}" />
                                         @error('address')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-12">
+                                        <h3 class="mb-0 mt-4 h6">Redes Sociais</h3>
+                                    </div>
+
+                                    <div class="col-lg-4 col-12">
+                                        <label class="form-label" for="facebook_url">Facebook</label>
+                                        <input type="url" class="form-control" id="facebook_url" name="facebook_url"
+                                            placeholder="https://facebook.com/sualoja"
+                                            value="{{ old('facebook_url', $storeInfo->facebook_url ?? '') }}" />
+                                        @error('facebook_url')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-lg-4 col-12">
+                                        <label class="form-label" for="x_url">X (Twitter)</label>
+                                        <input type="url" class="form-control" id="x_url" name="x_url"
+                                            placeholder="https://x.com/sualoja"
+                                            value="{{ old('x_url', $storeInfo->x_url ?? '') }}" />
+                                        @error('x_url')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-lg-4 col-12">
+                                        <label class="form-label" for="instagram_url">Instagram</label>
+                                        <input type="url" class="form-control" id="instagram_url"
+                                            name="instagram_url" placeholder="https://instagram.com/sualoja"
+                                            value="{{ old('instagram_url', $storeInfo->instagram_url ?? '') }}" />
+                                        @error('instagram_url')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>

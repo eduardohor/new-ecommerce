@@ -30,6 +30,10 @@ class StoreInfoRequest extends FormRequest
             'state' => 'nullable|string|max:255',
             'email' => 'required|email|max:255',
             'contact_number' => 'required|string|max:255',
+            'cnpj' => 'required|string|max:18',
+            'facebook_url' => 'nullable|url|max:255',
+            'x_url' => 'nullable|url|max:255',
+            'instagram_url' => 'nullable|url|max:255',
         ];
     }
 
@@ -66,6 +70,19 @@ class StoreInfoRequest extends FormRequest
             'contact_number.required' => 'O campo número de contato é obrigatório.',
             'contact_number.string' => 'O campo número de contato deve ser um texto.',
             'contact_number.max' => 'O campo número de contato não pode exceder 255 caracteres.',
+
+            'cnpj.required' => 'O campo CNPJ é obrigatório.',
+            'cnpj.string' => 'O campo CNPJ deve ser um texto.',
+            'cnpj.max' => 'O campo CNPJ não pode exceder 18 caracteres.',
+
+            'facebook_url.url' => 'O link do Facebook deve ser uma URL válida.',
+            'facebook_url.max' => 'O link do Facebook não pode exceder 255 caracteres.',
+
+            'x_url.url' => 'O link do X deve ser uma URL válida.',
+            'x_url.max' => 'O link do X não pode exceder 255 caracteres.',
+
+            'instagram_url.url' => 'O link do Instagram deve ser uma URL válida.',
+            'instagram_url.max' => 'O link do Instagram não pode exceder 255 caracteres.',
         ];
     }
 }
