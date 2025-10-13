@@ -239,6 +239,93 @@ class ProductController extends Controller
         }
     }
 
+    public function duplicate(string|int $id): RedirectResponse
+    {
+        $originalProduct = $this->findProductOrFail($id);
+
+        try {
+            DB::beginTransaction();
+
+            $newProductData = $originalProduct->replicate([
+                'slug',
+            ])->toArray();
+
+            $newProductData['title'] = $originalProduct->title . ' (Cópia)';
+            $newProductData['slug'] = $this->generateUniqueSlug($originalProduct->slug);
+            $newProductData['status'] = 'desabilitado';
+            $newProductData['product_code'] = $originalProduct->product_code
+                ? $originalProduct->product_code . '-copy'
+                : null;
+            $newProductData['sku'] = $originalProduct->sku
+                ? $originalProduct->sku . '-copy'
+                : null;
+
+            $newProduct = $this->product->create($newProductData);
+
+            foreach ($originalProduct->productImages as $productImage) {
+                if (!$productImage->image_path) {
+                    continue;
+                }
+
+                $newImagePath = $this->duplicateImageFile($productImage->image_path);
+
+                $this->productImage->create([
+                    'product_id' => $newProduct->id,
+                    'image_path' => $newImagePath,
+                ]);
+            }
+
+            DB::commit();
+
+            return redirect()
+                ->route('products.index')
+                ->with('success', 'Produto duplicado com sucesso! Atualize as informações antes de publicar.');
+        } catch (\Exception $error) {
+            DB::rollBack();
+
+            Log::error('Erro ao duplicar produto:', [
+                'product_id' => $originalProduct->id,
+                'message' => $error->getMessage(),
+                'type' => get_class($error),
+                'file' => $error->getFile(),
+                'line' => $error->getLine(),
+            ]);
+
+            return redirect()
+                ->route('products.index')
+                ->with('error', 'Erro ao duplicar produto. Por favor, tente novamente.');
+        }
+    }
+
+    protected function generateUniqueSlug(string $baseSlug): string
+    {
+        $slug = $baseSlug . '-copia';
+        $counter = 1;
+
+        while ($this->product->where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-copia-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
+    }
+
+    protected function duplicateImageFile(string $originalPath): string
+    {
+        $storage = Storage::disk('public');
+
+        if (!$storage->exists($originalPath)) {
+            throw new \RuntimeException("Arquivo de imagem original não encontrado: {$originalPath}");
+        }
+
+        $extension = pathinfo($originalPath, PATHINFO_EXTENSION);
+        $newPath = 'products/' . uniqid('product_', true) . '.' . $extension;
+
+        $storage->copy($originalPath, $newPath);
+
+        return $newPath;
+    }
+
     private function findProductOrFail(string|int $id): Model
     {
         try {

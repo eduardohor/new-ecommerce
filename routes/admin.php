@@ -33,6 +33,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('/produtos/edit/{id}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/produtos/edit/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
     Route::delete('/produtos/{product}/imagens/{image}', [ProductController::class, 'destroyImage'])->name('products.images.destroy');
+    Route::post('/produtos/{id}/duplicar', [ProductController::class, 'duplicate'])->name('products.duplicate');
 
     Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/pedidos/{order_nuber}/detalhes', [OrderController::class, 'show'])->name('orders.show');

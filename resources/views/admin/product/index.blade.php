@@ -131,6 +131,15 @@
                                                             href="{{ route('products.edit', $product->id) }}"><i
                                                                 class="bi bi-pencil-square me-3 "></i>Editar</a>
                                                     </li>
+                                                    <li>
+                                                        <form action="{{ route('products.duplicate', $product->id) }}"
+                                                            method="POST" class="dropdown-item p-0 m-0">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-link text-start text-decoration-none w-100">
+                                                                <i class="bi bi-files me-3"></i>Duplicar
+                                                            </button>
+                                                        </form>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </td>
@@ -176,6 +185,7 @@
     var error  = "{{ session('error') }}";
     var warning = "{{ session('warning') }}";
     var status = "{{ session('status') }}";
+    var success = "{{ session('success') }}";
     console.log('status')
 
       // Configuração do Toastr
@@ -216,6 +226,10 @@
 
         default:
           break;
+      }
+
+      if (success) {
+        toastr.success(success);
       }
   });
 </script>

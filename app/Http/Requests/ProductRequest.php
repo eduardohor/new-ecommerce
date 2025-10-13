@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
-use App\Models\Product;
+use Illuminate\Validation\Rule;
 
 class ProductRequest extends FormRequest
 {
@@ -49,7 +50,7 @@ class ProductRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('product');
+        $productId = $this->route('id') ?? $this->route('product');
 
         $rules =  [
             'title' => 'required|string|max:255',
@@ -65,7 +66,11 @@ class ProductRequest extends FormRequest
             'in_stock' => 'nullable|boolean',
             'product_code' => 'nullable|string',
             'sku' => 'nullable|string',
-            'slug' => 'required|string',
+            'slug' => [
+                'required',
+                'string',
+                Rule::unique('products', 'slug')->ignore($productId),
+            ],
             'status' => 'required|in:ativo,desabilitado',
             'regular_price' => 'required|numeric',
             'sale_price' => 'nullable|numeric',
@@ -150,6 +155,7 @@ class ProductRequest extends FormRequest
 
             'slug.required' => 'O campo slug é obrigatório.',
             'slug.string' => 'O campo slug do produto deve ser uma string.',
+            'slug.unique' => 'O slug do produto já está em uso.',
 
             'status.required' => 'O campo status é obrigatório.',
             'status.in' => 'O campo status deve ser uma das opções permitidas.',
