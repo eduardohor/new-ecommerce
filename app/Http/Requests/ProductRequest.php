@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
+use App\Models\Product;
 
 class ProductRequest extends FormRequest
 {
@@ -73,13 +74,36 @@ class ProductRequest extends FormRequest
             'meta_description' => 'nullable|string',
         ];
 
-        if ($this->isMethod('PUT')) {
-            $rules['images'] = [
-                'nullable', 'array', 'min:1'
-            ];
+        if ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
+            $rules['images'] = ['nullable', 'array', 'min:1'];
         }
 
         return $rules;
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if (!($this->isMethod('PUT') || $this->isMethod('PATCH'))) {
+                return;
+            }
+
+            $hasUploads = $this->hasFile('images');
+
+            $productId = $this->route('id') ?? $this->route('product');
+            $existingImagesCount = 0;
+
+            if ($productId) {
+                $product = Product::withCount('productImages')->find($productId);
+                if ($product) {
+                    $existingImagesCount = $product->product_images_count;
+                }
+            }
+
+            if (!$hasUploads && $existingImagesCount === 0) {
+                $validator->errors()->add('images', 'Pelo menos uma imagem é obrigatória.');
+            }
+        });
     }
 
     public function messages()

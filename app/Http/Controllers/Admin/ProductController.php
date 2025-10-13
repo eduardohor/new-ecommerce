@@ -180,6 +180,31 @@ class ProductController extends Controller
         }
     }
 
+    public function destroyImage(Request $request, Product $product, ProductImage $image)
+    {
+        if ($image->product_id !== $product->id) {
+            return response()->json(['message' => 'Imagem não encontrada para este produto.'], 404);
+        }
+
+        try {
+            if ($image->image_path && Storage::disk('public')->exists($image->image_path)) {
+                Storage::disk('public')->delete($image->image_path);
+            }
+
+            $image->delete();
+
+            return response()->json(['message' => 'Imagem removida com sucesso.']);
+        } catch (\Exception $error) {
+            Log::error('Erro ao remover imagem do produto:', [
+                'product_id' => $product->id,
+                'image_id' => $image->id,
+                'message' => $error->getMessage(),
+            ]);
+
+            return response()->json(['message' => 'Erro ao remover a imagem do produto.'], 500);
+        }
+    }
+
     public function destroy(string|int $id): RedirectResponse
     {
         try {

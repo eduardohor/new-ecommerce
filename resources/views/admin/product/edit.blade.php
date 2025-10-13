@@ -147,6 +147,23 @@
                                 </div>
                                 <div class="mb-3 col-lg-12 mt-5">
                                     <h4 class="mb-3 h5">Imagens do Produto <span class="text-danger">*</span></h4>
+                                    @if($product->productImages->isNotEmpty())
+                                    <div class="row g-3 mb-4">
+                                        @foreach($product->productImages as $image)
+                                        <div class="col-6 col-md-3" data-product-image-card>
+                                            <div class="border rounded-2 p-2 h-100 d-flex flex-column align-items-center justify-content-between bg-light">
+                                                <img src="{{ asset('storage/' . $image->image_path) }}" alt="Imagem do produto"
+                                                    class="img-fluid mb-2" style="object-fit: cover; max-height: 140px;">
+                                                <button type="button"
+                                                    class="btn btn-sm btn-outline-danger w-100 remove-product-image"
+                                                    data-delete-url="{{ route('products.images.destroy', ['product' => $product->id, 'image' => $image->id]) }}">
+                                                    Remover
+                                                </button>
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                    @endif
                                     <div class="d-block dropzone border-dashed rounded-2">
                                         <div class="fallback">
                                             <input type="file" name="images[]" multiple>
@@ -324,6 +341,49 @@
             // Reativa o Quill
             quill.enable();
         }
+
+        const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        $('.remove-product-image').on('click', function() {
+            const button = $(this);
+            const deleteUrl = button.data('delete-url');
+
+            if (!deleteUrl) {
+                return;
+            }
+
+            if (!csrfToken) {
+                alert('Token CSRF não encontrado. Recarregue a página e tente novamente.');
+                return;
+            }
+
+            if (!confirm('Deseja realmente remover esta imagem?')) {
+                return;
+            }
+
+            fetch(deleteUrl, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Accept': 'application/json',
+                    },
+                })
+                .then(async (response) => {
+                    if (!response.ok) {
+                        const data = await response.json().catch(() => null);
+                        const message = data && data.message ? data.message : 'Erro ao remover a imagem.';
+                        throw new Error(message);
+                    }
+
+                    return response.json();
+                })
+                .then(() => {
+                    button.closest('[data-product-image-card]').remove();
+                })
+                .catch((error) => {
+                    alert(error.message || 'Erro ao remover a imagem.');
+                });
+        });
 
     });
 </script>
