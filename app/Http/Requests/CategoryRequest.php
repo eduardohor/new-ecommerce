@@ -65,7 +65,7 @@ class CategoryRequest extends FormRequest
 
         $rules =  [
             'parent_id' => ['nullable', 'exists:categories,id'],
-            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:1048', 'dimensions:width=120,height=120'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:1048', 'dimensions:width=120,height=120'],
             'name' => ['required', 'string', 'max:255'],
             'slug' => [
                 'required', 'string', 'max:255', Rule::unique('categories', 'slug')->ignore($id),
@@ -89,7 +89,6 @@ class CategoryRequest extends FormRequest
     {
         return [
             'parent_id.exists' => 'A categoria superior selecionada é inválida.',
-            'image.required' => 'A imagem é obrigatória.',
             'image.image' => 'O arquivo deve ser uma imagem.',
             'image.mimes' => 'A imagem deve ser dos tipos: jpeg, png, jpg, gif.',
             'image.max' => 'A imagem não deve ter mais de 1048 kilobytes.',

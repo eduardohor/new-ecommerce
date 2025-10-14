@@ -47,9 +47,10 @@ class CategoryController extends Controller
 
             $request->filled('parent_id') ? $data['parent_id'] = $request->parent_id : null;
 
-            $path = $request->file('image')->store('categories', 'public');
-
-            $data['image'] = $path;
+            if ($request->has('image')) {
+                $path = $request->file('image')->store('categories', 'public');
+                $data['image'] = $path;
+            }
 
             $this->category->create($data);
 
@@ -121,7 +122,9 @@ class CategoryController extends Controller
 
             $category = $this->findCategoryOrFail($id);
 
-            Storage::delete($category->image);
+            if ($category->image) {
+                Storage::delete($category->image);
+            }
 
             $category->delete();
 

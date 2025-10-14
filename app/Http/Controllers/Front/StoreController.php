@@ -22,7 +22,13 @@ class StoreController extends Controller
 
     public function home(): View
     {
-        $categories = $this->category->all()->take(10);
+        $categories = $this->category
+            ->newQuery()
+            ->whereNotNull('image')
+            ->where('image', '!=', '')
+            ->latest()
+            ->take(10)
+            ->get();
         $popularProducts = $this->product->getPopularProducts();
         $topSellingProducts = $this->product->getTopSellingProducts();
 

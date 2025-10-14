@@ -93,10 +93,15 @@
                         </label>
                       </div>
                     </td>
-                    <td>
-                      <a href="{{ route('categories.edit', $category->id) }}"> <img src="{{ asset('storage/' . $category->image)  }}" alt=""
-                          class="icon-shape icon-sm"></a>
-                    </td>
+                        <td>
+                            <a href="{{ route('categories.edit', $category->id) }}">
+                                <img
+                                    src="{{ $category->image ? asset('storage/' . $category->image) : asset('images/placeholder.jpg') }}"
+                                    alt="{{ $category->name }}"
+                                    class="icon-shape icon-sm"
+                                >
+                            </a>
+                        </td>
                     <td><a href="#" class="text-reset">{{ $category->name }}</a></td>
                     <td>--</td>
 
