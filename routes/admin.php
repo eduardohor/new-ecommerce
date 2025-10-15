@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -25,6 +26,13 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/categorias/{id}/editar', [CategoryController::class, 'edit'])->name('categories.edit');
     Route::put('/categorias/{id}/editar', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categorias/{id}/editar', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+    Route::get('/banners', [BannerController::class, 'index'])->name('banners.index');
+    Route::get('/banners/cadastro', [BannerController::class, 'create'])->name('banners.create');
+    Route::post('/banners/cadastro', [BannerController::class, 'store'])->name('banners.store');
+    Route::get('/banners/{id}/editar', [BannerController::class, 'edit'])->name('banners.edit');
+    Route::put('/banners/{id}/editar', [BannerController::class, 'update'])->name('banners.update');
+    Route::delete('/banners/{id}/editar', [BannerController::class, 'destroy'])->name('banners.destroy');
 
     Route::get('/produtos', [ProductController::class, 'index'])->name('products.index');
     Route::get('/produtos/cadastro', [ProductController::class, 'create'])->name('products.create');

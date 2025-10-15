@@ -1,6 +1,5 @@
 @extends('front/layouts/store')
 @section('title', 'Início')
-@section('content')
 
 @section('head')
 <link href="{{ asset('libs/slick-carousel/slick/slick.css') }}" rel="stylesheet" />
@@ -10,42 +9,65 @@
 @endsection
 
 
+@section('content')
+
+
 <main>
     {{-- <a href="{{ route('email') }}">email</a> --}}
     <section class="mt-8">
         <div class="container">
-            <div class="hero-slider ">
-                <div
-                    style="background: url({{ asset('images/slider/slide-1.jpg') }})no-repeat; background-size: cover; border-radius: .5rem; background-position: center;">
-                    <div class="ps-lg-12 py-lg-16 col-xxl-5 col-md-7 py-14 px-8 text-xs-center">
-                        <span class="badge text-bg-warning">Desconto de Abertura 50%</span>
+            @if(isset($heroBanners) && $heroBanners->count())
+                <div class="hero-slider">
+                    @foreach($heroBanners as $banner)
+                        <div>
+                            @if($banner->link_url)
+                                <a href="{{ $banner->link_url }}" class="d-block position-relative hero-slide" target="{{ $banner->link_target }}" rel="noopener"
+                                    style="background: url({{ $banner->image_url ?? asset('images/placeholder.jpg') }}) no-repeat; background-size: cover; background-position: center; border-radius: .5rem; min-height: 625px;">
+                                    <span class="visually-hidden">Banner</span>
+                                </a>
+                            @else
+                                <div class="d-block position-relative hero-slide"
+                                    style="background: url({{ $banner->image_url ?? asset('images/placeholder.jpg') }}) no-repeat; background-size: cover; background-position: center; border-radius: .5rem; min-height: 625px;">
+                                    <span class="visually-hidden">Banner</span>
+                                </div>
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="hero-slider ">
+                    <div
+                        style="background: url({{ asset('images/slider/slide-1.jpg') }})no-repeat; background-size: cover; border-radius: .5rem; background-position: center;">
+                        <div class="ps-lg-12 py-lg-16 col-xxl-5 col-md-7 py-14 px-8 text-xs-center">
+                            <span class="badge text-bg-warning">Desconto de Abertura 50%</span>
 
-                        <h2 class="text-dark display-5 fw-bold mt-4">Supermercado para Produtos Frescos</h2>
-                        <p class="lead">ntroduzido um novo modelo para compras de supermercado online e entrega
-                            conveniente em casa.
-                        </p>
-                        <a href="#!" class="btn btn-dark mt-3">Comprar Agora <i
-                                class="feather-icon icon-arrow-right ms-1"></i></a>
+                            <h2 class="text-dark display-5 fw-bold mt-4">Supermercado para Produtos Frescos</h2>
+                            <p class="lead">ntroduzido um novo modelo para compras de supermercado online e entrega
+                                conveniente em casa.
+                            </p>
+                            <a href="#!" class="btn btn-dark mt-3">Comprar Agora <i
+                                    class="feather-icon icon-arrow-right ms-1"></i></a>
+                        </div>
+
+                    </div>
+                    <div class=" "
+                        style="background: url({{ asset('images/slider/slider-2.jpg') }})no-repeat; background-size: cover; border-radius: .5rem; background-position: center;">
+                        <div class="ps-lg-12 py-lg-16 col-xxl-5 col-md-7 py-14 px-8 text-xs-center">
+                            <span class="badge text-bg-warning">Frete Grátis - pedidos acima de R$100</span>
+                            <h2 class="text-dark display-5 fw-bold mt-4">Frete Grátis em <br> pedidos acima de <span
+                                    class="text-primary">R$100</span></h2>
+                            <p class="lead">Frete Grátis somente para Clientes de Primeira Viagem, após aplicação de
+                                promoções e
+                                descontos.
+                            </p>
+                            <a href="#!" class="btn btn-dark mt-3">Comprar Agora <i
+                                    class="feather-icon icon-arrow-right ms-1"></i></a>
+                        </div>
+
                     </div>
 
                 </div>
-                <div class=" "
-                    style="background: url({{ asset('images/slider/slider-2.jpg') }})no-repeat; background-size: cover; border-radius: .5rem; background-position: center;">
-                    <div class="ps-lg-12 py-lg-16 col-xxl-5 col-md-7 py-14 px-8 text-xs-center">
-                        <span class="badge text-bg-warning">Frete Grátis - pedidos acima de R$100</span>
-                        <h2 class="text-dark display-5 fw-bold mt-4">Frete Grátis em <br> pedidos acima de <span
-                                class="text-primary">R$100</span></h2>
-                        <p class="lead">Frete Grátis somente para Clientes de Primeira Viagem, após aplicação de
-                            promoções e
-                            descontos.
-                        </p>
-                        <a href="#!" class="btn btn-dark mt-3">Comprar Agora <i
-                                class="feather-icon icon-arrow-right ms-1"></i></a>
-                    </div>
-
-                </div>
-
-            </div>
+            @endif
         </div>
     </section>
 
@@ -169,37 +191,53 @@
     <!-- Category Section End-->
     <section>
         <div class="container">
-            <div class="row">
-                <div class="col-12 col-md-6 mb-3 mb-lg-0">
-                    <div>
-                        <div class="py-10 px-8 rounded"
-                            style="background:url({{ asset('images/banner/grocery-banner.png') }})no-repeat; background-size: cover; background-position: center;">
-                            <div>
-                                <h3 class="fw-bold mb-1">Frutas e Vegetais
-                                </h3>
-                                <p class="mb-4">Ganhe até <span class="fw-bold">30%</span> de desconto</p>
-                                <a href="#!" class="btn btn-dark">Comprar Agora</a>
+            @if(isset($featuredBanners) && $featuredBanners->count())
+                <div class="row">
+                    @foreach($featuredBanners as $banner)
+                        <div class="col-12 col-md-6 mb-3 mb-lg-0">
+                            @if($banner->link_url)
+                                <a href="{{ $banner->link_url }}" class="d-block" target="{{ $banner->link_target }}" rel="noopener">
+                                    <img src="{{ $banner->image_url ?? asset('images/placeholder.jpg') }}" alt="Banner" class="img-fluid rounded-3 w-100">
+                                </a>
+                            @else
+                                <img src="{{ $banner->image_url ?? asset('images/placeholder.jpg') }}" alt="Banner" class="img-fluid rounded-3 w-100">
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="row">
+                    <div class="col-12 col-md-6 mb-3 mb-lg-0">
+                        <div>
+                            <div class="py-10 px-8 rounded"
+                                style="background:url({{ asset('images/banner/grocery-banner.png') }})no-repeat; background-size: cover; background-position: center;">
+                                <div>
+                                    <h3 class="fw-bold mb-1">Frutas e Vegetais
+                                    </h3>
+                                    <p class="mb-4">Ganhe até <span class="fw-bold">30%</span> de desconto</p>
+                                    <a href="#!" class="btn btn-dark">Comprar Agora</a>
+                                </div>
                             </div>
+
                         </div>
 
                     </div>
+                    <div class="col-12 col-md-6 ">
 
-                </div>
-                <div class="col-12 col-md-6 ">
-
-                    <div>
-                        <div class="py-10 px-8 rounded"
-                            style="background:url({{ asset('images/banner/grocery-banner-2.jp') }}g)no-repeat; background-size: cover; background-position: center;">
-                            <div>
-                                <h3 class="fw-bold mb-1">Pãezinhos Frescos Assados</h3>
-                                <p class="mb-4">Ganhe até <span class="fw-bold">25%</span> de desconto</p>
-                                <a href="#!" class="btn btn-dark">Comprar Agora</a>
+                        <div>
+                            <div class="py-10 px-8 rounded"
+                                style="background:url({{ asset('images/banner/grocery-banner-2.jpg') }})no-repeat; background-size: cover; background-position: center;">
+                                <div>
+                                    <h3 class="fw-bold mb-1">Pãezinhos Frescos Assados</h3>
+                                    <p class="mb-4">Ganhe até <span class="fw-bold">25%</span> de desconto</p>
+                                    <a href="#!" class="btn btn-dark">Comprar Agora</a>
+                                </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
         </div>
     </section>
 
@@ -325,17 +363,32 @@
             <div class="table-responsive-xl pb-6">
                 <div class="row row-cols-lg-4 row-cols-1 row-cols-md-2 g-4 flex-nowrap">
                     <div class="col">
-                        <div class=" pt-8 px-6 px-xl-8 rounded"
-                            style="background:url({{ asset('images/banner/banner-deal.jpg') }})no-repeat; background-size: cover; height: 470px;">
-                            <div>
-                                <h3 class="fw-bold text-white">100% Orgânico
-                                    Grãos de Café.
-                                </h3>
-                                <p class="text-white">Obtenha a melhor oferta antes do encerramento.</p>
-                                <a href="#!" class="btn btn-primary">Comprar Agora <i
-                                        class="feather-icon icon-arrow-right ms-1"></i></a>
+                        @if(isset($dealBanner) && $dealBanner)
+                            @if($dealBanner->link_url)
+                                <a href="{{ $dealBanner->link_url }}" class="d-block pt-8 px-6 px-xl-8 rounded text-white text-decoration-none"
+                                    target="{{ $dealBanner->link_target }}" rel="noopener"
+                                    style="background:url({{ $dealBanner->image_url ?? asset('images/placeholder.jpg') }})no-repeat; background-size: cover; height: 470px;">
+                                    <span class="visually-hidden">Banner</span>
+                                </a>
+                            @else
+                                <div class="pt-8 px-6 px-xl-8 rounded"
+                                    style="background:url({{ $dealBanner->image_url ?? asset('images/placeholder.jpg') }})no-repeat; background-size: cover; height: 470px;">
+                                    <span class="visually-hidden">Banner</span>
+                                </div>
+                            @endif
+                        @else
+                            <div class=" pt-8 px-6 px-xl-8 rounded"
+                                style="background:url({{ asset('images/banner/banner-deal.jpg') }})no-repeat; background-size: cover; height: 470px;">
+                                <div>
+                                    <h3 class="fw-bold text-white">100% Orgânico
+                                        Grãos de Café.
+                                    </h3>
+                                    <p class="text-white">Obtenha a melhor oferta antes do encerramento.</p>
+                                    <a href="#!" class="btn btn-primary">Comprar Agora <i
+                                            class="feather-icon icon-arrow-right ms-1"></i></a>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
 
                     @forelse ($topSellingProducts as $topSellingProduct)
@@ -481,6 +534,8 @@
 
 </main>
 
+@endsection
+
 @section('footer')
 
 <script src="{{ asset('js/vendors/countdown.js') }}"></script>
@@ -534,7 +589,5 @@
 
 
 </script>
-
-@endsection
 
 @endsection

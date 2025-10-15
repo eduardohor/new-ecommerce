@@ -67,8 +67,7 @@
                         <li class="list-inline-item text-muted">Siga-nos</li>
                         <li class="list-inline-item me-1">
                             @php $facebook = optional($storeInfo)->facebook_url; @endphp
-                            <a href="{{ $facebook ?? '#!' }}" class="btn btn-xs btn-social btn-icon" @if($facebook)
-                                target="_blank" rel="noopener noreferrer" @endif> <svg xmlns="http://www.w3.org/2000/svg"
+                            <a href="{{ $facebook ?? '#!' }}" class="btn btn-xs btn-social btn-icon" @if($facebook) target="_blank" rel="noopener noreferrer" @endif> <svg xmlns="http://www.w3.org/2000/svg"
                                     width="16" height="16" fill="currentColor" class="bi bi-facebook"
                                     viewBox="0 0 16 16">
                                     <path
@@ -77,8 +76,7 @@
                         </li>
                         <li class="list-inline-item me-1">
                             @php $xUrl = optional($storeInfo)->x_url; @endphp
-                            <a href="{{ $xUrl ?? '#!' }}" class="btn btn-xs btn-social btn-icon" @if($xUrl) target="_blank"
-                                rel="noopener noreferrer" @endif> <svg xmlns="http://www.w3.org/2000/svg"
+                            <a href="{{ $xUrl ?? '#!' }}" class="btn btn-xs btn-social btn-icon" @if($xUrl) target="_blank" rel="noopener noreferrer" @endif> <svg xmlns="http://www.w3.org/2000/svg"
                                     width="16" height="16" fill="currentColor" class="bi bi-twitter-x"
                                     viewBox="0 0 16 16">
                                     <path
@@ -87,8 +85,7 @@
                         </li>
                         <li class="list-inline-item">
                             @php $instagram = optional($storeInfo)->instagram_url; @endphp
-                            <a href="{{ $instagram ?? '#!' }}" class="btn btn-xs btn-social btn-icon" @if($instagram)
-                                target="_blank" rel="noopener noreferrer" @endif><svg xmlns="http://www.w3.org/2000/svg"
+                            <a href="{{ $instagram ?? '#!' }}" class="btn btn-xs btn-social btn-icon" @if($instagram) target="_blank" rel="noopener noreferrer" @endif><svg xmlns="http://www.w3.org/2000/svg"
                                     width="16" height="16" fill="currentColor" class="bi bi-instagram"
                                     viewBox="0 0 16 16">
                                     <path

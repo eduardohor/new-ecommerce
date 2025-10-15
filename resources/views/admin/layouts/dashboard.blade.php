@@ -246,6 +246,15 @@
                 </a>
               </li>
               <li class="nav-item ">
+                <a class="nav-link {{ request()->routeIs('banners.index') || request()->routeIs('banners.create') || request()->routeIs('banners.edit') ? 'active' : '' }}"
+                  href="{{ route('banners.index') }}">
+                  <div class="d-flex align-items-center">
+                    <span class="nav-link-icon"> <i class="bi bi-image"></i></span>
+                    <span class="nav-link-text">Banners</span>
+                  </div>
+                </a>
+              </li>
+              <li class="nav-item ">
                 <a class="nav-link {{ request()->routeIs('products.index') || request()->routeIs('products.create') || request()->routeIs('products.edit') ? 'active' : '' }}"
                   href="{{ route('products.index') }}">
                   <div class="d-flex align-items-center">

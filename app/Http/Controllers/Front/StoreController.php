@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductStatistic;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -29,10 +29,27 @@ class StoreController extends Controller
             ->latest()
             ->take(10)
             ->get();
+
+        $heroBanners = Banner::active()
+            ->forPosition('home.hero')
+            ->orderBy('sort_order')
+            ->get();
+
+        $featuredBanners = Banner::active()
+            ->forPosition('home.featured')
+            ->orderBy('sort_order')
+            ->take(2)
+            ->get();
+
+        $dealBanner = Banner::active()
+            ->forPosition('home.deal')
+            ->orderBy('sort_order')
+            ->first();
+
         $popularProducts = $this->product->getPopularProducts();
         $topSellingProducts = $this->product->getTopSellingProducts();
 
-        return view('front.store.home', compact('categories', 'popularProducts', 'topSellingProducts'));
+        return view('front.store.home', compact('categories', 'heroBanners', 'featuredBanners', 'dealBanner', 'popularProducts', 'topSellingProducts'));
     }
 
     public function store(Request $request): View
@@ -46,7 +63,12 @@ class StoreController extends Controller
             $orderBy
         );
 
-        return view('front.store.store', compact('categories', 'products'));
+        $sidebarBanner = Banner::active()
+            ->forPosition('store.sidebar')
+            ->orderBy('sort_order')
+            ->first();
+
+        return view('front.store.store', compact('categories', 'products', 'sidebarBanner'));
     }
 
     public function wishlist(): View
