@@ -71,8 +71,30 @@ Já possui uma conta? <a href="{{ route('login') }}">Entrar</a>
               </div>
 
               <!-- text -->
-              <p><small>Ao continuar, você concorda com nossos<a href="#!"> Termos de Serviço</a> e <a href="#!">Plítica
-                    de Privacidade</a></small></p>
+              @php
+              $termsPage = optional($institutionalPagesBySlug)['termos-e-condicoes'];
+              $privacyPage = optional($institutionalPagesBySlug)['politica-de-privacidade'];
+              @endphp
+              <p>
+                <small>
+                  Ao continuar, você concorda com nossos
+                  @if ($termsPage)
+                    <a href="{{ route('institutional.show', $termsPage->slug) }}" target="_blank" rel="noopener noreferrer">
+                      {{ $termsPage->title }}
+                    </a>
+                  @else
+                    Termos e Condições
+                  @endif
+                  e
+                  @if ($privacyPage)
+                    <a href="{{ route('institutional.show', $privacyPage->slug) }}" target="_blank" rel="noopener noreferrer">
+                      {{ $privacyPage->title }}
+                    </a>
+                  @else
+                    Política de Privacidade
+                  @endif
+                </small>
+              </p>
             </div>
           </form>
         </div>

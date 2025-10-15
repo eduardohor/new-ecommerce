@@ -5,6 +5,7 @@ use App\Http\Controllers\Front\AddressController;
 use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\CheckoutController;
 use App\Http\Controllers\Front\FavoriteController;
+use App\Http\Controllers\Front\InstitutionalPageController;
 use App\Http\Controllers\Front\StoreController;
 use App\Http\Controllers\Front\NotificationController;
 use App\Http\Controllers\Front\OrderController;
@@ -22,6 +23,7 @@ Route::get('/loja', [StoreController::class, 'store'])->name('store');
 Route::get('/lista-de-desejos', [StoreController::class, 'wishlist'])->name('wishlist');
 Route::get('/pagina-nao-encontrada', [StoreController::class, 'pageNotFound'])->name('page-not-found');
 Route::get('/adicionar-view-produto/{productId}', [StoreController::class, 'addViewProduct'])->name('add-view-product');
+Route::get('/institucional/{slug}', [InstitutionalPageController::class, 'show'])->name('institutional.show');
 
 Route::get('categoria/{slug}', [CategoryController::class, 'categoryProducts'])->name('category-products');
 

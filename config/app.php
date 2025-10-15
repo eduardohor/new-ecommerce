@@ -171,7 +171,8 @@ return [
         App\Providers\ViewServiceProvider::class,
         App\Providers\CartServiceProvider::class,
         App\Providers\StoreInfoServiceProvider::class,
-        App\Providers\FavoriteProvider::class
+        App\Providers\FavoriteProvider::class,
+        App\Providers\InstitutionalPageServiceProvider::class,
     ])->toArray(),
 
     /*

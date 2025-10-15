@@ -19,10 +19,16 @@ $(document).ready(function () {
             placeholder: "Digite aqui...",
         });
 
+        var $hiddenInput = $("#description");
+
+        if ($hiddenInput.length && $hiddenInput.val()) {
+            quill.root.innerHTML = $hiddenInput.val();
+        }
+
         // Adicionar um ouvinte de evento para o envio do formulário
         $("form").submit(function () {
             var descriptionValue = quill.root.innerHTML;
-            $("#description").val(descriptionValue);
+            $hiddenInput.val(descriptionValue);
         });
     }
 });

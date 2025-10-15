@@ -4,11 +4,15 @@
             <div class="col-md-4">
                 <h4 class="mb-4">Links Rápidos</h4>
                 <ul class="nav flex-column">
-                    <!-- list -->
-                    <li class="nav-item mb-2"><a href="#!" class="nav-link">Termos e Condições</a></li>
-                    <li class="nav-item mb-2"><a href="#!" class="nav-link">Política de Privacidade</a></li>
-                    <li class="nav-item mb-2"><a href="#!" class="nav-link">Política de Cookies</a></li>
-                    <li class="nav-item mb-2"><a href="#!" class="nav-link">Sobre Nós</a></li>
+                    @forelse ($institutionalPages ?? [] as $institutionalPage)
+                    <li class="nav-item mb-2">
+                        <a href="{{ route('institutional.show', $institutionalPage->slug) }}" class="nav-link">
+                            {{ $institutionalPage->title }}
+                        </a>
+                    </li>
+                    @empty
+                    <li class="nav-item mb-2"><span class="nav-link text-muted">Nenhuma página disponível.</span></li>
+                    @endforelse
                 </ul>
             </div>
             <div class="col-md-4">

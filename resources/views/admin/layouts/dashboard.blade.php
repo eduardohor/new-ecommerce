@@ -371,6 +371,15 @@
                   </div>
                 </a>
               </li>
+              <li class="nav-item ">
+                <a class="nav-link {{ request()->routeIs('institutional-pages.*') ? 'active' : ''}}"
+                    href="{{ route('institutional-pages.index') }}">
+                  <div class="d-flex align-items-center">
+                    <span class="nav-link-icon"> <i class="bi bi-file-text"></i></span>
+                    <span class="nav-link-text">Páginas Institucionais</span>
+                  </div>
+                </a>
+              </li>
 
               {{-- <li class="nav-item mt-6 mb-3">
                 <span class="nav-label">Suporte</span> <span class="badge bg-light-info text-dark-info">Em breve</span>
