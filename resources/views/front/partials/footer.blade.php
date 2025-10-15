@@ -1,4 +1,4 @@
-<footer class="footer pt-5 pb-3">
+<footer class="footer pt-5 pb-1">
     <div class="container">
         <div class="row py-3">
             <div class="col-md-4">
@@ -97,6 +97,26 @@
                                 </svg></a>
                         </li>
                     </ul>
+                </div>
+            </div>
+
+            <div class="row mt-3 align-items-center">
+                <div class="col-md-6">
+                    <div class="d-flex flex-column flex-md-row gap-2 gap-md-4 small text-muted">
+                        <span>As imagens são meramente ilustrativas.</span>
+                        <span><i class="bi bi-shield-lock-fill me-1"></i>Site seguro.</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex flex-column flex-md-row gap-2 gap-md-4 small text-muted justify-content-md-end text-md-end">
+                        <span>Ao continuar, você aceita o uso de cookies.</span>
+                        <a href="#!" class="text-reset text-decoration-none" data-cookie-consent="manage">
+                            Gerenciar cookies
+                        </a>
+                        <a href="https://eft.com.br" target="_blank" rel="noopener noreferrer" class="text-reset text-decoration-none">
+                            Crie sua loja conosco: EFT Internet
+                        </a>
+                    </div>
                 </div>
             </div>
 

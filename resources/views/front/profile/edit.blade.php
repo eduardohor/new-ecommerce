@@ -117,10 +117,7 @@
       <!-- heading -->
       <h5 class="mb-4">Deletar Conta</h5>
       <p class="mb-2">Gostaria de excluir sua conta?</p>
-      <p class="mb-5">Esta conta contém 12 pedidos. Excluir sua conta removerá todos os detalhes do pedido associados
-        a
-        ela.
-      </p>
+      <p class="mb-5">Esta conta pode conter pedidos. Excluir sua conta removerá todos os detalhes de pedidos associados a ela.</p>
       <!-- btn -->
       <a href="#" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirm-user-deletion">Quero
         excluir minha
