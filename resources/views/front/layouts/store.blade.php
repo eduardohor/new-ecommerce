@@ -42,6 +42,48 @@
         .cookie-consent-banner .btn {
             min-width: 140px;
         }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            background-color: #25d366;
+            color: #ffffff;
+            box-shadow: 0 0.5rem 1.5rem rgba(37, 211, 102, 0.35);
+            z-index: 1090;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+
+        .whatsapp-float:hover,
+        .whatsapp-float:focus {
+            background-color: #1ebe5d;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 0.75rem 1.6rem rgba(37, 211, 102, 0.45);
+        }
+
+        .whatsapp-float i {
+            font-size: 1.75rem;
+        }
+
+        @media (max-width: 575.98px) {
+            .whatsapp-float {
+                bottom: 1rem;
+                right: 1rem;
+                width: 3rem;
+                height: 3rem;
+            }
+
+            .whatsapp-float i {
+                font-size: 1.5rem;
+            }
+        }
     </style>
 
     @yield('head')
@@ -59,6 +101,7 @@
     @yield('content')
 
     @include('front.partials.footer')
+    @include('front.partials.whatsapp-button')
 
     <div id="cookie-consent-banner" class="cookie-consent-banner" role="region" aria-label="Aviso de cookies">
         <div class="container">
