@@ -123,7 +123,7 @@
                                                         <input type="button" value="-"
                                                             class="button-minus btn btn-sm subtractButton">
                                                     </form>
-                                                    <input type="number" step="1" max="10"
+                                                    <input type="number" min="1" step="1" max="10"
                                                         value="{{ $cartProduct->quantity }}" name="quantity"
                                                         class="quantity-field form-control-sm form-input " readonly>
                                                     <form action="{{ route('cart.add-product-to-cart') }}"

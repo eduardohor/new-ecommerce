@@ -630,7 +630,7 @@
                                 <div class="input-group input-spinner  ">
                                     <input type="button" value="-" class="button-minus  btn  btn-sm "
                                         data-field="quantity">
-                                    <input type="number" step="1" max="10" value="1" name="quantity"
+                                    <input type="number" min="1" step="1" max="10" value="1" name="quantity"
                                         class="quantity-field form-control-sm form-input   ">
                                     <input type="button" value="+" class="button-plus btn btn-sm "
                                         data-field="quantity">
@@ -685,7 +685,7 @@
                                 <div class="input-group input-spinner  ">
                                     <input type="button" value="-" class="button-minus  btn  btn-sm "
                                         data-field="quantity">
-                                    <input type="number" step="1" max="10" value="1" name="quantity"
+                                    <input type="number" min="1" step="1" max="10" value="1" name="quantity"
                                         class="quantity-field form-control-sm form-input   ">
                                     <input type="button" value="+" class="button-plus btn btn-sm "
                                         data-field="quantity">
@@ -740,7 +740,7 @@
                                 <div class="input-group input-spinner  ">
                                     <input type="button" value="-" class="button-minus  btn  btn-sm "
                                         data-field="quantity">
-                                    <input type="number" step="1" max="10" value="1" name="quantity"
+                                    <input type="number" min="1" step="1" max="10" value="1" name="quantity"
                                         class="quantity-field form-control-sm form-input   ">
                                     <input type="button" value="+" class="button-plus btn btn-sm "
                                         data-field="quantity">
@@ -795,7 +795,7 @@
                                 <div class="input-group input-spinner  ">
                                     <input type="button" value="-" class="button-minus  btn  btn-sm "
                                         data-field="quantity">
-                                    <input type="number" step="1" max="10" value="1" name="quantity"
+                                    <input type="number" min="1" step="1" max="10" value="1" name="quantity"
                                         class="quantity-field form-control-sm form-input   ">
                                     <input type="button" value="+" class="button-plus btn btn-sm "
                                         data-field="quantity">
@@ -849,7 +849,7 @@
                                 <div class="input-group input-spinner  ">
                                     <input type="button" value="-" class="button-minus  btn  btn-sm "
                                         data-field="quantity">
-                                    <input type="number" step="1" max="10" value="1" name="quantity"
+                                    <input type="number" min="1" step="1" max="10" value="1" name="quantity"
                                         class="quantity-field form-control-sm form-input   ">
                                     <input type="button" value="+" class="button-plus btn btn-sm "
                                         data-field="quantity">

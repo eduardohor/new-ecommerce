@@ -57,11 +57,16 @@ class CartController extends Controller
     public function addProductToCart(Request $request): RedirectResponse
     {
         try {
+            $validated = $request->validate([
+                'product_id' => ['required', 'integer', 'exists:products,id'],
+                'quantity' => ['required', 'integer', 'min:1'],
+            ]);
+
             DB::beginTransaction();
 
             $user = Auth::user();
-            $product = $this->product->find($request->product_id);
-            $quantity = $request->quantity;
+            $product = $this->product->find($validated['product_id']);
+            $quantity = (int) $validated['quantity'];
             // Verifica se a oferta está ativa antes de aplicar o preço promocional
             $price = $product->hasActiveSale() ? $product->sale_price : $product->regular_price;
 
@@ -89,13 +94,19 @@ class CartController extends Controller
     public function deleteProductToCart(Request $request): RedirectResponse
     {
         try {
+            $validated = $request->validate([
+                'product_id' => ['required', 'integer', 'exists:products,id'],
+                'quantity' => ['required_without:remove_all', 'nullable', 'integer', 'min:1'],
+                'remove_all' => ['nullable', 'boolean'],
+            ]);
+
             DB::beginTransaction();
 
             $user = Auth::user();
-            $product = $this->product->find($request->product_id);
-            $quantity = $request->quantity;
+            $product = $this->product->find($validated['product_id']);
+            $quantity = isset($validated['quantity']) ? (int) $validated['quantity'] : null;
             $price = $product->sale_price > 0 ? $product->sale_price : $product->regular_price;
-            $removeAll = $request->remove_all;
+            $removeAll = $request->boolean('remove_all', false);
 
             $cart = $this->getCart($user);
             $cartProduct = $this->getCartProduct($cart, $product);
