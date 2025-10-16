@@ -63,6 +63,12 @@ class WebhookController extends Controller
                             ConfirmPaymentEmailJob::dispatch($emailUser, $order->order_number);
                         }
                     }
+
+                    if ($data['action'] == 'payment.created') {
+                        // Lógica para pagamento criado, se necessário
+                        Log::info('Pagamento criado.', ['transaction_id' => $transactionId]);
+                    }
+
                     break;
 
                 default:
