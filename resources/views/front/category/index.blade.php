@@ -256,19 +256,24 @@
 
                             </div> --}}
                             <div class="mb-8 position-relative">
-                                <!-- Banner Design -->
-                                <!-- Banner Content -->
-                                <div class="position-absolute p-5 py-8">
-                                    <h3 class="mb-0">Frutas frescas </h3>
-                                    <p>Ganhe até 25% de desconto</p>
-                                    <a href="#" class="btn btn-dark">Comprar Agora<i
-                                            class="feather-icon icon-arrow-right ms-1"></i></a>
-                                </div>
-                                <!-- Banner Content -->
-                                <!-- Banner Image -->
-                                <!-- img --><img src="{{ asset('images/banner/assortment-citrus-fruits.png') }}" alt=""
-                                    class="img-fluid rounded ">
-                                <!-- Banner Image -->
+                                @if(isset($sidebarBanner) && $sidebarBanner)
+                                    @if($sidebarBanner->link_url)
+                                        <a href="{{ $sidebarBanner->link_url }}" class="d-block" target="{{ $sidebarBanner->link_target }}" rel="noopener">
+                                            <img src="{{ $sidebarBanner->image_url ?? asset('images/placeholder.jpg') }}" alt="Banner" class="img-fluid rounded">
+                                        </a>
+                                    @else
+                                        <img src="{{ $sidebarBanner->image_url ?? asset('images/placeholder.jpg') }}" alt="Banner" class="img-fluid rounded">
+                                    @endif
+                                @else
+                                    <div class="position-absolute p-5 py-8">
+                                        <h3 class="mb-0">Frutas frescas </h3>
+                                        <p>Ganhe até 25% de desconto</p>
+                                        <a href="#" class="btn btn-dark">Comprar Agora<i
+                                                class="feather-icon icon-arrow-right ms-1"></i></a>
+                                    </div>
+                                    <img src="{{ asset('images/banner/assortment-citrus-fruits.png') }}" alt=""
+                                        class="img-fluid rounded ">
+                                @endif
                             </div>
                         </div>
                     </div>

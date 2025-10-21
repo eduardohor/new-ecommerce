@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Banner;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -25,6 +26,11 @@ class CategoryController extends Controller
         $nestedCategories = $this->category->nestedCategories();
         $products = $category->productsWithFilters($perPage, $orderBy);
 
-        return view('front.category.index', compact('category', 'nestedCategories', 'products'));
+        $sidebarBanner = Banner::active()
+            ->forPosition('store.sidebar')
+            ->orderBy('sort_order')
+            ->first();
+
+        return view('front.category.index', compact('category', 'nestedCategories', 'products', 'sidebarBanner'));
     }
 }

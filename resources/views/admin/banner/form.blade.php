@@ -47,6 +47,7 @@
                 </div>
 
                 <div class="form-check form-switch mb-3">
+                    <input type="hidden" name="is_active" value="0">
                     <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" {{ old('is_active', $banner->is_active ?? true) ? 'checked' : '' }}>
                     <label class="form-check-label" for="is_active">Ativo</label>
                     @error('is_active')<span class="text-danger">{{ $message }}</span>@enderror
