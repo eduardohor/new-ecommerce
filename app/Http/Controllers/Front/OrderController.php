@@ -104,6 +104,9 @@ class OrderController extends Controller
                 'shipping_price' => $shipping['shipping_price'],
                 'shipping_minimum_term' => $shipping['shipping_minimum_term'],
                 'shipping_deadline' => $shipping['shipping_deadline'],
+                'pickup_address' => $shipping['pickup_address'] ?? null,
+                'pickup_hours' => $shipping['pickup_hours'] ?? null,
+                'pickup_instructions' => $shipping['pickup_instructions'] ?? null,
                 'status' => 'pending'
             ]);
 

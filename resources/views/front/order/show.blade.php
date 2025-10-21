@@ -77,6 +77,40 @@ Carbon::setLocale('pt_BR');
                                     </div>
                                 </div>
                             </div>
+                            @if ($order->shipping)
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="border rounded-3 p-4 bg-light">
+                                        @if ($order->shipping->shipping_option === 'pickup')
+                                            <h6 class="mb-2">Retirada na Loja</h6>
+                                            <p class="mb-0 small text-muted">
+                                                <span class="d-block text-success fw-semibold">Sem custo de frete</span>
+                                                @if ($order->shipping->pickup_address)
+                                                    <span class="d-block">Endereço: {{ $order->shipping->pickup_address }}</span>
+                                                @endif
+                                                @if ($order->shipping->pickup_hours)
+                                                    <span class="d-block">Horário para retirada: {{ $order->shipping->pickup_hours }}</span>
+                                                @endif
+                                                @if ($order->shipping->pickup_instructions)
+                                                    <span class="d-block">{{ $order->shipping->pickup_instructions }}</span>
+                                                @endif
+                                            </p>
+                                        @else
+                                            <h6 class="mb-2">Detalhes do Envio</h6>
+                                            <p class="mb-0 small text-muted">
+                                                <span class="d-block">Transportadora: {{ $order->shipping->shipping_company }}</span>
+                                                <span class="d-block">Serviço: {{ $order->shipping->shipping_type }}</span>
+                                                <span class="d-block">Prazo estimado: {{ $order->shipping->shipping_minimum_term }} a {{ $order->shipping->shipping_deadline }} dias</span>
+                                                <span class="d-block">Valor do frete: R${{ number_format($order->shipping->shipping_price, 2, ',', '.') }}</span>
+                                                @if ($order->shipping->tracking_number)
+                                                    <span class="d-block">Código de rastreio: {{ $order->shipping->tracking_number }}</span>
+                                                @endif
+                                            </p>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
                         </div>
                     </div>
                     <div class="row">

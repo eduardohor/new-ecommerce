@@ -14,17 +14,37 @@
             </td>
         </tr>
 
-        <!-- Detalhes do Código de Rastreio -->
-        <tr>
-            <td style="padding: 20px;">
-                <p style="color: #555555; font-size: 16px;">
-                    <strong>Código de Rastreio:</strong> {{ $order->shipping->tracking_number }}<br>
-                    <strong>Transportadora:</strong> {{  $order->shipping->shipping_company }}<br>
-                    <strong> Prazo Estimado:</strong> {{  $order->shipping->shipping_minimum_term }} a {{  $order->shipping->shipping_deadline }} dias<br><br>
-                    Você pode acompanhar o status do seu pedido utilizando o código de rastreio fornecido. Para isso, visite o site da transportadora ou utilize a plataforma de rastreamento correspondente.
-                </p>
-            </td>
-        </tr>
+        @if ($order->shipping->shipping_option === 'pickup')
+            <tr>
+                <td style="padding: 20px;">
+                    <p style="color: #555555; font-size: 16px;">
+                        Seu pedido Nº {{ $order->order_number }} está pronto para retirada na loja.
+                        @if ($order->shipping->pickup_address)
+                            <br><strong>Endereço:</strong> {{ $order->shipping->pickup_address }}
+                        @endif
+                        @if ($order->shipping->pickup_hours)
+                            <br><strong>Horário:</strong> {{ $order->shipping->pickup_hours }}
+                        @endif
+                        @if ($order->shipping->pickup_instructions)
+                            <br>{{ $order->shipping->pickup_instructions }}
+                        @endif
+                        <br><br>Apresente este e-mail no balcão para facilitar a retirada.
+                    </p>
+                </td>
+            </tr>
+        @else
+            <!-- Detalhes do Código de Rastreio -->
+            <tr>
+                <td style="padding: 20px;">
+                    <p style="color: #555555; font-size: 16px;">
+                        <strong>Código de Rastreio:</strong> {{ $order->shipping->tracking_number }}<br>
+                        <strong>Transportadora:</strong> {{  $order->shipping->shipping_company }}<br>
+                        <strong>Prazo Estimado:</strong> {{  $order->shipping->shipping_minimum_term }} a {{  $order->shipping->shipping_deadline }} dias<br><br>
+                        Você pode acompanhar o status do seu pedido utilizando o código de rastreio fornecido. Para isso, visite o site da transportadora ou utilize a plataforma de rastreamento correspondente.
+                    </p>
+                </td>
+            </tr>
+        @endif
 
         <!-- Contatos -->
         @if($storeInfo)

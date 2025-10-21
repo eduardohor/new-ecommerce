@@ -26,6 +26,7 @@ Carbon::setLocale('pt_BR');
                         <th>Data</th>
                         <th>Pagamento</th>
                         <th>Status</th>
+                        <th>Entrega</th>
                         <th>Valor</th>
 
                         <th></th>
@@ -67,6 +68,13 @@ Carbon::setLocale('pt_BR');
                             <span class="badge bg-primary">Concluído</span>
                             @elseif($order->status == 'cancelled')
                             <span class="badge bg-danger">Cancelado</span>
+                            @endif
+                        </td>
+                        <td class="align-middle border-top-0">
+                            @if ($order->shipping && $order->shipping->shipping_option === 'pickup')
+                                <span class="badge bg-success-subtle text-success">Retirada na loja</span>
+                            @else
+                                <span class="badge bg-secondary-subtle text-secondary">Entrega</span>
                             @endif
                         </td>
                         <td class="align-middle border-top-0">

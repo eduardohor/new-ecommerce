@@ -319,12 +319,27 @@
         }
     });
 
+    function escapeHtml(text) {
+        if (typeof text !== 'string') {
+            return '';
+        }
+
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;',
+        };
+
+        return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+
     //Atualiza a Entrega de acordo com o endereco selecionado
     function updateShipping(zipCode) {
         $('#loadingOverlay').show();
 
         const cartId = "{{ $cart->id }}";
-
         const cleanedZipCode = zipCode.replace(/\D/g, '');
 
         $.ajax({
@@ -339,36 +354,72 @@
                 "X-CSRF-TOKEN": "{{ csrf_token() }}"
             },
             success: function(response) {
-                const { data } = response;
+                const options = response.data || [];
 
-                const hasError = data.every(frete => frete.error !== undefined);
+                let hasAvailableOption = false;
 
-                if (hasError) {
+                const radioHtml = options.map(function(option) {
+                    const isPickup = option.is_pickup === true;
+                    const company = option.company && option.company.name ? option.company.name : (isPickup ? 'Retirada na loja' : 'Entrega');
+                    const tipoFrete = option.name || (isPickup ? 'Retirada na loja' : 'Convencional');
+                    const identifier = option.identifier || (company + '-' + tipoFrete).replace(/\s+/g, '-').toLowerCase();
+                    const customPrice = parseFloat(option.custom_price !== undefined && option.custom_price !== null ? option.custom_price : 0) || 0;
+                    const prazoEstimadoMin = option.delivery_range && option.delivery_range.min ? option.delivery_range.min : 0;
+                    const prazoEstimadoMax = option.delivery_range && option.delivery_range.max ? option.delivery_range.max : 0;
+                    const pickupAddress = option.pickup_address || '';
+                    const pickupHours = option.pickup_hours || '';
+                    const pickupInstructions = option.pickup_instructions || '';
+                    const pickupAddressAttr = encodeURIComponent(pickupAddress);
+                    const pickupHoursAttr = encodeURIComponent(pickupHours);
+                    const pickupInstructionsAttr = encodeURIComponent(pickupInstructions);
+
+                    const priceLabel = customPrice.toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    });
+
+                    let labelBody = `
+                        ${escapeHtml(company)} (${escapeHtml(tipoFrete)}): <strong>${priceLabel}</strong><br>
+                        Prazo Estimado: ${prazoEstimadoMin} a ${prazoEstimadoMax} dias
+                    `;
+
+                    if (isPickup) {
+                        labelBody = `
+                            <strong>Retirada na loja</strong><br>
+                            ${pickupAddress ? `<span class="small text-muted d-block">Endereço: ${escapeHtml(pickupAddress)}</span>` : ''}
+                            ${pickupHours ? `<span class="small text-muted d-block">Horário: ${escapeHtml(pickupHours)}</span>` : ''}
+                            ${pickupInstructions ? `<span class="small text-muted d-block">${escapeHtml(pickupInstructions)}</span>` : ''}
+                            <span class="small text-success d-block mt-1">Sem custo de frete</span>
+                        `;
+                    }
+
+                    hasAvailableOption = true;
+
+                    return `
+                        <div class="form-check ${isPickup ? 'shipping-option-pickup' : ''}">
+                            <input class="form-check-input" type="radio" name="shipping_option" id="${escapeHtml(identifier)}"
+                                value="${escapeHtml(identifier)}"
+                                data-company="${escapeHtml(company)}"
+                                data-type="${escapeHtml(tipoFrete)}"
+                                data-price="${customPrice}"
+                                data-prazo-min="${prazoEstimadoMin}"
+                                data-prazo-max="${prazoEstimadoMax}"
+                                data-pickup="${isPickup ? 1 : 0}"
+                                data-pickup-address="${escapeHtml(pickupAddressAttr)}"
+                                data-pickup-hours="${escapeHtml(pickupHoursAttr)}"
+                                data-pickup-instructions="${escapeHtml(pickupInstructionsAttr)}">
+                            <label class="form-check-label" for="${escapeHtml(identifier)}">
+                                ${labelBody}
+                            </label>
+                        </div>
+                    `;
+                }).join('');
+
+                if (!hasAvailableOption) {
                     $("#mensagemErro").show();
+                    $('.shipping').html('');
                 } else {
-                    const radioHtml = data
-                        .filter(frete => !frete.error)
-                        .map(frete => {
-                            const company = frete.company.name;
-                            const tipoFrete = frete.name;
-                            const customPrice = frete.custom_price;
-                            const prazoEstimadoMin = frete.delivery_range.min;
-                            const prazoEstimadoMax = frete.delivery_range.max;
-                            const shippingType = company + tipoFrete
-
-                            return `
-                                <div class='form-check'>
-                                    <input class='form-check-input' type='radio' name='shipping_option' id='${tipoFrete}Radio'
-                                        data-company='${company}' data-type='${tipoFrete}' data-price='${customPrice}' data-prazo-min='${prazoEstimadoMin}' data-prazo-max='${prazoEstimadoMax}'
-                                        value='${customPrice}'>
-                                    <label class='form-check-label' for='${tipoFrete}Radio'>
-                                        ${company} (${tipoFrete}): <strong>R$ ${customPrice}</strong> <br> Prazo Estimado: ${prazoEstimadoMin} a ${prazoEstimadoMax} dias
-                                    </label>
-                                </div>
-                            `;
-                        })
-                        .join('');
-
+                    $("#mensagemErro").hide();
                     $('.shipping').html(radioHtml);
                 }
 
@@ -380,7 +431,8 @@
                 $('#loadingOverlay').hide();
             },
             complete: function() {
-                $('#subtotal').text("R$ {{ number_format($cart->total_amount, 2, ',', '.') }}");
+                const subtotalBase = parseFloat("{{ number_format($cart->total_amount, 2, '.', '') }}");
+                $('#subtotal').text((subtotalBase || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }));
             }
         });
     }
@@ -407,10 +459,11 @@
 
     // Atualiza a forma de envio e o subtotal ao selecionar uma opção de frete
     $(document).on('change', 'input[name="shipping_option"]', function() {
-        const selectedPrice = parseFloat($(this).val());
-        const subtotalAmount = parseFloat($('#subtotalItem').text().replace('R$', '').replace('.', '').replace(',', '.'));
+        const selectedPrice = parseFloat($(this).data('price')) || 0;
+        const subtotalAmount = parseFloat($('#subtotalItem').text().replace(/R\$|\s/g, '').replace(/\./g, '').replace(',', '.')) || 0;
         const finalAmount = subtotalAmount + selectedPrice;
-        $('#subtotal').text(`R$ ${finalAmount.toFixed(2).replace('.', ',')}`);
+        $('#subtotal').text(finalAmount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }));
+        $('#error-message').hide();
     });
 
     // Configura o evento de envio do formulário
@@ -421,42 +474,77 @@
             const selectedShippingOption = $('input[name="shipping_option"]:checked');
 
             if (selectedShippingOption.length) {
-                const company = selectedShippingOption.data('company');
-                const type = selectedShippingOption.data('type');
-                const price = selectedShippingOption.data('price');
-                const prazoMin = selectedShippingOption.data('prazo-min');
-                const prazoMax = selectedShippingOption.data('prazo-max');
-
                 const form = $(this);
-                $('<input>').attr({
+                const company = selectedShippingOption.data('company') || '';
+                const type = selectedShippingOption.data('type') || '';
+                const price = parseFloat(selectedShippingOption.data('price')) || 0;
+                const prazoMin = parseInt(selectedShippingOption.data('prazo-min')) || 0;
+                const prazoMax = parseInt(selectedShippingOption.data('prazo-max')) || 0;
+                const isPickup = Number(selectedShippingOption.data('pickup')) === 1;
+                const pickupAddressAttr = selectedShippingOption.data('pickup-address') || '';
+                const pickupHoursAttr = selectedShippingOption.data('pickup-hours') || '';
+                const pickupInstructionsAttr = selectedShippingOption.data('pickup-instructions') || '';
+                const pickupAddress = pickupAddressAttr ? decodeURIComponent(pickupAddressAttr) : '';
+                const pickupHours = pickupHoursAttr ? decodeURIComponent(pickupHoursAttr) : '';
+                const pickupInstructions = pickupInstructionsAttr ? decodeURIComponent(pickupInstructionsAttr) : '';
+
+                form.find('input[name="shipping_company"], input[name="shipping_type"], input[name="shipping_price"], input[name="shipping_minimum_term"], input[name="shipping_deadline"], input[name="pickup_address"], input[name="pickup_hours"], input[name="pickup_instructions"], input[name="is_pickup"]').remove();
+
+                $('<input>', {
                     type: 'hidden',
                     name: 'shipping_company',
                     value: company
                 }).appendTo(form);
 
-                $('<input>').attr({
+                $('<input>', {
                     type: 'hidden',
                     name: 'shipping_type',
                     value: type
                 }).appendTo(form);
 
-                $('<input>').attr({
+                $('<input>', {
                     type: 'hidden',
                     name: 'shipping_price',
-                    value: price
+                    value: price.toFixed(2)
                 }).appendTo(form);
 
-                $('<input>').attr({
+                $('<input>', {
                     type: 'hidden',
                     name: 'shipping_minimum_term',
                     value: prazoMin
                 }).appendTo(form);
 
-                $('<input>').attr({
+                $('<input>', {
                     type: 'hidden',
                     name: 'shipping_deadline',
                     value: prazoMax
                 }).appendTo(form);
+
+                $('<input>', {
+                    type: 'hidden',
+                    name: 'is_pickup',
+                    value: isPickup ? 1 : 0
+                }).appendTo(form);
+
+                if (isPickup) {
+                    $('<input>', {
+                        type: 'hidden',
+                        name: 'pickup_address',
+                        value: pickupAddress
+                    }).appendTo(form);
+
+                    $('<input>', {
+                        type: 'hidden',
+                        name: 'pickup_hours',
+                        value: pickupHours
+                    }).appendTo(form);
+
+                    $('<input>', {
+                        type: 'hidden',
+                        name: 'pickup_instructions',
+                        value: pickupInstructions
+                    }).appendTo(form);
+                }
             }
         }
     });

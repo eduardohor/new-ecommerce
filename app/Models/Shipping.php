@@ -18,6 +18,9 @@ class Shipping extends Model
         'shipping_price',
         'shipping_minimum_term',
         'shipping_deadline',
+        'pickup_address',
+        'pickup_hours',
+        'pickup_instructions',
         'tracking_number',
         'status'
     ];

@@ -265,6 +265,27 @@
                                             <div class="fw-bold" id="shippingCost">R$ {{
                                                 number_format($shipping['shipping_price'], 2, ',', '.') }}</div>
                                         </div>
+                                        <div class="mb-2">
+                                            @if (!empty($shipping['is_pickup']))
+                                                <span class="small fw-semibold text-success d-block">Retirada na loja</span>
+                                                @if (!empty($shipping['pickup_address']))
+                                                    <span class="small text-muted d-block">Endereço: {{ $shipping['pickup_address'] }}</span>
+                                                @endif
+                                                @if (!empty($shipping['pickup_hours']))
+                                                    <span class="small text-muted d-block">Horário: {{ $shipping['pickup_hours'] }}</span>
+                                                @endif
+                                                @if (!empty($shipping['pickup_instructions']))
+                                                    <span class="small text-muted d-block">{{ $shipping['pickup_instructions'] }}</span>
+                                                @endif
+                                            @else
+                                                <span class="small text-muted d-block">
+                                                    {{ $shipping['shipping_company'] }} ({{ $shipping['shipping_type'] }})
+                                                </span>
+                                                <span class="small text-muted d-block">
+                                                    Prazo estimado: {{ $shipping['shipping_minimum_term'] }} a {{ $shipping['shipping_deadline'] }} dias
+                                                </span>
+                                            @endif
+                                        </div>
                                         {{-- <div class="d-flex align-items-center justify-content-between mb-2">
                                             <div class="text-dark">Desconto</div>
                                             <div class="fw-bold text-success" id="discountAmount">- R$ {{

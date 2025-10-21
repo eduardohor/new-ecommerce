@@ -25,6 +25,9 @@ class StoreInfoRequest extends FormRequest
             'name' => 'required|string|max:255',
             'logo' => 'nullable|image|max:2048|dimensions:width=170,height=40',
             'address' => 'nullable|string|max:255',
+            'pickup_address' => 'nullable|string|max:255',
+            'pickup_hours' => 'nullable|string|max:255',
+            'pickup_instructions' => 'nullable|string|max:500',
             'zip_code' => 'required|max:10',
             'city' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
@@ -53,6 +56,13 @@ class StoreInfoRequest extends FormRequest
 
             'address.string' => 'O campo endereço deve ser um texto.',
             'address.max' => 'O campo endereço não pode exceder 255 caracteres.',
+
+            'pickup_address.string' => 'O campo endereço de retirada deve ser um texto.',
+            'pickup_address.max' => 'O campo endereço de retirada não pode exceder 255 caracteres.',
+            'pickup_hours.string' => 'O campo horário de retirada deve ser um texto.',
+            'pickup_hours.max' => 'O campo horário de retirada não pode exceder 255 caracteres.',
+            'pickup_instructions.string' => 'O campo instruções de retirada deve ser um texto.',
+            'pickup_instructions.max' => 'O campo instruções de retirada não pode exceder 500 caracteres.',
 
             'zip_code.required' => 'O campo CEP é obrigatório.',
             'zip_code.max' => 'O campo CEP não pode exceder 10 caracteres.',

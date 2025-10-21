@@ -130,6 +130,27 @@ Carbon::setLocale('pt_BR');
                                     </div>
                                 </div>
                             </div>
+                            @if ($order->shipping && $order->shipping->shipping_option === 'pickup')
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="border rounded-3 p-4 bg-light">
+                                            <h6 class="mb-2">Retirada na Loja</h6>
+                                            <p class="mb-0 small text-muted">
+                                                <span class="d-block text-success fw-semibold">Sem custo de frete</span>
+                                                @if ($order->shipping->pickup_address)
+                                                    <span class="d-block">Endereço: {{ $order->shipping->pickup_address }}</span>
+                                                @endif
+                                                @if ($order->shipping->pickup_hours)
+                                                    <span class="d-block">Horário para retirada: {{ $order->shipping->pickup_hours }}</span>
+                                                @endif
+                                                @if ($order->shipping->pickup_instructions)
+                                                    <span class="d-block">{{ $order->shipping->pickup_instructions }}</span>
+                                                @endif
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                     <div class="row">
@@ -201,7 +222,11 @@ Carbon::setLocale('pt_BR');
                                             <td class="border-bottom-0 pb-0"></td>
                                             <td colspan="1" class="fw-medium text-dark ">
                                                 <!-- text -->
-                                                Frete
+                                                @if ($order->shipping && $order->shipping->shipping_option === 'pickup')
+                                                    Retirada na loja
+                                                @else
+                                                    Frete
+                                                @endif
                                             </td>
                                             <td class="fw-medium text-dark  ">
                                                 <!-- text -->

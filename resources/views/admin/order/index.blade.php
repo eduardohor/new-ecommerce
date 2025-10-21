@@ -80,6 +80,7 @@ Carbon::setLocale('pt_BR');
                                         <th>Data</th>
                                         <th>Pagamento</th>
                                         <th>Status</th>
+                                        <th>Entrega</th>
                                         <th>Valor</th>
                                         <th></th>
                                     </tr>
@@ -124,6 +125,13 @@ Carbon::setLocale('pt_BR');
                                             <span class="badge bg-light-primary text-dark-primary">Concluído</span>
                                             @elseif($order->status == 'cancelled')
                                             <span class="badge bg-light-danger text-dark-danger">Cancelado</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($order->shipping && $order->shipping->shipping_option === 'pickup')
+                                                <span class="badge bg-success-subtle text-success">Retirada</span>
+                                            @else
+                                                <span class="badge bg-secondary-subtle text-secondary">Entrega</span>
                                             @endif
                                         </td>
                                         <td>R$ {{ number_format($order->total_amount, 2, ',', '.') }}</td>

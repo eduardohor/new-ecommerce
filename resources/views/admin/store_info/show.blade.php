@@ -195,6 +195,39 @@ Carbon::setLocale('pt_BR');
                                     </div>
 
                                     <div class="col-12">
+                                        <h3 class="mb-0 mt-4 h6">Retirada na Loja</h3>
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <label class="form-label" for="pickup_address">Endereço para retirada</label>
+                                        <input type="text" class="form-control" id="pickup_address" name="pickup_address"
+                                            placeholder="Endereço onde o cliente retira o pedido"
+                                            value="{{ old('pickup_address', $storeInfo->pickup_address ?? '') }}" />
+                                        @error('pickup_address')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <label class="form-label" for="pickup_hours">Horário de retirada</label>
+                                        <input type="text" class="form-control" id="pickup_hours" name="pickup_hours"
+                                            placeholder="Ex.: Seg a Sex, 9h às 18h"
+                                            value="{{ old('pickup_hours', $storeInfo->pickup_hours ?? '') }}" />
+                                        @error('pickup_hours')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label class="form-label" for="pickup_instructions">Instruções adicionais</label>
+                                        <textarea class="form-control" id="pickup_instructions" name="pickup_instructions"
+                                            rows="3" placeholder="Informações complementares para retirada">{{ old('pickup_instructions', $storeInfo->pickup_instructions ?? '') }}</textarea>
+                                        @error('pickup_instructions')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-12">
                                         <h3 class="mb-0 mt-4 h6">Redes Sociais</h3>
                                     </div>
 

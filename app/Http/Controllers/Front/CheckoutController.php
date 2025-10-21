@@ -7,13 +7,8 @@ use App\Models\Address;
 use App\Models\Cart;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use MercadoPago\Client\MercadoPagoClient;
-use MercadoPago\Client\Preference\PreferenceClient;
 use MercadoPago\MercadoPagoConfig;
-use MercadoPago\Resources\Preference;
-use MercadoPago\Resources\Preference\Item;
 
 class CheckoutController extends Controller
 {
@@ -30,7 +25,7 @@ class CheckoutController extends Controller
         MercadoPagoConfig::setAccessToken(config('mercadopago.access_token'));
 
         // Define o ambiente de execução
-        $environment = config('mercadopago.environment') === 'local'
+        $environment = config('mercadopago.environment') === 'LOCAL'
             ? MercadoPagoConfig::LOCAL
             : MercadoPagoConfig::SERVER;
 
@@ -55,12 +50,16 @@ class CheckoutController extends Controller
     {
         $shipping = $request->validate([
             'address_id' => 'required|integer',
-            'shipping_option' => 'required|numeric',
+            'shipping_option' => 'required|string',
             'shipping_company' => 'required|string',
             'shipping_type' => 'required|string',
             'shipping_price' => 'required|numeric',
             'shipping_minimum_term' => 'required|numeric',
             'shipping_deadline' => 'required|numeric',
+            'is_pickup' => 'required|boolean',
+            'pickup_address' => 'nullable|string|max:255',
+            'pickup_hours' => 'nullable|string|max:255',
+            'pickup_instructions' => 'nullable|string|max:500',
         ]);
 
         session()->put('shipping', $shipping);

@@ -123,6 +123,32 @@ Carbon::setLocale('pt_BR');
                 </table>
             </td>
         </tr>
+        @if ($order->shipping)
+        <tr>
+            <td style="padding: 20px;">
+                @if ($order->shipping->shipping_option === 'pickup')
+                    <p style="margin: 0; color: #555555; font-size: 15px;">
+                        <strong>Retirada na loja:</strong> seu pedido estará disponível para retirada sem custo de frete.
+                        @if ($order->shipping->pickup_address)
+                            <br>Endereço: {{ $order->shipping->pickup_address }}
+                        @endif
+                        @if ($order->shipping->pickup_hours)
+                            <br>Horário de atendimento: {{ $order->shipping->pickup_hours }}
+                        @endif
+                        @if ($order->shipping->pickup_instructions)
+                            <br>{{ $order->shipping->pickup_instructions }}
+                        @endif
+                    </p>
+                @else
+                    <p style="margin: 0; color: #555555; font-size: 15px;">
+                        <strong>Entrega:</strong> {{ $order->shipping->shipping_company }} ({{ $order->shipping->shipping_type }}).<br>
+                        Valor do frete: R${{ number_format($order->shipping->shipping_price, 2, ',', '.') }}<br>
+                        Prazo estimado: {{ $order->shipping->shipping_minimum_term }} a {{ $order->shipping->shipping_deadline }} dias.
+                    </p>
+                @endif
+            </td>
+        </tr>
+        @endif
 
         <!-- Footer -->
         <tr>

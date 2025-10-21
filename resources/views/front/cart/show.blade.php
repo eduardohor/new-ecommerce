@@ -306,6 +306,22 @@
 
         });
 
+        function escapeHtml(text) {
+            if (typeof text !== 'string') {
+                return '';
+            }
+
+            var map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            };
+
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
         function calculateShipping(event) {
             event.preventDefault();
             var formData = $("#freteForm").serialize();
@@ -329,45 +345,76 @@
                         return;
                     }
 
-                    var allErrors = response.data.every(function(frete) {
-                        return frete.error !== undefined;
-                    });
+                    var options = response.data || [];
+                    var hasAvailableOption = false;
+                    var radioHtml = "";
 
-                    if (allErrors) {
-                        $("#mensagemErro").show();
-                    } else {
-                        var radioHtml = "";
+                    options.forEach(function(option) {
+                        if (option.error !== undefined) {
+                            return;
+                        }
 
-                        response.data.forEach(function(frete, index) {
-                            if (!frete.error) {
-                                var company = frete.company.name;
-                                var picture = frete.company.picture;
-                                var tipoFrete = frete.name;
-                                var customPrice = frete.custom_price;
-                                var prazoEstimadoMin = frete.delivery_range.min;
-                                var prazoEstimadoMax = frete.delivery_range.max;
+                        var isPickup = option.is_pickup === true;
+                        var company = option.company && option.company.name ? option.company.name : (isPickup ? 'Retirada na loja' : 'Entrega');
+                        var tipoFrete = option.name || (isPickup ? 'Retirada na loja' : 'Convencional');
+                        var identifier = option.identifier || (company + '-' + tipoFrete).replace(/\s+/g, '-').toLowerCase();
+                        var customPrice = parseFloat(option.custom_price !== undefined && option.custom_price !== null ? option.custom_price : 0) || 0;
+                        var prazoEstimadoMin = option.delivery_range && option.delivery_range.min ? option.delivery_range.min : 0;
+                        var prazoEstimadoMax = option.delivery_range && option.delivery_range.max ? option.delivery_range.max : 0;
+                        var pickupAddress = option.pickup_address || '';
+                        var pickupHours = option.pickup_hours || '';
+                        var pickupInstructions = option.pickup_instructions || '';
+                        var pickupAddressAttr = encodeURIComponent(pickupAddress);
+                        var pickupHoursAttr = encodeURIComponent(pickupHours);
+                        var pickupInstructionsAttr = encodeURIComponent(pickupInstructions);
+                        var picture = option.company && option.company.picture ? option.company.picture : null;
 
-                                radioHtml += "<div class='form-check'>";
-                                radioHtml +=
-                                    "<input class='form-check-input' type='radio' name='freteRadio' id='" +
-                                    tipoFrete + "Radio' value='" + tipoFrete + "' data-custom-price='" +
-                                    customPrice + "'>";
-                                radioHtml += "<label class='form-check-label' for='" + tipoFrete +
-                                    "Radio'>" + "<img style='width:60px;' src='" + picture + "' alt='" +
-                                    company + "'>" + " " + company + "(" + tipoFrete + "): R$ " +
-                                    customPrice + " - Prazo Estimado: " + prazoEstimadoMin + " a " +
-                                    prazoEstimadoMax + " dias</label>";
-                                radioHtml += "</div>";
-                            }
+                        var priceLabel = customPrice.toLocaleString('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
                         });
 
+                        radioHtml += "<div class='form-check " + (isPickup ? "shipping-option-pickup" : "") + "'>";
+                        radioHtml += "<input class='form-check-input' type='radio' name='freteRadio' id='" + escapeHtml(identifier) + "Radio' value='" + escapeHtml(identifier) + "' data-custom-price='" + customPrice + "' data-pickup='" + (isPickup ? 1 : 0) + "' data-pickup-address='" + escapeHtml(pickupAddressAttr) + "' data-pickup-hours='" + escapeHtml(pickupHoursAttr) + "' data-pickup-instructions='" + escapeHtml(pickupInstructionsAttr) + "'>";
+                        radioHtml += "<label class='form-check-label' for='" + escapeHtml(identifier) + "Radio'>";
+
+                        if (!isPickup && picture) {
+                            radioHtml += "<img style='width:60px;' src='" + escapeHtml(picture) + "' alt='" + escapeHtml(company) + "' class='me-2'>";
+                        }
+
+                        if (isPickup) {
+                            radioHtml += "<strong>Retirada na loja</strong>";
+                            if (pickupAddress) {
+                                radioHtml += "<br><span class='small text-muted d-block'>Endereço: " + escapeHtml(pickupAddress) + "</span>";
+                            }
+                            if (pickupHours) {
+                                radioHtml += "<span class='small text-muted d-block'>Horário: " + escapeHtml(pickupHours) + "</span>";
+                            }
+                            if (pickupInstructions) {
+                                radioHtml += "<span class='small text-muted d-block'>" + escapeHtml(pickupInstructions) + "</span>";
+                            }
+                            radioHtml += "<span class='small text-success d-block mt-1'>Sem custo de frete</span>";
+                        } else {
+                            radioHtml += escapeHtml(company) + " (" + escapeHtml(tipoFrete) + "): <strong>" + priceLabel + "</strong>";
+                            radioHtml += "<span class='d-block small text-muted'>Prazo Estimado: " + prazoEstimadoMin + " a " + prazoEstimadoMax + " dias</span>";
+                        }
+
+                        radioHtml += "</label></div>";
+                        hasAvailableOption = true;
+                    });
+
+                    if (!hasAvailableOption) {
+                        $("#mensagemErro").show();
+                        $("#resultadoFrete").hide().html('');
+                    } else {
+                        $("#mensagemErro").hide();
                         $("#resultadoFrete").html(radioHtml).show();
                     }
 
                     $("#loadingIndicator").hide();
                     $("#calcularButton").attr("disabled", false);
 
-                    $('input[name="freteRadio"]').change(function() {
+                    $('input[name="freteRadio"]').off('change').on('change', function() {
                         displayTotalCost();
                     });
                 },

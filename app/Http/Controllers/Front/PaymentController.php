@@ -7,14 +7,11 @@ use App\Models\Address;
 use App\Models\Cart;
 use App\Models\Order;
 use Carbon\Carbon;
-use Illuminate\Console\View\Components\Info;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use MercadoPago\Client\Common\RequestOptions;
 use MercadoPago\Client\Payment\PaymentClient;
-use MercadoPago\Client\Preference\PreferenceClient;
 use MercadoPago\Exceptions\MPApiException;
 use MercadoPago\MercadoPagoConfig;
 
@@ -165,9 +162,11 @@ class PaymentController extends Controller
 
             return $payment;
         } catch (MPApiException $e) {
-            Log::error('API Error: ', [
-                'exception' => $e->getMessage(),
-                'status_code' => $e->getCode()
+            Log::error('API Error', [
+                'message'   => $e->getMessage(),
+                'status'    => $e->getCode(),
+                'response'  => $e->getApiResponse(),
+                'request'   => $dataPayment,
             ]);
             throw $e;
         } catch (\Exception $e) {
