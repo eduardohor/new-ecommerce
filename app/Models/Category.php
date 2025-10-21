@@ -42,6 +42,19 @@ class Category extends Model
         return $this->with('children')->whereNull('parent_id')->get();
     }
 
+    public function descendantCategoryIds(): array
+    {
+        $this->loadMissing('children');
+
+        $ids = [$this->id];
+
+        foreach ($this->children as $child) {
+            $ids = array_merge($ids, $child->descendantCategoryIds());
+        }
+
+        return array_values(array_unique($ids));
+    }
+
     public function getCategories(string $search = null): LengthAwarePaginator
     {
         $categories = $this->where(function ($query) use ($search) {
@@ -57,14 +70,16 @@ class Category extends Model
 
     public function productsWithFilters(int $perPage = 32, string $orderBy = "updated_at")
     {
-        $products = $this->products()
-            ->with(['statistics', 'productImages'])
+        $categoryIds = $this->descendantCategoryIds();
+
+        $products = Product::with(['statistics', 'productImages'])
+            ->whereIn('category_id', $categoryIds)
             ->where('status', 'ativo');
 
         switch ($orderBy) {
             case 'highlighted':
                 // Ordenar os produtos com base nas visualizações
-                $products = $products->leftJoin('product_statistics', 'products.id', '=', 'product_statistics.product_id')
+                $products->leftJoin('product_statistics', 'products.id', '=', 'product_statistics.product_id')
                     ->orderByDesc('product_statistics.views')
                     ->select('products.*');
                 break;
@@ -89,7 +104,7 @@ class Category extends Model
 
             default:
                 // Ordenar os produtos com base nas visualizações
-                $products = $products->leftJoin('product_statistics', 'products.id', '=', 'product_statistics.product_id')
+                $products->leftJoin('product_statistics', 'products.id', '=', 'product_statistics.product_id')
                     ->orderByDesc('product_statistics.views')
                     ->select('products.*');
                 break;
