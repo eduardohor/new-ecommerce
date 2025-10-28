@@ -81,6 +81,18 @@
                                     <div class="col-lg-6 col-12">
                                         <div>
                                             <!-- input -->
+                                            <label for="creatCustomerDocument" class="form-label">Documento<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control document" id="creatCustomerDocument"
+                                                placeholder="CPF ou CNPJ" name="document" @error('document') autofocus
+                                                @enderror value="{{ old('document') }}" required />
+                                            @error('document')
+                                            <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-12">
+                                        <div>
+                                            <!-- input -->
                                             <label for="creatCustomerPhone" class="form-label">Número</label>
                                             <input type="text" class="form-control phone" id="creatCustomerPhone"
                                                 placeholder="Número do Telefone" name="phone" @error('phone') autofocus

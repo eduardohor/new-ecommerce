@@ -47,6 +47,14 @@ Já possui uma conta? <a href="{{ route('login') }}">Entrar</a>
               </div>
 
               <div class="col-12">
+                <input type="text" name="document" class="form-control document @error('document') is-invalid @enderror"
+                  placeholder="CPF ou CNPJ" value="{{ old('document') }}" required autocomplete="off">
+                @error('document')
+                <span class="text-danger">{{ $message }}</span>
+                @enderror
+              </div>
+
+              <div class="col-12">
                 <div class="password-field position-relative">
                   <input type="password" name="password" id="password" placeholder="Senha"
                     class="form-control @error('password') is-invalid @enderror" required autocomplete="new-password">
@@ -104,5 +112,11 @@ Já possui uma conta? <a href="{{ route('login') }}">Entrar</a>
 
   </section>
 </main>
+
+@endsection
+
+@section('scripts')
+
+<script src="{{ asset('js/custom.js') }}"></script>
 
 @endsection

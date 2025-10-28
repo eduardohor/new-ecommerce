@@ -60,6 +60,15 @@
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+                                <div class="mb-3">
+                                    <label class="form-label">CPF ou CNPJ</label>
+                                    <input type="text" name="document" class="form-control document"
+                                        placeholder="Digite o CPF ou CNPJ" value="{{ old('document', $user->document) }}"
+                                        required autocomplete="off" @error('document') autofocus @enderror>
+                                    @error('document')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
                                 <!-- input -->
                                 <div class="mb-5">
                                     <label class="form-label">Telefone</label>

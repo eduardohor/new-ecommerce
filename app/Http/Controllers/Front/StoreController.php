@@ -55,8 +55,14 @@ class StoreController extends Controller
     public function store(Request $request): View
     {
         $categories = $this->category->nestedCategories();
-        $perPage = $request->input('per_page', 32);
+        $perPage = $request->integer('per_page');
+        $perPage = $perPage && $perPage > 0 ? $perPage : 32;
+
         $orderBy = $request->input('order_by', 'updated_at');
+        $allowedOrderings = ['highlighted', 'low_to_high', 'high_to_low', 'release_date', 'updated_at'];
+        if (!in_array($orderBy, $allowedOrderings, true)) {
+            $orderBy = 'updated_at';
+        }
 
         $products = $this->product->allProductsWithFilters(
             $perPage,

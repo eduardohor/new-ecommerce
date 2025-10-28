@@ -8,6 +8,21 @@ use Illuminate\Validation\Rule;
 
 class ProfileUpdateRequest extends FormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if ($this->filled('document')) {
+            $this->merge([
+                'document' => preg_replace('/\D+/', '', $this->input('document'))
+            ]);
+        }
+
+        if ($this->filled('phone')) {
+            $this->merge([
+                'phone' => preg_replace('/\D+/', '', $this->input('phone'))
+            ]);
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -19,6 +34,7 @@ class ProfileUpdateRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
             'phone' => ['nullable', 'string', 'max:20'],
+            'document' => ['required', 'string', 'regex:/^(\\d{11}|\\d{14})$/', Rule::unique(User::class)->ignore($this->user()->id)],
         ];
     }
 
@@ -35,6 +51,9 @@ class ProfileUpdateRequest extends FormRequest
             'email.unique' => 'O e-mail fornecido já está em uso.',
             'phone.string' => 'O campo telefone deve ser uma string.',
             'phone.max' => 'O campo telefone não pode ter mais de :max caracteres.',
+            'document.required' => 'Informe o CPF ou CNPJ.',
+            'document.regex' => 'Informe um CPF (11 dígitos) ou CNPJ (14 dígitos) válido.',
+            'document.unique' => 'Este CPF/CNPJ já está cadastrado.',
 
         ];
     }

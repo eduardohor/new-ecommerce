@@ -48,15 +48,16 @@
 
  <!-- Javascript-->
   <!-- Libs JS -->
-  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../assets/libs/simplebar/dist/simplebar.min.js"></script>
+  <script src="{{ asset('libs/jquery/dist/jquery.min.js') }}"></script>
+  <script src="{{ asset('libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset('libs/simplebar/dist/simplebar.min.js') }}"></script>
 
   <!-- Theme JS -->
-  <script src="../assets/js/theme.min.js"></script>
-    <script src="../assets/js/vendors/password.js"></script>
-
-
+  <script src="{{ asset('js/theme.min.js') }}"></script>
+  <script src="{{ asset('js/vendors/password.js') }}"></script>
+  <script src="{{ asset('libs/inputmask/dist/jquery.inputmask.min.js') }}"></script>
+  <script src="{{ asset('js/custom.js') }}"></script>
+  @stack('scripts')
 
 
   </body>

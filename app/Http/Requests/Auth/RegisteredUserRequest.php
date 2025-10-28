@@ -9,6 +9,21 @@ use Illuminate\Validation\Rules;
 
 class RegisteredUserRequest extends FormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if ($this->filled('document')) {
+            $this->merge([
+                'document' => preg_replace('/\D+/', '', $this->input('document'))
+            ]);
+        }
+
+        if ($this->filled('phone')) {
+            $this->merge([
+                'phone' => preg_replace('/\D+/', '', $this->input('phone'))
+            ]);
+        }
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -29,6 +44,7 @@ class RegisteredUserRequest extends FormRequest
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'phone' => ['nullable', 'string', 'max:20'],
+            'document' => ['required', 'string', 'regex:/^(\\d{11}|\\d{14})$/', 'unique:' . User::class],
         ];
     }
 
@@ -47,6 +63,9 @@ class RegisteredUserRequest extends FormRequest
             'password.min' => 'O campo de senha deve ter pelo menos 8 caracteres.',
             'phone.string' => 'O campo telefone deve ser uma string.',
             'phone.max' => 'O campo telefone não pode ter mais de :max caracteres.',
+            'document.required' => 'Informe o CPF ou CNPJ.',
+            'document.regex' => 'Informe um CPF (11 dígitos) ou CNPJ (14 dígitos) válido.',
+            'document.unique' => 'Este CPF/CNPJ já está cadastrado.',
         ];
     }
 }

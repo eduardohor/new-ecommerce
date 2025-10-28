@@ -26,6 +26,11 @@ class CustomerRequest extends FormRequest
                 'phone' => str_replace(['(', ')', ' ', '-'], '', $this->phone),
             ]);
         }
+        if ($this->filled('document')) {
+            $this->merge([
+                'document' => preg_replace('/\D+/', '', $this->document),
+            ]);
+        }
 
         if ($this->filled('birthdate')) {
             $this->merge([
@@ -46,10 +51,15 @@ class CustomerRequest extends FormRequest
             'email' => [
                 'required',
                 'email',
-                Rule::unique('users', 'email')->ignore($this->route('id')), // Ignora o e-mail do próprio usuário
+                Rule::unique('users', 'email')->ignore($this->route('id')),
+            ],
+            'document' => [
+                'required',
+                'regex:/^(\d{11}|\d{14})$/',
+                Rule::unique('users', 'document')->ignore($this->route('id')),
             ],
             'phone' => 'max:15',
-            'profile_image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:1024', // 1MB max
+            'profile_image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:1024',
         ];
     }
 
@@ -68,6 +78,10 @@ class CustomerRequest extends FormRequest
             'email.required' => 'O e-mail é obrigatório.',
             'email.email' => 'O e-mail deve ser um endereço de e-mail válido.',
             'email.unique' => 'O e-mail já está em uso.',
+
+            'document.required' => 'O CPF ou CNPJ é obrigatório.',
+            'document.regex' => 'Informe um CPF (11 dígitos) ou CNPJ (14 dígitos) válido.',
+            'document.unique' => 'Este CPF/CNPJ já está cadastrado.',
 
             'phone.max' => 'O número de telefone não pode ter mais de 15 caracteres.',
 

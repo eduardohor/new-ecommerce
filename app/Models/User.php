@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
+        'document',
         'is_admin',
         'is_super_admin',
         'profile_image',

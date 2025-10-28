@@ -3,6 +3,12 @@ $(document).ready(function () {
     $("#phone").inputmask("(99) 99999-9999");
     $(".phone").inputmask("(99) 99999-9999");
 
+    // Formatar CPF/CNPJ
+    $(".document").inputmask({
+        mask: ["999.999.999-99", "99.999.999/9999-99"],
+        keepStatic: true
+    });
+
     // Formatar CNPJ
     $(".cnpj").inputmask("99.999.999/9999-99");
 

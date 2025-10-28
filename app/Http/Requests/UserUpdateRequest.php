@@ -10,6 +10,21 @@ use Illuminate\Validation\Rules;
 
 class UserUpdateRequest extends FormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if ($this->filled('document')) {
+            $this->merge([
+                'document' => preg_replace('/\D+/', '', $this->input('document'))
+            ]);
+        }
+
+        if ($this->filled('phone')) {
+            $this->merge([
+                'phone' => preg_replace('/\D+/', '', $this->input('phone'))
+            ]);
+        }
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -31,6 +46,7 @@ class UserUpdateRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($id)],
             'phone' => ['nullable', 'string', 'max:20'],
+            'document' => ['required', 'string', 'regex:/^(\\d{11}|\\d{14})$/', Rule::unique(User::class)->ignore($id)],
         ];
     }
 
@@ -46,6 +62,9 @@ class UserUpdateRequest extends FormRequest
             'email.unique' => 'O e-mail já está sendo utilizado.',
             'phone.string' => 'O campo telefone deve ser uma string.',
             'phone.max' => 'O campo telefone não pode ter mais de :max caracteres.',
+            'document.required' => 'Informe o CPF ou CNPJ.',
+            'document.regex' => 'Informe um CPF (11 dígitos) ou CNPJ (14 dígitos) válido.',
+            'document.unique' => 'Este CPF/CNPJ já está cadastrado.',
         ];
     }
 }

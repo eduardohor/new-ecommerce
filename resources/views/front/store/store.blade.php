@@ -454,8 +454,8 @@
                             $products->total() }} resultados</span>
                         <nav class="mt-2 mt-md-0">
                             {{ $products->appends([
-                            'order_by' => request()->get('order_by', ''),
-                            'per_page' => request()->get('per_page', '')
+                                'order_by' => request()->get('order_by', 'highlighted'),
+                                'per_page' => request()->get('per_page', 32)
                             ])->links() }}
                         </nav>
                     </div>

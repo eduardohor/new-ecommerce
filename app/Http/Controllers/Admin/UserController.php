@@ -82,6 +82,7 @@ class UserController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
+                'document' => $request->document,
                 'is_super_admin' => $is_super_admin
             ]);
 

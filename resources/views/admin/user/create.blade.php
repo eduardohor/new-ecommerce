@@ -71,6 +71,15 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
+                                    <label class="form-label">CPF ou CNPJ</label>
+                                    <input type="text" name="document" class="form-control document"
+                                        placeholder="Digite o CPF ou CNPJ" value="{{ old('document') }}" required
+                                        autocomplete="off" @error('document') autofocus @enderror>
+                                    @error('document')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
                                     <label class="form-label">Telefone</label>
                                     <input type="text" id="phone" name="phone" class="form-control"
                                         placeholder="Número do telefone" value="{{ old('phone') }}" autocomplete="phone"
