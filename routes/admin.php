@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
@@ -61,6 +62,10 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('/clientes/endereco/{id}', [CustomerController::class, 'updateAddress'])->name('customers.update.address');
     Route::delete('/clientes/endereco/{id}', [CustomerController::class, 'destroyAddress'])->name('customers.destroy.address');
     Route::post('/clientes/{id}/pagamento', [CustomerController::class, 'storePayment'])->name('customers.store.payment');
+
+    Route::resource('/cupons', CouponController::class)
+      ->parameters(['cupons' => 'coupon'])
+      ->names('coupons');
 
     Route::get('/loja-info', [StoreInfoController::class, 'show'])->name('store.info.show');
     Route::post('/loja-info', [StoreInfoController::class, 'saveOrUpdate'])->name('store.info.saveOrUpdate');

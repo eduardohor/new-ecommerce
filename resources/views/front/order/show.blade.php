@@ -73,7 +73,16 @@ Carbon::setLocale('pt_BR');
                                             Data do Pedido: <span class="text-dark">{{
                                                 $order->created_at->translatedFormat('d M Y') }}</span><br>
                                             Total do Pedido: <span class="text-dark">R${{
-                                                number_format($order->total_amount, 2, ',', '.') }}</span></p>
+                                                number_format($order->total_amount, 2, ',', '.') }}</span>
+                                            @if ($order->coupon_discount > 0)
+                                                <br>
+                                                @if ($order->coupon_code)
+                                                    Cupom: <span class="text-success">{{ $order->coupon_code }}</span>
+                                                @endif
+                                                <br>Desconto aplicado: <span class="text-success">- R${{
+                                                    number_format($order->coupon_discount, 2, ',', '.') }}</span>
+                                            @endif
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -177,6 +186,18 @@ Carbon::setLocale('pt_BR');
                                                 R${{ number_format($subtotal, 2, ',', '.') }}
                                             </td>
                                         </tr>
+                                        @if ($order->coupon_discount > 0)
+                                        <tr>
+                                            <td class="border-bottom-0 pb-0"></td>
+                                            <td class="border-bottom-0 pb-0"></td>
+                                            <td colspan="1" class="fw-medium text-dark">
+                                                Desconto @if ($order->coupon_code) (Cupom {{ $order->coupon_code }}) @endif
+                                            </td>
+                                            <td class="fw-medium text-success">
+                                                - R${{ number_format($order->coupon_discount, 2, ',', '.') }}
+                                            </td>
+                                        </tr>
+                                        @endif
                                         <tr>
                                             <td class="border-bottom-0 pb-0"></td>
                                             <td class="border-bottom-0 pb-0"></td>

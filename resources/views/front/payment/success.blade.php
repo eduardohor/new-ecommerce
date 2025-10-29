@@ -75,8 +75,18 @@
                         <p>DATA <br> <span class="fw-bold">{{ $order->formatted_created_at }}</span></p>
                     </div>
                     <div class="col-md-3">
-                        <p>TOTAL <br> <span class="fw-bold">R${{ number_format($order->total_amount, 2, ',', '.')
-                                }}</span></p>
+                        <p>TOTAL <br> <span class="fw-bold">R${{ number_format($order->total_amount, 2, ',', '.') }}</span>
+                            @if ($order->coupon_discount > 0)
+                                <span class="d-block small text-success mt-1">
+                                    @if ($order->coupon_code)
+                                        Cupom {{ $order->coupon_code }} aplicado
+                                    @else
+                                        Desconto aplicado
+                                    @endif
+                                     (- R$ {{ number_format($order->coupon_discount, 2, ',', '.') }})
+                                </span>
+                            @endif
+                        </p>
                     </div>
                     <div class="col-md-3">
                         <p>MÉTODO DE PAGAMENTO <br> <span class="fw-bold">{{ $order->payment_type }}</span></p>
@@ -99,7 +109,7 @@
                         @foreach ($order->products as $product)
                         <tr>
                             <td>{{ $product->title }} x {{ $product->pivot->quantity }}</td>
-                            <td>R$ {{ number_format($product->pivot->price, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($product->pivot->price * $product->pivot->quantity, 2, ',', '.') }}</td>
                             <!-- Use o preço da tabela pivô -->
                         </tr>
                         @endforeach
@@ -107,9 +117,17 @@
                             <td class="fw-bold">Subtotal</td>
                             <td>R$ {{ number_format($subtotal, 2, ',', '.') }}</td>
                         </tr>
+                        @if ($discount > 0)
+                        <tr>
+                            <td class="fw-bold">
+                                Desconto @if ($order->coupon_code) (Cupom {{ $order->coupon_code }}) @endif
+                            </td>
+                            <td class="fw-bold text-success">- R$ {{ number_format($discount, 2, ',', '.') }}</td>
+                        </tr>
+                        @endif
                         <tr>
                             <td class="fw-bold">Entrega</td>
-                            <td>R$ {{number_format($order->shipping->shipping_price, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($shippingPrice, 2, ',', '.') }}</td>
                         </tr>
                         <tr>
                             <td class="fw-bold">Método de Pagamento</td>
@@ -117,7 +135,7 @@
                         </tr>
                         <tr>
                             <td class="fw-bold">Total</td>
-                            <td>R$ {{ number_format($total + $order->shipping->shipping_price, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($grandTotal, 2, ',', '.') }}</td>
                         </tr>
                     </tbody>
                 </table>

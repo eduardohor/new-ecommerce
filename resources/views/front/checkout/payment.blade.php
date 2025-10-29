@@ -260,6 +260,19 @@
                                             <div class="fw-bold" id="subtotalItem">R$ {{
                                                 number_format($cart->total_amount, 2, ',', '.') }}</div>
                                         </div>
+                                        @if ($discount > 0)
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <div>
+                                                Desconto
+                                                @if ($appliedCoupon)
+                                                <small class="text-muted d-block">Cupom {{ $appliedCoupon->code }}</small>
+                                                @endif
+                                            </div>
+                                            <div class="fw-semibold text-success">
+                                                - R$ {{ number_format($discount, 2, ',', '.') }}
+                                            </div>
+                                        </div>
+                                        @endif
                                         <div class="d-flex align-items-center justify-content-between mb-2">
                                             <div>Frete</div>
                                             <div class="fw-bold" id="shippingCost">R$ {{
@@ -294,7 +307,7 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="text-dark">Total</div>
                                             <div class="fw-bold" id="totalAmount">R$ {{
-                                                number_format($cart->total_amount + $shipping['shipping_price'], 2,
+                                                number_format($finalSubtotal + $shipping['shipping_price'], 2,
                                                 ',', '.') }}</div>
                                         </div>
                                     </li>
@@ -357,6 +370,9 @@
     const publicKey = @json($mercadoPagoPublicKey);
 
     const userEmail = "{{ auth()->user()->email }}";
+    const subtotalWithDiscount = Number(@json($finalSubtotal));
+    const shippingPrice = Number(@json((float) $shipping['shipping_price']));
+    const orderTotal = parseFloat((subtotalWithDiscount + shippingPrice).toFixed(2));
 
     const mp = new MercadoPago(publicKey, {
         locale: 'pt'
@@ -364,12 +380,11 @@
 
     const bricksBuilder = mp.bricks();
     const renderPaymentBrick = async (bricksBuilder) => {
-        const amount = "{{ $cart->total_amount + + $shipping['shipping_price']}}"
         const paymentProcessUrl = "{{ route('payment.process') }}";
 
         const settings = {
         initialization: {
-            amount: amount,
+            amount: orderTotal,
             preferenceId: "<PREFERENCE_ID>",
             payer: {
                 email: userEmail
@@ -474,7 +489,6 @@
 
     function createOrder(payment) {
         const csrfToken = $('meta[name="csrf-token"]').attr('content');
-        const amount = "{{ $cart->total_amount + + $shipping['shipping_price']}}";
         const cartId = "{{ $cart->id }}";
 
         $.ajax({
@@ -483,7 +497,7 @@
             data: {
                 _token: csrfToken,
                 payment: payment,
-                total_amount:amount,
+                total_amount: orderTotal,
                 cart_id: cartId
             },
             success: function(response) {

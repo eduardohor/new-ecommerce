@@ -4,6 +4,7 @@ use App\Http\Controllers\Front\CategoryController;
 use App\Http\Controllers\Front\AddressController;
 use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\CheckoutController;
+use App\Http\Controllers\Front\CouponController;
 use App\Http\Controllers\Front\FavoriteController;
 use App\Http\Controllers\Front\InstitutionalPageController;
 use App\Http\Controllers\Front\StoreController;
@@ -33,6 +34,9 @@ Route::get('/pesquisar-produtos', [ProductController::class, 'search'])->name('p
 Route::get('/carrinho', [CartController::class, 'show'])->name('cart.show');
 Route::post('/adicionar-ao-carrinho', [CartController::class, 'addProductToCart'])->name('cart.add-product-to-cart');
 Route::post('/remover-do-carrinho', [CartController::class, 'deleteProductToCart'])->name('cart.delete-product-to-cart');
+
+Route::post('/cupons/aplicar', [CouponController::class, 'apply'])->name('coupons.apply');
+Route::delete('/cupons/remover', [CouponController::class, 'remove'])->name('coupons.remove');
 
 Route::post('/calcular-frete', [ShippingController::class, 'calculateShipping'])->name('calculate-shipping');
 

@@ -213,6 +213,19 @@
                                                 </div>
 
                                             </div>
+                                            @if ($discount > 0)
+                                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                                <div>
+                                                    Desconto
+                                                    @if ($appliedCoupon)
+                                                    <small class="text-muted d-block">Cupom {{ $appliedCoupon->code }}</small>
+                                                    @endif
+                                                </div>
+                                                <div class="text-success fw-semibold">
+                                                    - R$ {{ number_format($discount, 2, ',', '.') }}
+                                                </div>
+                                            </div>
+                                            @endif
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     Entrega
@@ -240,8 +253,9 @@
                                                     Subtotal
                                                 </div>
                                                 <div>
-                                                    <span class="fw-bold" id="subtotal">R$ {{
-                                                        number_format($cart->total_amount,
+                                                    <span class="fw-bold" id="subtotal"
+                                                        data-base-subtotal="{{ $finalSubtotal }}">R$
+                                                        {{ number_format($finalSubtotal,
                                                         2, ',', '.') }}</span>
                                                 </div>
                                             </div>
@@ -335,9 +349,33 @@
         return text.replace(/[&<>"']/g, function(m) { return map[m]; });
     }
 
+    function formatCurrency(value) {
+        return Number(value || 0).toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });
+    }
+
+    function getBaseSubtotal() {
+        const baseSubtotal = $('#subtotal').data('base-subtotal');
+        const parsedSubtotal = parseFloat(baseSubtotal);
+        return isNaN(parsedSubtotal) ? 0 : parsedSubtotal;
+    }
+
+    function updateSubtotalDisplay(shippingValue) {
+        const subtotalBase = getBaseSubtotal();
+        const totalWithShipping = subtotalBase + Number(shippingValue || 0);
+        $('#subtotal').text(formatCurrency(totalWithShipping));
+    }
+
+    function resetSubtotalDisplay() {
+        updateSubtotalDisplay(0);
+    }
+
     //Atualiza a Entrega de acordo com o endereco selecionado
     function updateShipping(zipCode) {
         $('#loadingOverlay').show();
+        resetSubtotalDisplay();
 
         const cartId = "{{ $cart->id }}";
         const cleanedZipCode = zipCode.replace(/\D/g, '');
@@ -431,8 +469,7 @@
                 $('#loadingOverlay').hide();
             },
             complete: function() {
-                const subtotalBase = parseFloat("{{ number_format($cart->total_amount, 2, '.', '') }}");
-                $('#subtotal').text((subtotalBase || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }));
+                resetSubtotalDisplay();
             }
         });
     }
@@ -460,9 +497,7 @@
     // Atualiza a forma de envio e o subtotal ao selecionar uma opção de frete
     $(document).on('change', 'input[name="shipping_option"]', function() {
         const selectedPrice = parseFloat($(this).data('price')) || 0;
-        const subtotalAmount = parseFloat($('#subtotalItem').text().replace(/R\$|\s/g, '').replace(/\./g, '').replace(',', '.')) || 0;
-        const finalAmount = subtotalAmount + selectedPrice;
-        $('#subtotal').text(finalAmount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }));
+        updateSubtotalDisplay(selectedPrice);
         $('#error-message').hide();
     });
 

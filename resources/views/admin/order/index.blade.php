@@ -134,7 +134,19 @@ Carbon::setLocale('pt_BR');
                                                 <span class="badge bg-secondary-subtle text-secondary">Entrega</span>
                                             @endif
                                         </td>
-                                        <td>R$ {{ number_format($order->total_amount, 2, ',', '.') }}</td>
+                                        <td>
+                                            R$ {{ number_format($order->total_amount, 2, ',', '.') }}
+                                            @if ($order->coupon_discount > 0)
+                                                <span class="d-block small text-success">
+                                                    @if ($order->coupon_code)
+                                                        Cupom {{ $order->coupon_code }} aplicado
+                                                    @else
+                                                        Desconto aplicado
+                                                    @endif
+                                                     (- R$ {{ number_format($order->coupon_discount, 2, ',', '.') }})
+                                                </span>
+                                            @endif
+                                        </td>
 
                                         <td>
                                             <div class="dropdown">

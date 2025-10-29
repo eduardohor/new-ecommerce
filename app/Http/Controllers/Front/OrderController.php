@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Jobs\OrderSuccessEmailJob;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Services\CouponService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,11 +16,13 @@ class OrderController extends Controller
 {
     protected $order;
     protected $cart;
+    protected $couponService;
 
-    public function __construct(Order $order, Cart $cart)
+    public function __construct(Order $order, Cart $cart, CouponService $couponService)
     {
         $this->order = $order;
         $this->cart = $cart;
+        $this->couponService = $couponService;
     }
 
     public function index(): View
@@ -42,6 +45,10 @@ class OrderController extends Controller
         $shipping = session('shipping');
         $cart = $this->cart->find($validatedData['cart_id']);
 
+        if (!$cart) {
+            return response()->json(['message' => 'Carrinho não encontrado.'], 422);
+        }
+
         $status = $validatedData['payment']['status'];
         $statusPayment = '';
         $statusOrder = 'pending';
@@ -58,13 +65,32 @@ class OrderController extends Controller
                 $statusPayment = 'pending';
                 break;
             case 'pending':
-                $statusPayment = 'pending';
-                break;
-
-            default:
-                $statusPayment = 'pending';
-                break;
+            $statusPayment = 'pending';
+            break;
+        default:
+            $statusPayment = 'pending';
+            break;
         }
+
+        $coupon = $this->couponService->getAppliedCoupon();
+        $couponDiscount = 0;
+        $couponCode = null;
+
+        $cartSubtotal = max($cart->total_amount ?? 0, 0);
+
+        if ($coupon) {
+            $validation = $this->couponService->validateForCart($coupon, $cartSubtotal);
+
+            if ($validation['valid']) {
+                $couponDiscount = $this->couponService->calculateDiscount($coupon, $cartSubtotal);
+                $couponCode = $coupon->code;
+            } else {
+                $this->couponService->removeAppliedCoupon();
+            }
+        }
+
+        $shippingPrice = $shipping['shipping_price'] ?? 0;
+        $finalTotal = max($cartSubtotal - $couponDiscount, 0) + $shippingPrice;
 
         $orderNumber = $this->order->generateOrderNumber();
 
@@ -75,15 +101,17 @@ class OrderController extends Controller
                 'user_id' => $user->id,
                 'address_id' => $shipping['address_id'],
                 'order_number' => $orderNumber,
-                'total_amount' => $validatedData['total_amount'],
-                'total_discount' => $validatedData['total_discount'] ?? 0,
+                'total_amount' => $finalTotal,
+                'total_discount' => $couponDiscount,
+                'coupon_code' => $couponCode,
+                'coupon_discount' => $couponDiscount,
                 'status' => $statusOrder
             ]);
 
             $order->payment()->create([
                 'payment_type' => $validatedData['payment']['payment_type_id'] ?? 'unknown',
                 'transaction_id' => $validatedData['payment']['id'],
-                'amount' => $validatedData['total_amount'],
+                'amount' => $finalTotal,
                 'status' => $statusPayment,
                 'installments' => $validatedData['payment']['installments'] ?? 'unknown',
                 'payment_method' => $validatedData['payment']['payment_method']['id'] ?? 'unknown'
@@ -113,6 +141,13 @@ class OrderController extends Controller
             $cart->cartProducts()->delete();
 
             $cart->delete();
+
+            if ($coupon && $couponCode) {
+                $coupon->increment('used_count');
+            }
+
+            $this->couponService->removeAppliedCoupon();
+            session()->forget('shipping');
 
             DB::commit();
 

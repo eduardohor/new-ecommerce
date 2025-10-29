@@ -298,6 +298,15 @@
                   </div>
                 </a>
               </li> --}}
+              <li class="nav-item ">
+                <a class="nav-link {{ request()->routeIs('coupons.*') ? 'active' : '' }}"
+                  href="{{ route('coupons.index') }}">
+                  <div class="d-flex align-items-center">
+                    <span class="nav-link-icon"> <i class="bi bi-ticket-perforated"></i></span>
+                    <span class="nav-link-text">Cupons</span>
+                  </div>
+                </a>
+              </li>
               <!-- Nav item -->
               {{-- <li class="nav-item">
                 <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#navMenuLevelFirst"

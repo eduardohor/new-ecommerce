@@ -8,6 +8,7 @@ use App\Models\CartProduct;
 use App\Models\Product;
 use App\Models\StoreInfo;
 use App\Models\User;
+use App\Services\CouponService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,13 +23,21 @@ class CartController extends Controller
     private $cart;
     private $cartProduct;
     private $storeInfo;
+    private $couponService;
 
-    public function __construct(Product $product, Cart $cart, CartProduct $cartProduct, StoreInfo $storeInfo)
+    public function __construct(
+        Product $product,
+        Cart $cart,
+        CartProduct $cartProduct,
+        StoreInfo $storeInfo,
+        CouponService $couponService
+    )
     {
         $this->product = $product;
         $this->cart = $cart;
         $this->cartProduct = $cartProduct;
         $this->storeInfo = $storeInfo;
+        $this->couponService = $couponService;
     }
 
     public function show(): View
@@ -36,6 +45,11 @@ class CartController extends Controller
         $user = Auth::user();
 
         $cart = $this->getCart($user);
+
+        $summary = [
+            'coupon' => null,
+            'discount' => 0.0,
+        ];
 
         if ($cart) {
             foreach ($cart->cartProducts as $cartProduct) {
@@ -49,9 +63,15 @@ class CartController extends Controller
             }
 
             $this->updateCartTotalAmount($cart);
+            $summary = $this->couponService->syncCouponWithCart($cart);
         }
 
-        return view('front.cart.show', compact('cart'));
+        $discount = $summary['discount'] ?? 0;
+        $appliedCoupon = $summary['coupon'] ?? null;
+        $cartTotal = $cart?->total_amount ?? 0;
+        $finalSubtotal = max($cartTotal - $discount, 0);
+
+        return view('front.cart.show', compact('cart', 'appliedCoupon', 'discount', 'finalSubtotal'));
     }
 
     public function addProductToCart(Request $request): RedirectResponse
@@ -204,5 +224,6 @@ class CartController extends Controller
             ->sum(DB::raw('quantity * price'));
 
         $cart->save();
+        $this->couponService->syncCouponWithCart($cart);
     }
 }

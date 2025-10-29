@@ -16,6 +16,8 @@ class Order extends Model
         'order_number',
         'total_amount',
         'total_discount',
+        'coupon_code',
+        'coupon_discount',
         'status',
         'notes'
     ];

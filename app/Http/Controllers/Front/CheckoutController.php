@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Models\Address;
 use App\Models\Cart;
+use App\Services\CouponService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -15,11 +16,13 @@ class CheckoutController extends Controller
     protected $address;
     protected $cart;
     protected $mercadoPagoPublicKey;
+    protected $couponService;
 
-    public function __construct(Address $address, Cart $cart)
+    public function __construct(Address $address, Cart $cart, CouponService $couponService)
     {
         $this->address = $address;
         $this->cart = $cart;
+        $this->couponService = $couponService;
         $this->mercadoPagoPublicKey = config('mercadopago.public_key');
 
         MercadoPagoConfig::setAccessToken(config('mercadopago.access_token'));
@@ -43,7 +46,12 @@ class CheckoutController extends Controller
             return redirect()->route('cart.show');
         }
 
-        return view('front.checkout.address', compact('addresses', 'cart'));
+        $summary = $this->couponService->syncCouponWithCart($cart);
+        $appliedCoupon = $summary['coupon'] ?? null;
+        $discount = $summary['discount'] ?? 0;
+        $finalSubtotal = max(($cart->total_amount ?? 0) - $discount, 0);
+
+        return view('front.checkout.address', compact('addresses', 'cart', 'appliedCoupon', 'discount', 'finalSubtotal'));
     }
 
     public function processCheckout(Request $request): RedirectResponse
@@ -81,7 +89,12 @@ class CheckoutController extends Controller
             return redirect()->route('checkout.address');
         }
 
-        return view('front.checkout.payment', compact('cart', 'mercadoPagoPublicKey', 'shipping'));
+        $summary = $this->couponService->syncCouponWithCart($cart);
+        $appliedCoupon = $summary['coupon'] ?? null;
+        $discount = $summary['discount'] ?? 0;
+        $finalSubtotal = max(($cart->total_amount ?? 0) - $discount, 0);
+
+        return view('front.checkout.payment', compact('cart', 'mercadoPagoPublicKey', 'shipping', 'appliedCoupon', 'discount', 'finalSubtotal'));
     }
 
 }

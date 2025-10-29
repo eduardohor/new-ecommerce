@@ -193,8 +193,50 @@
 
         <!-- sidebar -->
         <div class="col-12 col-lg-4 col-md-5">
-            <!-- card -->
-            <div class="mb-5 card mt-6">
+            @if (session('coupon_success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('coupon_success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            @if (session('coupon_error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('coupon_error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            @if (session('coupon_warning'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ session('coupon_warning') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="h5 mb-3">Cupom de desconto</h2>
+                    @if ($appliedCoupon)
+                        <p class="mb-3">Cupom <span class="fw-semibold">{{ $appliedCoupon->code }}</span> aplicado.</p>
+                        <form method="POST" action="{{ route('coupons.remove') }}" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Remover cupom</button>
+                        </form>
+                    @else
+                        <form method="POST" action="{{ route('coupons.apply') }}" class="d-flex gap-2 flex-column flex-sm-row">
+                            @csrf
+                            <input type="text" name="code" class="form-control @error('code') is-invalid @enderror"
+                                placeholder="Digite o código" value="{{ old('code') }}" autocomplete="off">
+                            <button type="submit" class="btn btn-outline-primary">Aplicar</button>
+                        </form>
+                        @error('code')
+                        <span class="text-danger small d-block mt-1">{{ $message }}</span>
+                        @enderror
+                    @endif
+                </div>
+            </div>
+
+            <div class="card mb-5">
                 <div class="card-body p-6">
                     <!-- heading -->
                     <h2 class="h5 mb-4">Resumo</h2>
@@ -210,6 +252,18 @@
                                 <span>R$ {{ number_format($cart->total_amount, 2, ',', '.') }}</span>
                             </li>
 
+                            @if ($discount > 0)
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div class="me-auto">
+                                    <div>Desconto</div>
+                                    @if ($appliedCoupon)
+                                    <small class="text-muted">Cupom {{ $appliedCoupon->code }}</small>
+                                    @endif
+                                </div>
+                                <span class="text-success">- R$ {{ number_format($discount, 2, ',', '.') }}</span>
+                            </li>
+                            @endif
+
                             <!-- list group item Frete -->
                             <li class="list-group-item d-flex justify-content-between align-items-start">
                                 <div class="me-auto">
@@ -224,8 +278,9 @@
                                     <div class="fw-bold">Subtotal</div>
 
                                 </div>
-                                <span class="fw-bold subtotal">R$
-                                    {{ number_format($cart->total_amount, 2, ',', '.') }}</span>
+                                <span class="fw-bold subtotal"
+                                    data-base-subtotal="{{ $finalSubtotal }}">R$
+                                    {{ number_format($finalSubtotal, 2, ',', '.') }}</span>
                             </li>
                         </ul>
 
@@ -235,8 +290,8 @@
                         <a href="{{ route('checkout.address') }}" class="btn btn-primary btn-lg d-flex justify-content-between align-items-center"
                             type="submit" id="finalizarButton">
                             Ir para Finalização
-                            <span class="fw-bold subtotal">R$
-                                {{ number_format($cart->total_amount, 2, ',', '.') }}</span>
+                            <span class="fw-bold subtotal" data-base-subtotal="{{ $finalSubtotal }}">R$
+                                {{ number_format($finalSubtotal, 2, ',', '.') }}</span>
                         </a>
                     </div>
                     <!-- text -->
@@ -320,6 +375,26 @@
             };
 
             return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        function getBaseSubtotal() {
+            var baseSubtotal = $(".subtotal").first().data('base-subtotal');
+            var parsedSubtotal = parseFloat(baseSubtotal);
+            return isNaN(parsedSubtotal) ? 0 : parsedSubtotal;
+        }
+
+        function formatCurrency(value) {
+            return Number(value || 0).toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            });
+        }
+
+        function updateSubtotalDisplays(total) {
+            var formattedTotal = formatCurrency(total);
+            $(".subtotal").each(function() {
+                $(this).text(formattedTotal);
+            });
         }
 
         function calculateShipping(event) {
@@ -432,27 +507,11 @@
             var freteSelecionado = $("input[name='freteRadio']:checked");
 
             if (freteSelecionado.length > 0) {
-                var valorFrete = parseFloat(freteSelecionado.data('custom-price'));
+                var valorFrete = parseFloat(freteSelecionado.data('custom-price')) || 0;
+                var subtotalBase = getBaseSubtotal();
 
-                @if ($cart && isset($cart->total_amount))
-                    var subtotal = parseFloat('{{ $cart->total_amount }}');
-                @else
-                    var subtotal = 0;
-                @endif
-
-                var valorFormatado = valorFrete.toLocaleString('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
-                });
-
-                $("#freteValue").text(valorFormatado);
-
-                var novoSubtotal = subtotal + valorFrete;
-                var novoSubtotalFormatado = novoSubtotal.toLocaleString('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
-                });
-                $(".subtotal").text(novoSubtotalFormatado);
+                $("#freteValue").text(formatCurrency(valorFrete));
+                updateSubtotalDisplays(subtotalBase + valorFrete);
             } else {
                 alert("Selecione uma opção de frete antes de visualizar o resumo.");
             }
@@ -462,17 +521,7 @@
         function resetShippingValues() {
             $("#freteValue").text("- - -");
 
-            @if ($cart && isset($cart->total_amount))
-                var subtotal = parseFloat('{{ $cart->total_amount }}');
-            @else
-                var subtotal = 0;
-            @endif
-
-            var subtotalFormatado = subtotal.toLocaleString('pt-BR', {
-                style: 'currency',
-                currency: 'BRL'
-            });
-            $(".subtotal").text(subtotalFormatado);
+            updateSubtotalDisplays(getBaseSubtotal());
 
             $("#resultadoFrete").html("");
 
