@@ -69,7 +69,10 @@
             <div class="card-body">
                 <div class="row mb-3">
                     <div class="col-md-3">
-                        <p>NÚMERO DO PEDIDO <br> <span class="fw-bold">#{{ $order->order_number }}</span></p>
+                        <p class="mb-0">NÚMERO DO PEDIDO <br> <span class="fw-bold">#{{ $order->order_number }}</span></p>
+                        @if ($order->user->formatted_document)
+                            <span class="small text-muted d-block mt-1">Documento: {{ $order->user->formatted_document }}</span>
+                        @endif
                     </div>
                     <div class="col-md-3">
                         <p>DATA <br> <span class="fw-bold">{{ $order->formatted_created_at }}</span></p>

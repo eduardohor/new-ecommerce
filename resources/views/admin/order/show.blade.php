@@ -103,7 +103,11 @@ Carbon::setLocale('pt_BR');
                                         <h6>Detalhes do Cliente</h6>
                                         <p class="mb-1 lh-lg">{{ $order->user->name }}<br>
                                             {{ $order->user->email }}<br>
-                                            {{ $order->user->phone }}</p>
+                                            {{ $order->user->phone }}<br>
+                                            @if ($order->user->formatted_document)
+                                                Documento: {{ $order->user->formatted_document }}
+                                            @endif
+                                        </p>
                                         <a href="{{ route('customers.edit', $order->user->id) }}">Ver Perfil</a>
                                     </div>
                                 </div>

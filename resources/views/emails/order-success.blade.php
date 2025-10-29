@@ -28,7 +28,11 @@ Carbon::setLocale('pt_BR');
                         <td style="padding-bottom: 10px; width: 50%; vertical-align: top;">
                             <h4 style="color: #333333; margin-bottom: 5px;">Detalhes do Cliente</h4>
                             <p style="color: #555555; margin: 0;">{{ $order->user->name }}<br>{{ $order->user->email
-                                }}<br>{{ $order->user->phone }}</p>
+                                }}<br>{{ $order->user->phone }}
+                                @if ($order->user->formatted_document)
+                                    <br>Documento: {{ $order->user->formatted_document }}
+                                @endif
+                            </p>
                         </td>
 
                         <td style="padding-bottom: 10px; width: 50%; vertical-align: top;">

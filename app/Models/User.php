@@ -30,6 +30,10 @@ class User extends Authenticatable
         'birthdate'
     ];
 
+    protected $appends = [
+        'formatted_document',
+    ];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -89,6 +93,25 @@ class User extends Authenticatable
     public function favorites()
     {
         return $this->belongsToMany(Product::class, 'favorites');
+    }
+
+    public function getFormattedDocumentAttribute(): ?string
+    {
+        if (empty($this->document)) {
+            return null;
+        }
+
+        $digits = preg_replace('/\D+/', '', (string) $this->document);
+
+        if (strlen($digits) === 11) {
+            return preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $digits);
+        }
+
+        if (strlen($digits) === 14) {
+            return preg_replace('/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/', '$1.$2.$3/$4-$5', $digits);
+        }
+
+        return $this->document;
     }
 
 
