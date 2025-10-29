@@ -19,8 +19,14 @@ class CategoryController extends Controller
 
     public function categoryProducts(Request $request, $slug): View
     {
-        $perPage = $request->input('per_page', 32);
+        $perPageInput = $request->input('per_page', 32);
+        $perPage = is_numeric($perPageInput) && (int) $perPageInput > 0 ? (int) $perPageInput : 32;
+
+        $allowedOrderings = ['highlighted', 'low_to_high', 'high_to_low', 'release_date', 'updated_at'];
         $orderBy = $request->input('order_by', 'updated_at');
+        if (!in_array($orderBy, $allowedOrderings, true)) {
+            $orderBy = 'updated_at';
+        }
 
         $category = $this->category->where('slug', $slug)->firstOrFail();
         $nestedCategories = $this->category->nestedCategories();
