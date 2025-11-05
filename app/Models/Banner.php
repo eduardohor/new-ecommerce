@@ -13,6 +13,7 @@ class Banner extends Model
     protected $fillable = [
         'position',
         'image_path',
+        'mobile_image',
         'link_url',
         'open_new_tab',
         'is_active',
@@ -38,6 +39,13 @@ class Banner extends Model
     {
         return $this->image_path
             ? asset('storage/' . $this->image_path)
+            : null;
+    }
+
+    public function getMobileImageUrlAttribute(): ?string
+    {
+        return $this->mobile_image
+            ? asset('storage/' . $this->mobile_image)
             : null;
     }
 

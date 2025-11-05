@@ -59,17 +59,18 @@
     <div class="col-lg-4 col-12">
         <div class="card mb-6 card-lg">
             <div class="card-body p-6">
-                <div class="mb-3">
+                @if (old('position'))
+                    @php($positionConfig = $positions[old('position')] ?? null)
+                @elseif(isset($banner))
+                    @php($positionConfig = $positions[$banner->position] ?? null)
+                @else
+                    @php($positionConfig = null)
+                @endif
+
+                <div class="mb-4">
                     <label class="form-label">Imagem <span class="text-danger">{{ $editing ? '' : '*' }}</span></label>
                     <input type="file" name="image" class="form-control" accept="image/*" @if(!$editing) required @endif>
                     @error('image')<span class="text-danger">{{ $message }}</span>@enderror
-                    @if (old('position'))
-                        @php($positionConfig = $positions[old('position')] ?? null)
-                    @elseif(isset($banner))
-                        @php($positionConfig = $positions[$banner->position] ?? null)
-                    @else
-                        @php($positionConfig = null)
-                    @endif
                     @if($positionConfig && isset($positionConfig['dimensions']))
                         <small class="text-muted d-block mt-2">
                             Dimensões sugeridas: {{ $positionConfig['dimensions']['width'] }}x{{ $positionConfig['dimensions']['height'] }} px
@@ -81,12 +82,32 @@
                         </small>
                     @endif
                 </div>
+
                 @if($editing && $banner->image_path)
-                    <div class="mb-3">
-                        <span class="d-block fw-semibold mb-2">Pré-visualização</span>
+                    <div class="mb-4">
+                        <span class="d-block fw-semibold mb-2">Pré-visualização (Desktop)</span>
                         <img src="{{ $banner->image_url }}" alt="Banner" class="img-fluid rounded border">
                     </div>
                 @endif
+
+                <div class="mb-4">
+                    <label class="form-label">Imagem Mobile</label>
+                    <input type="file" name="mobile_image" class="form-control" accept="image/*">
+                    @error('mobile_image')<span class="text-danger">{{ $message }}</span>@enderror
+                    @if($positionConfig && isset($positionConfig['mobile_dimensions']))
+                        <small class="text-muted d-block mt-2">
+                            Dimensões sugeridas (mobile): {{ $positionConfig['mobile_dimensions']['width'] }}x{{ $positionConfig['mobile_dimensions']['height'] }} px
+                        </small>
+                    @endif
+                </div>
+
+                @if($editing && $banner->mobile_image)
+                    <div class="mb-3">
+                        <span class="d-block fw-semibold mb-2">Pré-visualização (Mobile)</span>
+                        <img src="{{ $banner->mobile_image_url }}" alt="Banner Mobile" class="img-fluid rounded border">
+                    </div>
+                @endif
+
                 <button type="submit" class="btn btn-primary w-100">
                     {{ $editing ? 'Atualizar Banner' : 'Salvar Banner' }}
                 </button>

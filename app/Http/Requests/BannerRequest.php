@@ -30,12 +30,23 @@ class BannerRequest extends FormRequest
             $imageRules[] = $dimensions;
         }
 
+        $mobileImageRules = [
+            'image',
+            'mimes:jpeg,png,jpg,gif,webp',
+            'max:4096',
+        ];
+
+        if ($mobileDimensions = $this->imageDimensionsRule($position, 'mobile_dimensions')) {
+            $mobileImageRules[] = $mobileDimensions;
+        }
+
         $rules = [
             'position' => ['required', 'string', Rule::in($positions)],
             'link_url' => ['nullable', 'url'],
             'open_new_tab' => ['nullable', 'boolean'],
             'is_active' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
+            'mobile_image' => array_merge(['nullable'], $mobileImageRules),
         ];
 
         if ($this->isMethod('POST')) {
@@ -56,15 +67,15 @@ class BannerRequest extends FormRequest
         ]);
     }
 
-    private function imageDimensionsRule(?string $position): ?string
+    private function imageDimensionsRule(?string $position, string $key = 'dimensions'): ?string
     {
         $config = config('banners.positions.' . $position);
 
-        if (!$config || empty($config['dimensions'])) {
+        if (!$config || empty($config[$key])) {
             return null;
         }
 
-        $dimensions = $config['dimensions'];
+        $dimensions = $config[$key];
 
         if (!isset($dimensions['width']) || !isset($dimensions['height'])) {
             return null;
@@ -83,6 +94,9 @@ class BannerRequest extends FormRequest
             'image.image' => 'O arquivo deve ser uma imagem.',
             'image.mimes' => 'Formatos permitidos: jpeg, png, jpg, gif, webp.',
             'image.dimensions' => 'A imagem deve ter o tamanho específico configurado para esta posição.',
+            'mobile_image.image' => 'O arquivo deve ser uma imagem.',
+            'mobile_image.mimes' => 'Formatos permitidos: jpeg, png, jpg, gif, webp.',
+            'mobile_image.dimensions' => 'A imagem mobile deve ter o tamanho específico configurado para esta posição.',
         ];
     }
 }

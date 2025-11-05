@@ -38,6 +38,7 @@
                                         <tr>
                                             <th>Posição</th>
                                             <th>Dimensões sugeridas</th>
+                                            <th>Dimensões mobile</th>
                                             <th>Observações</th>
                                         </tr>
                                     </thead>
@@ -48,6 +49,13 @@
                                                 <td>
                                                     @if(isset($config['dimensions']))
                                                         {{ $config['dimensions']['width'] }} x {{ $config['dimensions']['height'] }} px
+                                                    @else
+                                                        <span class="text-muted">—</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if(isset($config['mobile_dimensions']))
+                                                        {{ $config['mobile_dimensions']['width'] }} x {{ $config['mobile_dimensions']['height'] }} px
                                                     @else
                                                         <span class="text-muted">—</span>
                                                     @endif

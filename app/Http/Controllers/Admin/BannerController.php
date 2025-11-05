@@ -62,6 +62,10 @@ class BannerController extends Controller
                 $data['image_path'] = $request->file('image')->store('banners', 'public');
             }
 
+            if ($request->hasFile('mobile_image')) {
+                $data['mobile_image'] = $request->file('mobile_image')->store('banners', 'public');
+            }
+
             Banner::create($data);
 
             DB::commit();
@@ -115,6 +119,14 @@ class BannerController extends Controller
                 $data['image_path'] = $request->file('image')->store('banners', 'public');
             }
 
+            if ($request->hasFile('mobile_image')) {
+                if ($banner->mobile_image && Storage::disk('public')->exists($banner->mobile_image)) {
+                    Storage::disk('public')->delete($banner->mobile_image);
+                }
+
+                $data['mobile_image'] = $request->file('mobile_image')->store('banners', 'public');
+            }
+
             $banner->update($data);
 
             DB::commit();
@@ -146,6 +158,10 @@ class BannerController extends Controller
                 Storage::disk('public')->delete($banner->image_path);
             }
 
+            if ($banner->mobile_image && Storage::disk('public')->exists($banner->mobile_image)) {
+                Storage::disk('public')->delete($banner->mobile_image);
+            }
+
             $banner->delete();
 
             DB::commit();
@@ -174,7 +190,7 @@ class BannerController extends Controller
     {
         $data = $request->validated();
 
-        unset($data['image']);
+        unset($data['image'], $data['mobile_image']);
 
         if (isset($data['link_url'])) {
             $data['link_url'] = trim($data['link_url']) ?: null;
