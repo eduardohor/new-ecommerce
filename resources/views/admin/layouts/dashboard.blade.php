@@ -372,7 +372,7 @@
                 <span class="nav-label">Configurações do Site</span>
               </li>
               <li class="nav-item ">
-                <a class="nav-link {{ request()->routeIs('store.info.show') ? 'active' : ''}}"
+                <a class="nav-link {{ request()->routeIs('store.info.*', 'admin.free-shipping-zip-ranges.*') ? 'active' : ''}}"
                     href="{{ route('store.info.show') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-gear"></i></span>

@@ -141,6 +141,23 @@ Carbon::setLocale('pt_BR');
                                             @endif
                                         </p>
                                     </div>
+                                    @if ($order->shipping && $order->shipping->shipping_option !== 'pickup')
+                                    <div class="mb-6">
+                                        <h6>Informações de Frete</h6>
+                                        <p class="mb-1 lh-lg">
+                                            Transportadora: <span class="text-dark">{{ $order->shipping->shipping_company }}</span><br>
+                                            Tipo: <span class="text-dark">{{ $order->shipping->shipping_type }}</span><br>
+                                            Prazo: <span class="text-dark">{{ $order->shipping->shipping_minimum_term }}-{{ $order->shipping->shipping_deadline }} dias úteis</span><br>
+                                            Valor: <span class="text-dark">
+                                                @if ($order->shipping->shipping_price > 0)
+                                                    R${{ number_format($order->shipping->shipping_price, 2, ',', '.') }}
+                                                @else
+                                                    <span class="text-success">Grátis</span>
+                                                @endif
+                                            </span>
+                                        </p>
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                             @if ($order->shipping && $order->shipping->shipping_option === 'pickup')
@@ -251,11 +268,23 @@ Carbon::setLocale('pt_BR');
                                                     Retirada na loja
                                                 @else
                                                     Frete
+                                                    @if ($order->shipping)
+                                                        <br>
+                                                        <small class="text-muted fw-normal">
+                                                            {{ $order->shipping->shipping_company }} - {{ $order->shipping->shipping_type }}
+                                                            <br>
+                                                            Prazo: {{ $order->shipping->shipping_minimum_term }}-{{ $order->shipping->shipping_deadline }} dias úteis
+                                                        </small>
+                                                    @endif
                                                 @endif
                                             </td>
                                             <td class="fw-medium text-dark  ">
                                                 <!-- text -->
-                                                R${{ number_format($order->shipping->shipping_price, 2, ',', '.') }}
+                                                @if ($order->shipping->shipping_price > 0)
+                                                    R${{ number_format($order->shipping->shipping_price, 2, ',', '.') }}
+                                                @else
+                                                    <span class="text-success">Grátis</span>
+                                                @endif
                                             </td>
                                         </tr>
 

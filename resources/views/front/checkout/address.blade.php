@@ -398,6 +398,8 @@
 
                 const radioHtml = options.map(function(option) {
                     const isPickup = option.is_pickup === true;
+                    const isFreeShipping = option.is_free_shipping === true;
+                    const originalPrice = option.original_price || 0;
                     const company = option.company && option.company.name ? option.company.name : (isPickup ? 'Retirada na loja' : 'Entrega');
                     const tipoFrete = option.name || (isPickup ? 'Retirada na loja' : 'Convencional');
                     const identifier = option.identifier || (company + '-' + tipoFrete).replace(/\s+/g, '-').toLowerCase();
@@ -416,37 +418,81 @@
                         currency: 'BRL'
                     });
 
-                    let labelBody = `
-                        ${escapeHtml(company)} (${escapeHtml(tipoFrete)}): <strong>${priceLabel}</strong><br>
-                        Prazo Estimado: ${prazoEstimadoMin} a ${prazoEstimadoMax} dias
-                    `;
+                    const originalPriceLabel = originalPrice ? originalPrice.toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    }) : '';
 
-                    if (isPickup) {
+                    let labelBody = '';
+
+                    if (isFreeShipping) {
+                        // Frete grátis aplicado
                         labelBody = `
-                            <strong>Retirada na loja</strong><br>
-                            ${pickupAddress ? `<span class="small text-muted d-block">Endereço: ${escapeHtml(pickupAddress)}</span>` : ''}
-                            ${pickupHours ? `<span class="small text-muted d-block">Horário: ${escapeHtml(pickupHours)}</span>` : ''}
-                            ${pickupInstructions ? `<span class="small text-muted d-block">${escapeHtml(pickupInstructions)}</span>` : ''}
-                            <span class="small text-success d-block mt-1">Sem custo de frete</span>
+                            <div class="d-flex justify-content-between align-items-start w-100">
+                                <div class="flex-grow-1">
+                                    <div class="d-flex align-items-center mb-1">
+                                        <strong class="me-2">${escapeHtml(tipoFrete)}</strong>
+                                        <span class="badge bg-success">FRETE GRÁTIS</span>
+                                    </div>
+                                    <small class="text-muted">Prazo: ${prazoEstimadoMin}-${prazoEstimadoMax} dias úteis</small>
+                                </div>
+                                <div class="text-end ms-3">
+                                    ${originalPriceLabel ? `<small class="text-muted text-decoration-line-through d-block mb-1">${originalPriceLabel}</small>` : ''}
+                                    <strong class="text-success fs-5">Grátis</strong>
+                                </div>
+                            </div>
+                        `;
+                    } else if (isPickup) {
+                        labelBody = `
+                            <div class="d-flex justify-content-between align-items-start w-100">
+                                <div class="flex-grow-1">
+                                    <strong>Retirada na loja</strong>
+                                    ${pickupAddress ? `<br><small class="text-muted">${escapeHtml(pickupAddress)}</small>` : ''}
+                                    ${pickupHours ? `<br><small class="text-muted">${escapeHtml(pickupHours)}</small>` : ''}
+                                </div>
+                                <div class="text-end">
+                                    <strong class="text-success fs-5">Grátis</strong>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        labelBody = `
+                            <div class="d-flex justify-content-between align-items-center w-100">
+                                <div class="flex-grow-1">
+                                    <strong>${escapeHtml(tipoFrete)}</strong>
+                                    <br>
+                                    <small class="text-muted">Prazo: ${prazoEstimadoMin}-${prazoEstimadoMax} dias úteis</small>
+                                </div>
+                                <div class="text-end">
+                                    <strong class="fs-5">${priceLabel}</strong>
+                                </div>
+                            </div>
                         `;
                     }
 
                     hasAvailableOption = true;
 
+                    // Captura dados originais da transportadora se existirem (para frete grátis)
+                    const originalCompany = option.original_company || company;
+                    const originalType = option.original_type || tipoFrete;
+
                     return `
-                        <div class="form-check ${isPickup ? 'shipping-option-pickup' : ''}">
+                        <div class="form-check border rounded p-3 mb-2 ${isPickup ? 'shipping-option-pickup' : ''}" style="cursor: pointer;">
                             <input class="form-check-input" type="radio" name="shipping_option" id="${escapeHtml(identifier)}"
                                 value="${escapeHtml(identifier)}"
                                 data-company="${escapeHtml(company)}"
                                 data-type="${escapeHtml(tipoFrete)}"
+                                data-original-company="${escapeHtml(originalCompany)}"
+                                data-original-type="${escapeHtml(originalType)}"
                                 data-price="${customPrice}"
                                 data-prazo-min="${prazoEstimadoMin}"
                                 data-prazo-max="${prazoEstimadoMax}"
                                 data-pickup="${isPickup ? 1 : 0}"
                                 data-pickup-address="${escapeHtml(pickupAddressAttr)}"
                                 data-pickup-hours="${escapeHtml(pickupHoursAttr)}"
-                                data-pickup-instructions="${escapeHtml(pickupInstructionsAttr)}">
-                            <label class="form-check-label" for="${escapeHtml(identifier)}">
+                                data-pickup-instructions="${escapeHtml(pickupInstructionsAttr)}"
+                                style="margin-top: 0.5rem;">
+                            <label class="form-check-label w-100" for="${escapeHtml(identifier)}" style="cursor: pointer;">
                                 ${labelBody}
                             </label>
                         </div>
@@ -459,6 +505,25 @@
                 } else {
                     $("#mensagemErro").hide();
                     $('.shipping').html(radioHtml);
+
+                    // Mensagem de incentivo para frete grátis
+                    const amountToFreeShipping = options.find(opt => opt.amount_to_free_shipping !== undefined)?.amount_to_free_shipping;
+
+                    if (amountToFreeShipping && amountToFreeShipping > 0) {
+                        const amountLabel = amountToFreeShipping.toLocaleString('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                        });
+
+                        const incentiveMessage = `
+                            <div class="alert alert-info mt-3 mb-0" role="alert">
+                                <i class="ri-information-line me-2"></i>
+                                <strong>Faltam ${amountLabel} para você ganhar frete grátis!</strong>
+                            </div>
+                        `;
+
+                        $('.shipping').append(incentiveMessage);
+                    }
                 }
 
                 $('#loadingOverlay').hide();
@@ -510,8 +575,11 @@
 
             if (selectedShippingOption.length) {
                 const form = $(this);
-                const company = selectedShippingOption.data('company') || '';
-                const type = selectedShippingOption.data('type') || '';
+                // Usa dados originais se existirem (para frete grátis), senão usa os dados normais
+                const originalCompany = selectedShippingOption.data('original-company') || '';
+                const originalType = selectedShippingOption.data('original-type') || '';
+                const company = originalCompany || selectedShippingOption.data('company') || '';
+                const type = originalType || selectedShippingOption.data('type') || '';
                 const price = parseFloat(selectedShippingOption.data('price')) || 0;
                 const prazoMin = parseInt(selectedShippingOption.data('prazo-min')) || 0;
                 const prazoMax = parseInt(selectedShippingOption.data('prazo-max')) || 0;

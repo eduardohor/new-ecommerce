@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FreeShippingZipRangeController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProfileController;
@@ -66,6 +67,14 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::resource('/cupons', CouponController::class)
       ->parameters(['cupons' => 'coupon'])
       ->names('coupons');
+
+    // Frete Grátis - Faixas de CEP
+    Route::resource('/frete-gratis/faixas-cep', FreeShippingZipRangeController::class)
+      ->parameters(['faixas-cep' => 'free_shipping_zip_range'])
+      ->names('admin.free-shipping-zip-ranges')
+      ->except(['show']);
+    Route::post('/frete-gratis/faixas-cep/{free_shipping_zip_range}/toggle', [FreeShippingZipRangeController::class, 'toggleActive'])
+      ->name('admin.free-shipping-zip-ranges.toggle');
 
     Route::get('/loja-info', [StoreInfoController::class, 'show'])->name('store.info.show');
     Route::post('/loja-info', [StoreInfoController::class, 'saveOrUpdate'])->name('store.info.saveOrUpdate');

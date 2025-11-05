@@ -37,6 +37,10 @@ class StoreInfoRequest extends FormRequest
             'facebook_url' => 'nullable|url|max:255',
             'x_url' => 'nullable|url|max:255',
             'instagram_url' => 'nullable|url|max:255',
+            'free_shipping_enabled' => 'nullable|boolean',
+            'free_shipping_type' => 'nullable|in:zip_range,minimum_value,both',
+            'free_shipping_minimum_value' => 'nullable|numeric|min:0',
+            'free_shipping_minimum_order' => 'nullable|numeric|min:0',
         ];
     }
 
@@ -93,6 +97,13 @@ class StoreInfoRequest extends FormRequest
 
             'instagram_url.url' => 'O link do Instagram deve ser uma URL válida.',
             'instagram_url.max' => 'O link do Instagram não pode exceder 255 caracteres.',
+
+            'free_shipping_enabled.boolean' => 'O campo frete grátis deve ser verdadeiro ou falso.',
+            'free_shipping_type.in' => 'O tipo de frete grátis deve ser: por faixa de CEP, por valor mínimo ou ambos.',
+            'free_shipping_minimum_value.numeric' => 'O valor mínimo para frete grátis deve ser um número.',
+            'free_shipping_minimum_value.min' => 'O valor mínimo para frete grátis não pode ser negativo.',
+            'free_shipping_minimum_order.numeric' => 'O valor mínimo do pedido deve ser um número.',
+            'free_shipping_minimum_order.min' => 'O valor mínimo do pedido não pode ser negativo.',
         ];
     }
 }

@@ -1,5 +1,5 @@
 @extends('admin.layouts.dashboard')
-@section('title', 'Clientes')
+@section('title', 'Configurações da Loja')
 
 
 
@@ -55,7 +55,7 @@ Carbon::setLocale('pt_BR');
                                 <div>
                                     <img class="image"
                                         src="{{ $storeInfo && $storeInfo->logo ? asset('storage/' . $storeInfo->logo) : asset('images/docs/bg-logo.png') }}"
-                                        alt="Image" style="width:170px; height=40px"/>
+                                        alt="Image" style="width:170px; height:40px"/>
                                 </div>
 
                                 <div class="file-upload btn btn-light ms-md-4">
@@ -259,6 +259,98 @@ Carbon::setLocale('pt_BR');
                                         @error('instagram_url')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
+                                    </div>
+
+                                    <div class="col-12">
+                                        <h3 class="mb-0 mt-4 h6">Configurações de Frete Grátis</h3>
+                                    </div>
+
+                                    <div class="col-12" x-data="{
+                                        enabled: {{ old('free_shipping_enabled', $storeInfo->free_shipping_enabled ?? false) ? 'true' : 'false' }},
+                                        type: '{{ old('free_shipping_type', $storeInfo->free_shipping_type ?? '') }}'
+                                    }">
+                                        <div class="mb-3">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="free_shipping_enabled"
+                                                    name="free_shipping_enabled" value="1"
+                                                    x-model="enabled"
+                                                    {{ old('free_shipping_enabled', $storeInfo->free_shipping_enabled ?? false) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="free_shipping_enabled">
+                                                    Ativar Frete Grátis
+                                                </label>
+                                            </div>
+                                            <small class="text-muted">Habilite esta opção para oferecer frete grátis aos seus clientes</small>
+                                            @error('free_shipping_enabled')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div x-show="enabled" x-transition>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="free_shipping_type">
+                                                    Tipo de Regra
+                                                    <span class="text-danger" x-show="enabled">*</span>
+                                                </label>
+                                                <select class="form-control" id="free_shipping_type" name="free_shipping_type"
+                                                    x-model="type">
+                                                    <option value="">Selecione o tipo de regra</option>
+                                                    <option value="zip_range" {{ old('free_shipping_type', $storeInfo->free_shipping_type ?? '') == 'zip_range' ? 'selected' : '' }}>
+                                                        Por Faixa de CEP
+                                                    </option>
+                                                    <option value="minimum_value" {{ old('free_shipping_type', $storeInfo->free_shipping_type ?? '') == 'minimum_value' ? 'selected' : '' }}>
+                                                        Por Valor Mínimo
+                                                    </option>
+                                                    <option value="both" {{ old('free_shipping_type', $storeInfo->free_shipping_type ?? '') == 'both' ? 'selected' : '' }}>
+                                                        Ambos (CEP OU Valor Mínimo)
+                                                    </option>
+                                                </select>
+                                                <small class="text-muted">
+                                                    Escolha como o frete grátis será aplicado
+                                                </small>
+                                                @error('free_shipping_type')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
+                                            <div x-show="type === 'zip_range' || type === 'both'" x-transition class="alert alert-info">
+                                                <i class="ri-information-line"></i>
+                                                <strong>Faixas de CEP:</strong>
+                                                Para configurar as faixas de CEP elegíveis para frete grátis,
+                                                <a href="{{ route('admin.free-shipping-zip-ranges.index') }}" class="alert-link">
+                                                    clique aqui para gerenciar as faixas
+                                                </a>
+                                            </div>
+
+                                            <div x-show="type === 'minimum_value' || type === 'both'" x-transition class="mb-3">
+                                                <label class="form-label" for="free_shipping_minimum_value">
+                                                    Valor Mínimo para Frete Grátis (R$)
+                                                </label>
+                                                <input type="number" class="form-control" id="free_shipping_minimum_value"
+                                                    name="free_shipping_minimum_value" placeholder="0.00" step="0.01" min="0"
+                                                    value="{{ old('free_shipping_minimum_value', $storeInfo->free_shipping_minimum_value ?? '') }}" />
+                                                <small class="text-muted">
+                                                    Clientes com carrinho acima deste valor ganham frete grátis
+                                                </small>
+                                                @error('free_shipping_minimum_value')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label" for="free_shipping_minimum_order">
+                                                    Valor Mínimo do Pedido para Cobrar Frete (R$)
+                                                </label>
+                                                <input type="number" class="form-control" id="free_shipping_minimum_order"
+                                                    name="free_shipping_minimum_order" placeholder="0.00" step="0.01" min="0"
+                                                    value="{{ old('free_shipping_minimum_order', $storeInfo->free_shipping_minimum_order ?? '') }}" />
+                                                <small class="text-muted">
+                                                    Deixe em branco ou 0 para não ter valor mínimo. Pedidos abaixo deste valor não terão opção de frete.
+                                                </small>
+                                                @error('free_shipping_minimum_order')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="col-12 mt-3">

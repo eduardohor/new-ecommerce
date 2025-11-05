@@ -149,8 +149,18 @@
                     </tr>
                     @endif
                     <tr>
-                        <td colspan="3">Frete</td>
-                        <td>R${{ number_format($shippingPrice, 2, ',', '.') }}</td>
+                        <td colspan="3">Frete
+                            @if ($shipping && $shipping->shipping_option !== 'pickup')
+                                <br><small>{{ $shipping->shipping_company }} - {{ $shipping->shipping_type }}</small>
+                            @endif
+                        </td>
+                        <td>
+                            @if ($shippingPrice > 0)
+                                R${{ number_format($shippingPrice, 2, ',', '.') }}
+                            @else
+                                Grátis
+                            @endif
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="3"><strong>Total Geral</strong></td>
@@ -178,8 +188,13 @@
                     <p><strong>Entrega</strong><br>
                         Transportadora: {{ $shipping->shipping_company }}<br>
                         Serviço: {{ $shipping->shipping_type }}<br>
-                        Prazo estimado: {{ $shipping->shipping_minimum_term }} a {{ $shipping->shipping_deadline }} dias<br>
-                        Valor do frete: R${{ number_format($shippingPrice, 2, ',', '.') }}
+                        Prazo estimado: {{ $shipping->shipping_minimum_term }} a {{ $shipping->shipping_deadline }} dias úteis<br>
+                        Valor do frete:
+                        @if ($shippingPrice > 0)
+                            R${{ number_format($shippingPrice, 2, ',', '.') }}
+                        @else
+                            Grátis
+                        @endif
                         @if (!empty($shipping->tracking_number))
                             <br>Código de rastreio: {{ $shipping->tracking_number }}
                         @endif
