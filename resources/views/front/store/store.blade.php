@@ -249,12 +249,22 @@
                             </div> --}}
                             <div class="mb-8 position-relative">
                                 @if(isset($sidebarBanner) && $sidebarBanner)
+                                    @php
+                                        $desktopImage = $sidebarBanner->image_url ?? asset('images/placeholder.jpg');
+                                        $mobileImage = $sidebarBanner->mobile_image_url ?? $desktopImage;
+                                    @endphp
                                     @if($sidebarBanner->link_url)
                                         <a href="{{ $sidebarBanner->link_url }}" class="d-block" target="{{ $sidebarBanner->link_target }}" rel="noopener">
-                                            <img src="{{ $sidebarBanner->image_url ?? asset('images/placeholder.jpg') }}" alt="Banner" class="img-fluid rounded">
+                                            <picture>
+                                                <source media="(max-width: 767px)" srcset="{{ $mobileImage }}">
+                                                <img src="{{ $desktopImage }}" alt="Banner" class="img-fluid rounded">
+                                            </picture>
                                         </a>
                                     @else
-                                        <img src="{{ $sidebarBanner->image_url ?? asset('images/placeholder.jpg') }}" alt="Banner" class="img-fluid rounded">
+                                        <picture>
+                                            <source media="(max-width: 767px)" srcset="{{ $mobileImage }}">
+                                            <img src="{{ $desktopImage }}" alt="Banner" class="img-fluid rounded">
+                                        </picture>
                                     @endif
                                 @else
                                     <div class="position-absolute p-5 py-8">

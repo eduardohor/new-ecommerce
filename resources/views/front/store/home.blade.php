@@ -5,7 +5,33 @@
 <link href="{{ asset('libs/slick-carousel/slick/slick.css') }}" rel="stylesheet" />
 <link href="{{ asset('libs/slick-carousel/slick/slick-theme.css') }}" rel="stylesheet" />
 <link href="{{ asset('libs/tiny-slider/dist/tiny-slider.css') }}" rel="stylesheet">
+<style>
+    .hero-slide__img {
+        width: 100%;
+        min-height: 625px;
+        object-fit: cover;
+        display: block;
+        border-radius: 0.5rem;
+    }
 
+    .deal-banner__img {
+        width: 100%;
+        height: 470px;
+        object-fit: cover;
+        display: block;
+        border-radius: 0.75rem;
+    }
+
+    @media (max-width: 767px) {
+        .hero-slide__img {
+            min-height: 360px;
+        }
+
+        .deal-banner__img {
+            height: 320px;
+        }
+    }
+</style>
 @endsection
 
 
@@ -19,16 +45,24 @@
             @if(isset($heroBanners) && $heroBanners->count())
                 <div class="hero-slider">
                     @foreach($heroBanners as $banner)
+                        @php
+                            $desktopImage = $banner->image_url ?? asset('images/placeholder.jpg');
+                            $mobileImage = $banner->mobile_image_url ?? $desktopImage;
+                        @endphp
                         <div>
                             @if($banner->link_url)
-                                <a href="{{ $banner->link_url }}" class="d-block position-relative hero-slide" target="{{ $banner->link_target }}" rel="noopener"
-                                    style="background: url({{ $banner->image_url ?? asset('images/placeholder.jpg') }}) no-repeat; background-size: cover; background-position: center; border-radius: .5rem; min-height: 625px;">
-                                    <span class="visually-hidden">Banner</span>
+                                <a href="{{ $banner->link_url }}" class="d-block position-relative hero-slide" target="{{ $banner->link_target }}" rel="noopener">
+                                    <picture>
+                                        <source media="(max-width: 767px)" srcset="{{ $mobileImage }}">
+                                        <img src="{{ $desktopImage }}" alt="Banner" class="hero-slide__img">
+                                    </picture>
                                 </a>
                             @else
-                                <div class="d-block position-relative hero-slide"
-                                    style="background: url({{ $banner->image_url ?? asset('images/placeholder.jpg') }}) no-repeat; background-size: cover; background-position: center; border-radius: .5rem; min-height: 625px;">
-                                    <span class="visually-hidden">Banner</span>
+                                <div class="d-block position-relative hero-slide">
+                                    <picture>
+                                        <source media="(max-width: 767px)" srcset="{{ $mobileImage }}">
+                                        <img src="{{ $desktopImage }}" alt="Banner" class="hero-slide__img">
+                                    </picture>
                                 </div>
                             @endif
                         </div>
@@ -194,13 +228,23 @@
             @if(isset($featuredBanners) && $featuredBanners->count())
                 <div class="row">
                     @foreach($featuredBanners as $banner)
+                        @php
+                            $desktopImage = $banner->image_url ?? asset('images/placeholder.jpg');
+                            $mobileImage = $banner->mobile_image_url ?? $desktopImage;
+                        @endphp
                         <div class="col-12 col-md-6 mb-3 mb-lg-0">
                             @if($banner->link_url)
                                 <a href="{{ $banner->link_url }}" class="d-block" target="{{ $banner->link_target }}" rel="noopener">
-                                    <img src="{{ $banner->image_url ?? asset('images/placeholder.jpg') }}" alt="Banner" class="img-fluid rounded-3 w-100">
+                                    <picture>
+                                        <source media="(max-width: 767px)" srcset="{{ $mobileImage }}">
+                                        <img src="{{ $desktopImage }}" alt="Banner" class="img-fluid rounded-3 w-100">
+                                    </picture>
                                 </a>
                             @else
-                                <img src="{{ $banner->image_url ?? asset('images/placeholder.jpg') }}" alt="Banner" class="img-fluid rounded-3 w-100">
+                                <picture>
+                                    <source media="(max-width: 767px)" srcset="{{ $mobileImage }}">
+                                    <img src="{{ $desktopImage }}" alt="Banner" class="img-fluid rounded-3 w-100">
+                                </picture>
                             @endif
                         </div>
                     @endforeach
@@ -364,17 +408,23 @@
                 <div class="row row-cols-lg-4 row-cols-1 row-cols-md-2 g-4 flex-nowrap">
                     <div class="col">
                         @if(isset($dealBanner) && $dealBanner)
+                            @php
+                                $desktopImage = $dealBanner->image_url ?? asset('images/placeholder.jpg');
+                                $mobileImage = $dealBanner->mobile_image_url ?? $desktopImage;
+                            @endphp
                             @if($dealBanner->link_url)
-                                <a href="{{ $dealBanner->link_url }}" class="d-block pt-8 px-6 px-xl-8 rounded text-white text-decoration-none"
-                                    target="{{ $dealBanner->link_target }}" rel="noopener"
-                                    style="background:url({{ $dealBanner->image_url ?? asset('images/placeholder.jpg') }})no-repeat; background-size: cover; height: 470px;">
-                                    <span class="visually-hidden">Banner</span>
+                                <a href="{{ $dealBanner->link_url }}" class="d-block text-decoration-none"
+                                    target="{{ $dealBanner->link_target }}" rel="noopener">
+                                    <picture>
+                                        <source media="(max-width: 767px)" srcset="{{ $mobileImage }}">
+                                        <img src="{{ $desktopImage }}" alt="Banner" class="deal-banner__img">
+                                    </picture>
                                 </a>
                             @else
-                                <div class="pt-8 px-6 px-xl-8 rounded"
-                                    style="background:url({{ $dealBanner->image_url ?? asset('images/placeholder.jpg') }})no-repeat; background-size: cover; height: 470px;">
-                                    <span class="visually-hidden">Banner</span>
-                                </div>
+                                <picture>
+                                    <source media="(max-width: 767px)" srcset="{{ $mobileImage }}">
+                                    <img src="{{ $desktopImage }}" alt="Banner" class="deal-banner__img">
+                                </picture>
                             @endif
                         @else
                             <div class=" pt-8 px-6 px-xl-8 rounded"
