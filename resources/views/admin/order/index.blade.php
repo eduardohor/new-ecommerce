@@ -157,11 +157,10 @@ Carbon::setLocale('pt_BR');
                                                 <ul class="dropdown-menu">
                                                     <li><a class="dropdown-item" href="{{ route('orders.show', $order->order_number) }}"><i
                                                                 class="bi bi-eye-fill me-3"></i>Visualizar</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i
-                                                                class="bi bi-trash me-3"></i>Excluir</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i
-                                                                class="bi bi-pencil-square me-3 "></i>Editar</a>
-                                                    </li>
+                                                    @if($order->shipping && $order->shipping->shipping_option !== 'pickup')
+                                                    <li><a class="dropdown-item" href="{{ route('orders.download.shipping-label', $order->order_number) }}"><i
+                                                                class="bi bi-tag me-3"></i>Baixar Etiqueta</a></li>
+                                                    @endif
                                                 </ul>
                                             </div>
                                         </td>

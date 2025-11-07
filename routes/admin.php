@@ -51,6 +51,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/pedidos/atualizar-status', [OrderController::class, 'updateStatus'])->name('orders.update.status');
     Route::post('/pedidos/atualizar-anotacoes', [OrderController::class, 'updateNotes'])->name('orders.update.notes');
     Route::get('/pedidos/{order_number}/invoice', [OrderController::class, 'downloadInvoice'])->name('orders.download.invoice');
+    Route::get('/pedidos/{order_number}/etiqueta', [OrderController::class, 'downloadShippingLabel'])->name('orders.download.shipping-label');
     Route::post('/pedidos/adicionar-codigo-rastreio', [OrderController::class, 'addTrackingCode'])->name('orders.add.tracking.code');
 
     Route::get('/clientes', [CustomerController::class, 'index'])->name('customers.index');

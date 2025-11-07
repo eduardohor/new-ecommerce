@@ -92,6 +92,12 @@ Carbon::setLocale('pt_BR');
                                         title="Ao alterar o status do pedido enviará um e-mail ao cliente com a informação do novo status.">Salvar</button>
                                     <a href="{{ route('orders.download.invoice', $order->order_number) }}"
                                         class="btn btn-secondary">Baixar o Invoice</a>
+                                    @if($order->shipping && $order->shipping->shipping_option !== 'pickup')
+                                    <a href="{{ route('orders.download.shipping-label', $order->order_number) }}"
+                                        class="btn btn-success">
+                                        <i class="bi bi-tag"></i> Baixar Etiqueta
+                                    </a>
+                                    @endif
                                 </div>
                             </div>
                         </div>

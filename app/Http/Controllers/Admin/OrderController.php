@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Jobs\StatusUpdateEmailJob;
 use App\Jobs\TrackingNumberEmailJob;
 use App\Models\Order;
+use App\Models\StoreInfo;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -81,6 +82,18 @@ class OrderController extends Controller
         $pdf = Pdf::loadView('admin.order.invoice', compact('order'));
 
         return $pdf->download('fatura_' . $order_number . ".pdf");
+    }
+
+    public function downloadShippingLabel($order_number)
+    {
+        $order = $this->order->where('order_number', $order_number)->first();
+        $storeInfo = StoreInfo::first();
+
+        // Define o tamanho A5 (metade de A4) para etiqueta
+        $pdf = Pdf::loadView('admin.order.shipping-label', compact('order', 'storeInfo'))
+            ->setPaper('a5', 'landscape'); // A5 paisagem (21x14.8cm)
+
+        return $pdf->download('etiqueta_' . $order_number . ".pdf");
     }
 
     public function addTrackingCode(Request $request)
