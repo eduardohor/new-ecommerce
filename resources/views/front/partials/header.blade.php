@@ -86,8 +86,7 @@
                                     @endguest
                                     <div class="list-inline-item">
 
-                                        <a class="text-muted position-relative " data-bs-toggle="offcanvas"
-                                            data-bs-target="#offcanvasRight" href="#offcanvasExample" role="button"
+                                        <a class="text-muted position-relative " href="{{ route('cart.show') }}" role="button"
                                             aria-controls="offcanvasRight">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
