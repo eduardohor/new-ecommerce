@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
@@ -92,7 +91,9 @@ class CategoryController extends Controller
             $data = $request->all();
 
             if ($request->hasFile('image')) {
-                Storage::delete($category->image);
+                if ($category->image) {
+                    Storage::delete($category->image);
+                }
                 $path = $request->file('image')->store('categories', 'public');
                 $data['image'] = $path;
             } else {
@@ -156,11 +157,9 @@ class CategoryController extends Controller
         try {
             return $this->category->findOrFail($id);
         } catch (ModelNotFoundException $error) {
-            $errorMessage = 'Categoria não encontrado. Detalhes: ' . $error->getMessage();
-            Log::error($errorMessage);
-
-            $redirectResponse = redirect()->route('categories.index')->with('error', 'Categoria não encontrada');
-            $redirectResponse->send();  // Encerra a execução imediatamente
+            Log::error('Categoria não encontrada. Detalhes: ' . $error->getMessage());
+            abort(404, 'Categoria não encontrada');
+            throw $error; // Nunca alcançado, mas satisfaz o analisador estático
         }
     }
 }
