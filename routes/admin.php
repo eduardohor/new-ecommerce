@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FreeShippingZipRangeController;
+use App\Http\Controllers\Admin\PriceAdjustmentController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProfileController;
@@ -45,6 +46,10 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::delete('/produtos/edit/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
     Route::delete('/produtos/{product}/imagens/{image}', [ProductController::class, 'destroyImage'])->name('products.images.destroy');
     Route::post('/produtos/{id}/duplicar', [ProductController::class, 'duplicate'])->name('products.duplicate');
+
+    Route::get('/produtos/reajuste-preco', [PriceAdjustmentController::class, 'index'])->name('products.price-adjustment.index');
+    Route::post('/produtos/reajuste-preco/preview', [PriceAdjustmentController::class, 'preview'])->name('products.price-adjustment.preview');
+    Route::post('/produtos/reajuste-preco/aplicar', [PriceAdjustmentController::class, 'apply'])->name('products.price-adjustment.apply');
 
     Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/pedidos/{order_nuber}/detalhes', [OrderController::class, 'show'])->name('orders.show');

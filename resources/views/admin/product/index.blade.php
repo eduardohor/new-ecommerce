@@ -26,7 +26,10 @@
                         </nav>
                     </div>
                     <!-- button -->
-                    <div>
+                    <div class="d-flex gap-2">
+                        <a href="{{ route('products.price-adjustment.index') }}" class="btn btn-outline-success">
+                            <i class="bi bi-tag"></i> Reajustar Preços
+                        </a>
                         <a href="{{ route('products.create') }}" class="btn btn-primary">Adicionar Produto</a>
                     </div>
                 </div>
