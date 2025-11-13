@@ -390,6 +390,19 @@
                 </a>
               </li>
 
+              <li class="nav-item mt-6 mb-3">
+                <span class="nav-label">Relatórios</span>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link {{ request()->routeIs('admin.reports.sales.*') ? 'active' : ''}}"
+                    href="{{ route('admin.reports.sales.index') }}">
+                  <div class="d-flex align-items-center">
+                    <span class="nav-link-icon"> <i class="bi bi-graph-up"></i></span>
+                    <span class="nav-link-text">Vendas</span>
+                  </div>
+                </a>
+              </li>
+
               {{-- <li class="nav-item mt-6 mb-3">
                 <span class="nav-label">Suporte</span> <span class="badge bg-light-info text-dark-info">Em breve</span>
               </li>

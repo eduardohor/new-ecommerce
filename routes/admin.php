@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FreeShippingZipRangeController;
 use App\Http\Controllers\Admin\PriceAdjustmentController;
+use App\Http\Controllers\Admin\SalesReportController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProfileController;
@@ -88,6 +89,12 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::resource('/paginas-institucionais', InstitutionalPageController::class)
       ->parameters(['paginas-institucionais' => 'institutional_page'])
       ->names('institutional-pages');
+
+    Route::prefix('/relatorios')->name('admin.reports.')->group(function () {
+      Route::get('/vendas', [SalesReportController::class, 'index'])->name('sales.index');
+      Route::get('/vendas/exportar/excel', [SalesReportController::class, 'exportExcel'])->name('sales.export.excel');
+      Route::get('/vendas/exportar/pdf', [SalesReportController::class, 'exportPdf'])->name('sales.export.pdf');
+    });
 
   });
 
