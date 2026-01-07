@@ -113,8 +113,8 @@
                             <i class="bi bi-clock-fill me-2"></i>
                             <strong>Oferta termina em:</strong>
                             <div id="countdown-{{ $product->id }}"
-                                 data-end-date="{{ $product->sale_end_date->toIso8601String() }}"
-                                 class="d-inline-block fw-bold ms-2">
+                                data-end-date="{{ $product->sale_end_date->toIso8601String() }}"
+                                class="d-inline-block fw-bold ms-2">
                             </div>
                         </div>
                         @endif
@@ -126,9 +126,9 @@
                                 {{-- <button type="button" class="btn btn-outline-secondary">
                                     @if ($product->weight >= 1)
                                     {{ $product->weight }}kg
-                                    @else
-                                    {{ $product->weight * 1000 }}g
-                                    @endif
+                                @else
+                                {{ $product->weight * 1000 }}g
+                                @endif
                                 </button> --}}
                                 {{--
                                 <!-- btn --> <button type="button" class="btn btn-outline-secondary">500g</button>
@@ -210,20 +210,43 @@
 
                         </div>
                         <div class="mt-8">
+                            @php
+                            $shareUrl = url()->current();
+                            $shareTitle = $product->title;
+                            @endphp
                             <!-- dropdown -->
                             <div class="dropdown">
-                                <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="btn btn-outline-secondary dropdown-toggle js-share-trigger" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false"
+                                    data-share-title="{{ $shareTitle }}"
+                                    data-share-url="{{ $shareUrl }}">
                                     Compartilhar
                                 </a>
 
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#"><i
-                                                class="bi bi-facebook me-2"></i>Facebook</a></li>
-                                    <li><a class="dropdown-item" href="#"><i class="bi bi-twitter me-2"></i>Twitter</a>
+                                    <li>
+                                        <a class="dropdown-item"
+                                            href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode($shareUrl) }}"
+                                            target="_blank" rel="noopener noreferrer">
+                                            <i class="bi bi-facebook me-2"></i>Facebook
+                                        </a>
                                     </li>
-                                    <li><a class="dropdown-item" href="#"><i
-                                                class="bi bi-instagram me-2"></i>Instagram</a></li>
+                                    <li>
+                                        <a class="dropdown-item"
+                                            href="https://twitter.com/intent/tweet?url={{ urlencode($shareUrl) }}&text={{ urlencode($shareTitle) }}"
+                                            target="_blank" rel="noopener noreferrer">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-twitter-x" viewBox="0 0 16 16">
+                                                <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z" />
+                                            </svg>
+                                            <span class="ms-2">X</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="dropdown-item js-copy-share"
+                                            data-share-url="{{ $shareUrl }}">
+                                            <i class="bi bi-link-45deg me-2"></i><span class="copy-label">Copiar link</span>
+                                        </button>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -467,254 +490,254 @@
                                             <div class="d-flex border-bottom pb-6 mb-6">
                                                 <!-- img -->
                                                 <!-- img --><img src="{{ asset('') }}images/avatar/avatar-10.jpg" alt=""
-                                                    class="rounded-circle avatar-lg">
-                                                <div class="ms-5">
-                                                    <h6 class="mb-1">
-                                                        Shankar Subbaraman
+                        class="rounded-circle avatar-lg">
+                        <div class="ms-5">
+                            <h6 class="mb-1">
+                                Shankar Subbaraman
 
-                                                    </h6>
-                                                    <!-- select option -->
-                                                    <!-- content -->
-                                                    <p class="small"> <span class="text-muted">30 de Dezembro de
-                                                            2022</span>
-                                                        <span class="text-primary ms-3 fw-bold">Compra Verificada</span>
-                                                    </p>
-                                                    <!-- rating -->
-                                                    <div class=" mb-2">
-                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                        <span class="ms-3 text-dark fw-bold">Precisa verificar novamente
-                                                            o peso no ponto de
-                                                            entrega</span>
-                                                    </div>
-                                                    <!-- text-->
-                                                    <p>A qualidade do produto é boa. Mas o peso parecia inferior a 1kg.
-                                                        Por ser enviado em pacote
-                                                        aberto, existe a possibilidade de furto no meio. FreshCart envia
-                                                        os vegetais e frutas
-                                                        através de tampas plásticas lacradas e código de barras no peso
-                                                        etc.</p>
-                                                    <div>
-                                                        <div class="border icon-shape icon-lg border-2 ">
-                                                            <!-- img --><img
-                                                                src="{{ asset('') }}images/products/product-img-1.jpg"
-                                                                alt="" class="img-fluid ">
-                                                        </div>
-                                                        <div class="border icon-shape icon-lg border-2 ms-1 ">
-                                                            <!-- img --><img
-                                                                src="{{ asset('') }}images/products/product-img-2.jpg"
-                                                                alt="" class="img-fluid ">
-                                                        </div>
-                                                        <div class="border icon-shape icon-lg border-2 ms-1 ">
-                                                            <!-- img --><img
-                                                                src="{{ asset('') }}images/products/product-img-3.jpg"
-                                                                alt="" class="img-fluid ">
-                                                        </div>
-
-                                                    </div>
-                                                    <!-- icon -->
-                                                    <div class="d-flex justify-content-end mt-4">
-                                                        <a href="#" class="text-muted"><i
-                                                                class="feather-icon icon-thumbs-up me-1"></i>Útil</a>
-                                                        <a href="#" class="text-muted ms-4"><i
-                                                                class="feather-icon icon-flag me-2"></i>Denunciar
-                                                            Abuso</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex border-bottom pb-6 mb-6 pt-4">
-                                                <!-- img --><img src="{{ asset('') }}images/avatar/avatar-12.jpg" alt=""
-                                                    class="rounded-circle avatar-lg">
-                                                <div class="ms-5">
-                                                    <h6 class="mb-1">
-                                                        Robert Thomas
-
-                                                    </h6>
-                                                    <!-- content -->
-                                                    <p class="small"> <span class="text-muted">29 de Dezembro de
-                                                            2022</span>
-                                                        <span class="text-primary ms-3 fw-bold">Compra Verificada</span>
-                                                    </p>
-                                                    <!-- rating -->
-                                                    <div class=" mb-2">
-                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                        <i class="bi bi-star text-warning"></i>
-                                                        <span class="ms-3 text-dark fw-bold">Precisa verificar novamente
-                                                            o peso no ponto de
-                                                            entrega</span>
-                                                    </div>
-
-                                                    <p>A qualidade do produto é boa. Mas o peso parecia inferior a 1kg.
-                                                        Por ser enviado em pacote
-                                                        aberto, existe a possibilidade de furto no meio. FreshCart envia
-                                                        os vegetais e frutas
-                                                        através de tampas plásticas lacradas e código de barras no peso
-                                                        etc.</p>
-
-                                                    <!-- icon -->
-                                                    <div class="d-flex justify-content-end mt-4">
-                                                        <a href="#" class="text-muted"><i
-                                                                class="feather-icon icon-thumbs-up me-1"></i>Útil</a>
-                                                        <a href="#" class="text-muted ms-4"><i
-                                                                class="feather-icon icon-flag me-2"></i>Denunciar
-                                                            Abuso</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex border-bottom pb-6 mb-6 pt-4">
-                                                <!-- img --><img src="{{ asset('') }}images/avatar/avatar-9.jpg" alt=""
-                                                    class="rounded-circle avatar-lg">
-                                                <div class="ms-5">
-                                                    <h6 class="mb-1">
-                                                        Barbara Tay
-
-                                                    </h6>
-                                                    <!-- content -->
-                                                    <p class="small"> <span class="text-muted">28 de Dezembro de
-                                                            2022</span>
-                                                        <span class="text-danger ms-3 fw-bold">Compra Não
-                                                            Verificada</span>
-                                                    </p>
-                                                    <!-- rating -->
-                                                    <div class=" mb-2">
-                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                        <i class="bi bi-star text-warning"></i>
-                                                        <span class="ms-3 text-dark fw-bold">Precisa verificar novamente
-                                                            o peso no ponto de
-                                                            entrega</span>
-                                                    </div>
-
-                                                    <p>Sempre que peço bananas frescas, recebo bananas
-                                                        amarelo-esverdeadas exatamente como eu
-                                                        queria, então vá em frente, é muito raro você superar as
-                                                        maduras.</p>
-
-                                                    <!-- icon -->
-                                                    <div class="d-flex justify-content-end mt-4">
-                                                        <a href="#" class="text-muted"><i
-                                                                class="feather-icon icon-thumbs-up me-1"></i>Útil</a>
-                                                        <a href="#" class="text-muted ms-4"><i
-                                                                class="feather-icon icon-flag me-2"></i>Denunciar
-                                                            Abuso</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex border-bottom pb-6 mb-6 pt-4">
-                                                <!-- img --><img src="{{ asset('') }}images/avatar/avatar-8.jpg" alt=""
-                                                    class="rounded-circle avatar-lg">
-                                                <div class="ms-5 flex-grow-1">
-                                                    <h6 class="mb-1">
-                                                        Sandra Langevin
-
-                                                    </h6>
-                                                    <!-- content -->
-                                                    <p class="small"> <span class="text-muted">8 December 2022</span>
-                                                        <span class="text-danger ms-3 fw-bold">Compra Não
-                                                            Verificada</span>
-                                                    </p>
-                                                    <!-- rating -->
-                                                    <div class=" mb-2">
-                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                        <i class="bi bi-star text-warning"></i>
-                                                        <span class="ms-3 text-dark fw-bold">Great product</span>
-                                                    </div>
-
-                                                    <p>Ótimo produto e excelente qualidade. pacote. A entrega pode ser
-                                                        agilizada. </p>
-
-                                                    <!-- icon -->
-                                                    <div class="d-flex justify-content-end mt-4">
-                                                        <a href="#" class="text-muted"><i
-                                                                class="feather-icon icon-thumbs-up me-1"></i>Útil</a>
-                                                        <a href="#" class="text-muted ms-4"><i
-                                                                class="feather-icon icon-flag me-2"></i>Denunciar
-                                                            Abuso</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <a href="#" class="btn btn-outline-gray-400 text-muted">Ler Mais
-                                                    Comentários</a>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <!-- rating -->
-                                            <h3 class="mb-5">Criar Revisão</h3>
-                                            <div class="border-bottom py-4 mb-4">
-                                                <h4 class="mb-3">Avaliação Geral</h4>
-                                                <div id="rater"></div>
-                                            </div>
-                                            <div class="border-bottom py-4 mb-4">
-                                                <h4 class="mb-0">Recursos de Taxa</h4>
-                                                <div class="my-5">
-                                                    <h5>Sabor</h5>
-                                                    <div id="rate-2"></div>
-                                                </div>
-                                                <div class="my-5">
-                                                    <h5>Custo-benefício</h5>
-                                                    <div id="rate-3"></div>
-                                                </div>
-                                                <div class="my-5">
-                                                    <h5>Aroma</h5>
-                                                    <div id="rate-4"></div>
-                                                </div>
-
-
-                                            </div>
-                                            <!-- form control -->
-                                            <div class="border-bottom py-4 mb-4">
-                                                <h5>Adicione um título</h5>
-                                                <input type="text" class="form-control"
-                                                    placeholder="O que é mais importante saber">
-                                            </div>
-                                            <div class="border-bottom py-4 mb-4">
-                                                <h5>Adicione uma foto ou vídeo</h5>
-                                                <p>Os compradores consideram imagens e vídeos mais úteis do que apenas
-                                                    texto.</p>
-                                                <!-- form -->
-                                                <form action="#" class="dropzone profile-dropzone">
-                                                    <div class="fallback">
-                                                        <input name="file" type="file" multiple />
-                                                    </div>
-                                                </form>
-
-                                            </div>
-                                            <div class=" py-4 mb-4">
-                                                <!-- heading -->
-                                                <h5>Adicione um comentário por escrito</h5>
-                                                <textarea class="form-control" rows="3"
-                                                    placeholder="O que você gostou ou não gostou? Para que você usou este produto?"></textarea>
-
-                                            </div>
-                                            <!-- button -->
-                                            <div class="d-flex justify-content-end">
-                                                <a href="#" class="btn btn-primary">Enviar Revisão</a>
-                                            </div>
-                                        </div>
-                                    </div>
+                            </h6>
+                            <!-- select option -->
+                            <!-- content -->
+                            <p class="small"> <span class="text-muted">30 de Dezembro de
+                                    2022</span>
+                                <span class="text-primary ms-3 fw-bold">Compra Verificada</span>
+                            </p>
+                            <!-- rating -->
+                            <div class=" mb-2">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <span class="ms-3 text-dark fw-bold">Precisa verificar novamente
+                                    o peso no ponto de
+                                    entrega</span>
+                            </div>
+                            <!-- text-->
+                            <p>A qualidade do produto é boa. Mas o peso parecia inferior a 1kg.
+                                Por ser enviado em pacote
+                                aberto, existe a possibilidade de furto no meio. FreshCart envia
+                                os vegetais e frutas
+                                através de tampas plásticas lacradas e código de barras no peso
+                                etc.</p>
+                            <div>
+                                <div class="border icon-shape icon-lg border-2 ">
+                                    <!-- img --><img
+                                        src="{{ asset('') }}images/products/product-img-1.jpg"
+                                        alt="" class="img-fluid ">
                                 </div>
+                                <div class="border icon-shape icon-lg border-2 ms-1 ">
+                                    <!-- img --><img
+                                        src="{{ asset('') }}images/products/product-img-2.jpg"
+                                        alt="" class="img-fluid ">
+                                </div>
+                                <div class="border icon-shape icon-lg border-2 ms-1 ">
+                                    <!-- img --><img
+                                        src="{{ asset('') }}images/products/product-img-3.jpg"
+                                        alt="" class="img-fluid ">
+                                </div>
+
+                            </div>
+                            <!-- icon -->
+                            <div class="d-flex justify-content-end mt-4">
+                                <a href="#" class="text-muted"><i
+                                        class="feather-icon icon-thumbs-up me-1"></i>Útil</a>
+                                <a href="#" class="text-muted ms-4"><i
+                                        class="feather-icon icon-flag me-2"></i>Denunciar
+                                    Abuso</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex border-bottom pb-6 mb-6 pt-4">
+                        <!-- img --><img src="{{ asset('') }}images/avatar/avatar-12.jpg" alt=""
+                            class="rounded-circle avatar-lg">
+                        <div class="ms-5">
+                            <h6 class="mb-1">
+                                Robert Thomas
+
+                            </h6>
+                            <!-- content -->
+                            <p class="small"> <span class="text-muted">29 de Dezembro de
+                                    2022</span>
+                                <span class="text-primary ms-3 fw-bold">Compra Verificada</span>
+                            </p>
+                            <!-- rating -->
+                            <div class=" mb-2">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star text-warning"></i>
+                                <span class="ms-3 text-dark fw-bold">Precisa verificar novamente
+                                    o peso no ponto de
+                                    entrega</span>
                             </div>
 
+                            <p>A qualidade do produto é boa. Mas o peso parecia inferior a 1kg.
+                                Por ser enviado em pacote
+                                aberto, existe a possibilidade de furto no meio. FreshCart envia
+                                os vegetais e frutas
+                                através de tampas plásticas lacradas e código de barras no peso
+                                etc.</p>
 
+                            <!-- icon -->
+                            <div class="d-flex justify-content-end mt-4">
+                                <a href="#" class="text-muted"><i
+                                        class="feather-icon icon-thumbs-up me-1"></i>Útil</a>
+                                <a href="#" class="text-muted ms-4"><i
+                                        class="feather-icon icon-flag me-2"></i>Denunciar
+                                    Abuso</a>
+                            </div>
                         </div>
-                        <!-- tab pane -->
-                        <div class="tab-pane fade" id="sellerInfo-tab-pane" role="tabpanel"
-                            aria-labelledby="sellerInfo-tab" tabindex="0">...</div> --}}
+                    </div>
+                    <div class="d-flex border-bottom pb-6 mb-6 pt-4">
+                        <!-- img --><img src="{{ asset('') }}images/avatar/avatar-9.jpg" alt=""
+                            class="rounded-circle avatar-lg">
+                        <div class="ms-5">
+                            <h6 class="mb-1">
+                                Barbara Tay
+
+                            </h6>
+                            <!-- content -->
+                            <p class="small"> <span class="text-muted">28 de Dezembro de
+                                    2022</span>
+                                <span class="text-danger ms-3 fw-bold">Compra Não
+                                    Verificada</span>
+                            </p>
+                            <!-- rating -->
+                            <div class=" mb-2">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star text-warning"></i>
+                                <span class="ms-3 text-dark fw-bold">Precisa verificar novamente
+                                    o peso no ponto de
+                                    entrega</span>
+                            </div>
+
+                            <p>Sempre que peço bananas frescas, recebo bananas
+                                amarelo-esverdeadas exatamente como eu
+                                queria, então vá em frente, é muito raro você superar as
+                                maduras.</p>
+
+                            <!-- icon -->
+                            <div class="d-flex justify-content-end mt-4">
+                                <a href="#" class="text-muted"><i
+                                        class="feather-icon icon-thumbs-up me-1"></i>Útil</a>
+                                <a href="#" class="text-muted ms-4"><i
+                                        class="feather-icon icon-flag me-2"></i>Denunciar
+                                    Abuso</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex border-bottom pb-6 mb-6 pt-4">
+                        <!-- img --><img src="{{ asset('') }}images/avatar/avatar-8.jpg" alt=""
+                            class="rounded-circle avatar-lg">
+                        <div class="ms-5 flex-grow-1">
+                            <h6 class="mb-1">
+                                Sandra Langevin
+
+                            </h6>
+                            <!-- content -->
+                            <p class="small"> <span class="text-muted">8 December 2022</span>
+                                <span class="text-danger ms-3 fw-bold">Compra Não
+                                    Verificada</span>
+                            </p>
+                            <!-- rating -->
+                            <div class=" mb-2">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star text-warning"></i>
+                                <span class="ms-3 text-dark fw-bold">Great product</span>
+                            </div>
+
+                            <p>Ótimo produto e excelente qualidade. pacote. A entrega pode ser
+                                agilizada. </p>
+
+                            <!-- icon -->
+                            <div class="d-flex justify-content-end mt-4">
+                                <a href="#" class="text-muted"><i
+                                        class="feather-icon icon-thumbs-up me-1"></i>Útil</a>
+                                <a href="#" class="text-muted ms-4"><i
+                                        class="feather-icon icon-flag me-2"></i>Denunciar
+                                    Abuso</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="#" class="btn btn-outline-gray-400 text-muted">Ler Mais
+                            Comentários</a>
+                    </div>
+                </div>
+                <div>
+                    <!-- rating -->
+                    <h3 class="mb-5">Criar Revisão</h3>
+                    <div class="border-bottom py-4 mb-4">
+                        <h4 class="mb-3">Avaliação Geral</h4>
+                        <div id="rater"></div>
+                    </div>
+                    <div class="border-bottom py-4 mb-4">
+                        <h4 class="mb-0">Recursos de Taxa</h4>
+                        <div class="my-5">
+                            <h5>Sabor</h5>
+                            <div id="rate-2"></div>
+                        </div>
+                        <div class="my-5">
+                            <h5>Custo-benefício</h5>
+                            <div id="rate-3"></div>
+                        </div>
+                        <div class="my-5">
+                            <h5>Aroma</h5>
+                            <div id="rate-4"></div>
+                        </div>
+
+
+                    </div>
+                    <!-- form control -->
+                    <div class="border-bottom py-4 mb-4">
+                        <h5>Adicione um título</h5>
+                        <input type="text" class="form-control"
+                            placeholder="O que é mais importante saber">
+                    </div>
+                    <div class="border-bottom py-4 mb-4">
+                        <h5>Adicione uma foto ou vídeo</h5>
+                        <p>Os compradores consideram imagens e vídeos mais úteis do que apenas
+                            texto.</p>
+                        <!-- form -->
+                        <form action="#" class="dropzone profile-dropzone">
+                            <div class="fallback">
+                                <input name="file" type="file" multiple />
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class=" py-4 mb-4">
+                        <!-- heading -->
+                        <h5>Adicione um comentário por escrito</h5>
+                        <textarea class="form-control" rows="3"
+                            placeholder="O que você gostou ou não gostou? Para que você usou este produto?"></textarea>
+
+                    </div>
+                    <!-- button -->
+                    <div class="d-flex justify-content-end">
+                        <a href="#" class="btn btn-primary">Enviar Revisão</a>
                     </div>
                 </div>
             </div>
+        </div>
+        </div>
+
+
+        </div>
+        <!-- tab pane -->
+        <div class="tab-pane fade" id="sellerInfo-tab-pane" role="tabpanel"
+            aria-labelledby="sellerInfo-tab" tabindex="0">...</div> --}}
+        </div>
+        </div>
+        </div>
         </div>
 
 
@@ -858,6 +881,72 @@
 
 <script>
     $(document).ready(function() {
+        function copyToClipboard(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                return navigator.clipboard.writeText(text);
+            }
+
+            return new Promise(function(resolve, reject) {
+                var $temp = $('<input>');
+                $('body').append($temp);
+                $temp.val(text).select();
+
+                try {
+                    document.execCommand('copy');
+                    $temp.remove();
+                    resolve();
+                } catch (err) {
+                    $temp.remove();
+                    reject(err);
+                }
+            });
+        }
+
+        $(document).on('click', '.js-share-trigger', function(e) {
+            if (!navigator.share) {
+                return;
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            var $button = $(this);
+            var title = $button.data('share-title') || document.title;
+            var url = $button.data('share-url') || window.location.href;
+
+            navigator.share({
+                title: title,
+                text: title,
+                url: url
+            }).catch(function(err) {
+                if (err && err.name !== 'AbortError') {
+                    console.warn('Erro ao compartilhar:', err);
+                }
+            });
+        });
+
+        $(document).on('click', '.js-copy-share', function(e) {
+            e.preventDefault();
+
+            var $button = $(this);
+            var url = $button.data('share-url') || window.location.href;
+            var $label = $button.find('.copy-label');
+            var originalText = $label.text();
+
+            copyToClipboard(url).then(function() {
+                $label.text('Link copiado');
+                setTimeout(function() {
+                    $label.text(originalText);
+                }, 2000);
+            }).catch(function(err) {
+                console.warn('Erro ao copiar link:', err);
+                $label.text('Nao foi possivel copiar');
+                setTimeout(function() {
+                    $label.text(originalText);
+                }, 2000);
+            });
+        });
+
         // Toggle de favoritos
         $('.toggle-favorite').on('click', function(e) {
             e.preventDefault();
