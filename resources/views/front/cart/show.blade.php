@@ -6,7 +6,6 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="{{ asset('css/theme.min.css') }}">
-
 @endsection
 
 <main>

@@ -13,26 +13,6 @@
 <!-- Theme CSS -->
 <link rel="stylesheet" href="{{ asset('css/theme.min.css') }}">
 
-<style>
-    .input-spinner .quantity-field {
-        appearance: textfield;
-        -moz-appearance: textfield;
-        width: 3rem !important;
-    }
-
-    .input-spinner .quantity-field::-webkit-inner-spin-button,
-    .input-spinner .quantity-field::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    .input-spinner .quantity-field::-moz-number-spin-box,
-    .input-spinner .quantity-field::-moz-number-spin-up,
-    .input-spinner .quantity-field::-moz-number-spin-down {
-        display: none;
-    }
-</style>
-
 @endsection
 
 <main>
