@@ -16,6 +16,8 @@
 use Carbon\Carbon;
 
 Carbon::setLocale('pt_BR');
+
+$activeTab = request('tab', 'address');
 @endphp
 
 <main class="main-content-wrapper">
@@ -203,19 +205,27 @@ Carbon::setLocale('pt_BR');
                     <!-- nav item -->
                     <li class="nav-item" role="presentation">
                         <!-- btn -->
-                        <button class="nav-link active" id="address-tab" data-bs-toggle="tab"
+                        <button class="nav-link {{ $activeTab === 'address' ? 'active' : '' }}" id="address-tab" data-bs-toggle="tab"
                             data-bs-target="#address-tab-pane" type="button" role="tab" aria-controls="address-tab-pane"
-                            aria-selected="true">
+                            aria-selected="{{ $activeTab === 'address' ? 'true' : 'false' }}">
                             Endereço
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <!-- btn -->
+                        <button class="nav-link {{ $activeTab === 'order' ? 'active' : '' }}" id="order-tab" data-bs-toggle="tab"
+                            data-bs-target="#order-tab-pane" type="button" role="tab" aria-controls="order-tab-pane"
+                            aria-selected="{{ $activeTab === 'order' ? 'true' : 'false' }}">
+                            Pedidos
                         </button>
                     </li>
                     <!-- nav item -->
                     <li class="nav-item" role="presentation">
                         <!-- btn -->
-                        <button class="nav-link" id="payment-tab" data-bs-toggle="tab"
+                        <button class="nav-link {{ $activeTab === 'payment' ? 'active' : '' }}" id="payment-tab" data-bs-toggle="tab"
                             data-bs-target="#payment-tab-pane" type="button" role="tab" aria-controls="payment-tab-pane"
-                            aria-selected="false">
-                            Pagamento
+                            aria-selected="{{ $activeTab === 'payment' ? 'true' : 'false' }}">
+                            Pagamentos
                         </button>
                     </li>
                 </ul>
@@ -223,7 +233,7 @@ Carbon::setLocale('pt_BR');
                 <!-- tab content -->
                 <div class="tab-content" id="myTabContent">
                     <!-- tab pane -->
-                    <div class="tab-pane fade show active" id="address-tab-pane" role="tabpanel"
+                    <div class="tab-pane fade {{ $activeTab === 'address' ? 'show active' : '' }}" id="address-tab-pane" role="tabpanel"
                         aria-labelledby="address-tab" tabindex="0">
                         <div class="card h-100 card-lg">
                             <div class="p-6">
@@ -335,7 +345,7 @@ Carbon::setLocale('pt_BR');
                                     <span>Mostrando {{ $addresses->firstItem() }} a {{ $addresses->lastItem() }} de {{
                                         $addresses->total() }} resultados</span>
                                     <nav class="mt-2 mt-md-0">
-                                        {{ $addresses->links() }}
+                                        {{ $addresses->appends(['tab' => 'address'])->links() }}
                                     </nav>
                                 </div>
                             </div>
@@ -343,7 +353,7 @@ Carbon::setLocale('pt_BR');
                     </div>
 
                     <!-- tab pane -->
-                    <div class="tab-pane fade" id="payment-tab-pane" role="tabpanel" aria-labelledby="payment-tab"
+                    <div class="tab-pane fade {{ $activeTab === 'payment' ? 'show active' : '' }}" id="payment-tab-pane" role="tabpanel" aria-labelledby="payment-tab"
                         tabindex="0">
                         <div class="card h-100 card-lg">
                             <div class="p-6">
@@ -430,7 +440,103 @@ Carbon::setLocale('pt_BR');
                                     <span>Mostrando {{ $payments->firstItem() }} a {{ $payments->lastItem() }} de {{
                                         $payments->total() }} resultados</span>
                                     <nav class="mt-2 mt-md-0">
-                                        {{ $payments->links() }}
+                                        {{ $payments->appends(['tab' => 'payment'])->links() }}
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- tab pane -->
+                    <div class="tab-pane fade {{ $activeTab === 'order' ? 'show active' : '' }}" id="order-tab-pane" role="tabpanel" aria-labelledby="order-tab"
+                        tabindex="0">
+                        <div class="card h-100 card-lg">
+                            <div class="p-6">
+                                <div class="d-flex justify-content-between flex-row align-items-center">
+                                    <div>
+                                        <h3 class="mb-0 h6">Pedidos</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table
+                                        class="table table-centered table-hover table-borderless mb-0 table-with-checkbox text-nowrap">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value=""
+                                                            id="orderOne" />
+                                                        <label class="form-check-label" for="orderOne"></label>
+                                                    </div>
+                                                </th>
+                                                <th>Pedido</th>
+                                                <th>Data</th>
+                                                <th>Status</th>
+                                                <th>Total</th>
+                                                <th>Método</th>
+                                                <th>Link</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($orders as $order)
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value=""
+                                                            id="orderTwo" />
+                                                        <label class="form-check-label" for="orderTwo"></label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('orders.show', $order->order_number) }}"
+                                                        class="text-reset link-success">#{{ $order->order_number }}</a>
+                                                </td>
+                                                <td>{{ $order->created_at->translatedFormat('d M Y') }}</td>
+                                                <td>
+                                                    @if ($order->status == 'pending')
+                                                    <span class="badge bg-light-warning text-dark-warning">Pendente</span>
+                                                    @elseif($order->status == 'processing')
+                                                    <span class="badge bg-light-info text-dark-info">Processando</span>
+                                                    @elseif($order->status == 'completed')
+                                                    <span class="badge bg-light-primary text-dark-primary">Concluído</span>
+                                                    @elseif($order->status == 'cancelled')
+                                                    <span class="badge bg-light-danger text-dark-danger">Cancelado</span>
+                                                    @endif
+                                                </td>
+                                                <td>R${{ number_format($order->total_amount, 2, ',', '.') }}</td>
+                                                <td>
+                                                    @if (!$order->payment)
+                                                    Sem pagamento
+                                                    @elseif ($order->payment->payment_type == 'credit_card')
+                                                    Cartão de Crédito
+                                                    @elseif ($order->payment->payment_type == 'bank_transfer')
+                                                    Pix
+                                                    @else
+                                                    Outro Método de Pagamento
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-sm btn-light"
+                                                        href="{{ route('orders.show', $order->order_number) }}">Ver
+                                                        pedido</a>
+                                                </td>
+                                            </tr>
+                                            @empty
+                                            <tr>
+                                                <td colspan="7">Nenhum pedido encontrado</td>
+                                            </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="border-top d-md-flex justify-content-between align-items-center p-6">
+                                    <span>Mostrando {{ $orders->firstItem() }} a {{ $orders->lastItem() }} de {{
+                                        $orders->total() }} resultados</span>
+                                    <nav class="mt-2 mt-md-0">
+                                        {{ $orders->appends(['tab' => 'order'])->links() }}
                                     </nav>
                                 </div>
                             </div>

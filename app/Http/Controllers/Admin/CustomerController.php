@@ -75,12 +75,19 @@ class CustomerController extends Controller
             return redirect()->route('customers.index')->with('error', 'Cliente não encontrado.');
         }
 
-        $addresses = $customer->addresses()->orderByDesc('updated_at')->paginate(5);
+        $addresses = $customer->addresses()
+            ->orderByDesc('updated_at')
+            ->paginate(5, ['*'], 'address_page');
 
-        $payments = $customer->payments()->orderByDesc('updated_at')->paginate(5);
+        $payments = $customer->payments()
+            ->orderByDesc('updated_at')
+            ->paginate(5, ['*'], 'payment_page');
+        $orders = $customer->orders()
+            ->with(['payment'])
+            ->orderByDesc('updated_at')
+            ->paginate(5, ['*'], 'order_page');
 
-
-        return view('admin.customer.edit', compact('customer', 'addresses', 'payments'));
+        return view('admin.customer.edit', compact('customer', 'addresses', 'payments', 'orders'));
     }
 
     public function update(CustomerRequest $request, $id)
