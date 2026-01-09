@@ -282,7 +282,7 @@
                 </a>
               </li> --}}
               <li class="nav-item ">
-                <a class="nav-link {{ request()->routeIs('customers.index') || request()->routeIs('customers.create') || request()->routeIs('customers.edit') ? 'active' : ''}}"
+                <a class="nav-link {{ request()->routeIs('customers.index') || request()->routeIs('customers.create') || request()->routeIs('customers.edit') || request()->routeIs('orders.create') ? 'active' : ''}}"
                   href="{{ route('customers.index') }}">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"> <i class="bi bi-people"></i></span>

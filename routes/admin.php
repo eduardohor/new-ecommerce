@@ -53,6 +53,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/produtos/reajuste-preco/aplicar', [PriceAdjustmentController::class, 'apply'])->name('products.price-adjustment.apply');
 
     Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/pedidos/novo/{customer}', [OrderController::class, 'create'])->name('orders.create');
+    Route::post('/pedidos', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/pedidos/{order_nuber}/detalhes', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/pedidos/atualizar-status', [OrderController::class, 'updateStatus'])->name('orders.update.status');
     Route::post('/pedidos/atualizar-anotacoes', [OrderController::class, 'updateNotes'])->name('orders.update.notes');

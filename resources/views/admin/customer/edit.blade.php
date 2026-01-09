@@ -177,6 +177,11 @@ $activeTab = request('tab', 'address');
                         </div>
                     </div>
                 </div>
+                <div class="mt-4 d-grid">
+                    <a class="btn btn-primary" href="{{ route('orders.create', $customer->id) }}">
+                        Gerar pedido para este cliente
+                    </a>
+                </div>
             </div>
         </div>
 
