@@ -85,7 +85,11 @@
                                 <tbody>
                                     @foreach($products as $product)
                                         <tr>
-                                            <td class="fw-semibold">{{ $product->title }}</td>
+                                            <td class="fw-semibold">
+                                                <a class="text-reset" href="{{ route('products.edit', $product->id) }}">
+                                                    {{ $product->title }}
+                                                </a>
+                                            </td>
                                             <td>{{ $product->sku ?? '-' }}</td>
                                             <td>{{ $product->category?->name ?? '-' }}</td>
                                             <td class="text-end">{{ number_format($product->total_quantity ?? 0, 0, ',', '.') }}</td>
@@ -94,6 +98,17 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="border-top d-md-flex justify-content-between align-items-center p-2 p-md-6">
+                            <span class="mb-2 mb-md-0">Mostrando {{ $products->firstItem() }} a {{ $products->lastItem() }}
+                                de {{ $products->total() }} resultados</span>
+                            <nav class="mt-2 mt-md-0">
+                                {{ $products->appends([
+                                    'tab' => 'top-selling',
+                                    'start_date' => $filters['start_date'] ?? null,
+                                    'end_date' => $filters['end_date'] ?? null,
+                                ])->links() }}
+                            </nav>
                         </div>
                     @else
                         <div class="text-center py-6">
@@ -146,7 +161,11 @@
                                             $isOut = !$product->in_stock || $product->quantity <= 0;
                                         @endphp
                                         <tr>
-                                            <td class="fw-semibold">{{ $product->title }}</td>
+                                            <td class="fw-semibold">
+                                                <a class="text-reset" href="{{ route('products.edit', $product->id) }}">
+                                                    {{ $product->title }}
+                                                </a>
+                                            </td>
                                             <td>{{ $product->sku ?? '-' }}</td>
                                             <td class="text-end">{{ number_format($product->quantity ?? 0, 0, ',', '.') }}</td>
                                             <td>
@@ -160,6 +179,16 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="border-top d-md-flex justify-content-between align-items-center p-2 p-md-6">
+                            <span class="mb-2 mb-md-0">Mostrando {{ $lowStockProducts->firstItem() }} a {{ $lowStockProducts->lastItem() }}
+                                de {{ $lowStockProducts->total() }} resultados</span>
+                            <nav class="mt-2 mt-md-0">
+                                {{ $lowStockProducts->appends([
+                                    'tab' => 'low-stock',
+                                    'threshold' => $threshold,
+                                ])->links() }}
+                            </nav>
                         </div>
                     @else
                         <div class="text-center py-6">
@@ -214,14 +243,33 @@
                                 <tbody>
                                     @foreach($customers as $customer)
                                         <tr>
-                                            <td class="fw-semibold">{{ $customer->name }}</td>
-                                            <td>{{ $customer->email }}</td>
+                                            <td class="fw-semibold">
+                                                <a class="text-reset" href="{{ route('customers.edit', $customer->id) }}">
+                                                    {{ $customer->name }}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a class="text-reset" href="{{ route('customers.edit', $customer->id) }}">
+                                                    {{ $customer->email }}
+                                                </a>
+                                            </td>
                                             <td class="text-end">{{ number_format($customer->total_orders ?? 0, 0, ',', '.') }}</td>
                                             <td class="text-end">R$ {{ number_format($customer->total_spent ?? 0, 2, ',', '.') }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="border-top d-md-flex justify-content-between align-items-center p-2 p-md-6">
+                            <span class="mb-2 mb-md-0">Mostrando {{ $customers->firstItem() }} a {{ $customers->lastItem() }}
+                                de {{ $customers->total() }} resultados</span>
+                            <nav class="mt-2 mt-md-0">
+                                {{ $customers->appends([
+                                    'tab' => 'top-customers',
+                                    'start_date' => $filters['start_date'] ?? null,
+                                    'end_date' => $filters['end_date'] ?? null,
+                                ])->links() }}
+                            </nav>
                         </div>
                     @else
                         <div class="text-center py-6">

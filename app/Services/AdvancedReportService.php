@@ -5,12 +5,12 @@ namespace App\Services;
 use App\Models\Product;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class AdvancedReportService
 {
-    public function getTopSellingProducts(array $filters, int $limit = 20): Collection
+    public function getTopSellingProducts(array $filters, int $perPage = 15): LengthAwarePaginator
     {
         $totals = DB::table('order_products')
             ->select('product_id')
@@ -28,11 +28,11 @@ class AdvancedReportService
             ->with('category')
             ->where('products.status', 'ativo')
             ->orderByDesc('totals.total_quantity')
-            ->limit($limit)
-            ->get();
+            ->paginate($perPage)
+            ->withQueryString();
     }
 
-    public function getLowStockProducts(int $threshold = 5): Collection
+    public function getLowStockProducts(int $threshold = 5, int $perPage = 15): LengthAwarePaginator
     {
         return Product::query()
             ->where('status', 'ativo')
@@ -42,10 +42,11 @@ class AdvancedReportService
             })
             ->orderBy('in_stock')
             ->orderBy('quantity')
-            ->get();
+            ->paginate($perPage)
+            ->withQueryString();
     }
 
-    public function getTopCustomers(array $filters, int $limit = 20): Collection
+    public function getTopCustomers(array $filters, int $perPage = 15): LengthAwarePaginator
     {
         $totals = DB::table('orders')
             ->select('user_id')
@@ -61,8 +62,8 @@ class AdvancedReportService
             ->select('users.*', 'totals.total_spent', 'totals.total_orders')
             ->joinSub($totals, 'totals', 'users.id', '=', 'totals.user_id')
             ->orderByDesc('totals.total_spent')
-            ->limit($limit)
-            ->get();
+            ->paginate($perPage)
+            ->withQueryString();
     }
 
     private function applyDateFilters($query, array $filters, string $column): void
