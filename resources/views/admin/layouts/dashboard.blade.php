@@ -403,6 +403,16 @@
                 </a>
               </li>
 
+              <li class="nav-item ">
+                <a class="nav-link {{ request()->routeIs('admin.reports.advanced.index') ? 'active' : ''}}"
+                    href="{{ route('admin.reports.advanced.index') }}">
+                  <div class="d-flex align-items-center">
+                    <span class="nav-link-icon"> <i class="bi bi-box-seam"></i></span>
+                    <span class="nav-link-text">Relatórios avançados</span>
+                  </div>
+                </a>
+              </li>
+
               {{-- <li class="nav-item mt-6 mb-3">
                 <span class="nav-label">Suporte</span> <span class="badge bg-light-info text-dark-info">Em breve</span>
               </li>
@@ -668,6 +678,25 @@
   <script src="{{ asset('libs/simplebar/dist/simplebar.min.js') }}"></script>
   <!-- Theme JS -->
   <script src="{{ asset('js/theme.min.js') }}"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const containers = document.querySelectorAll('.navbar-vertical-content');
+      containers.forEach((container) => {
+        const activeLink = container.querySelector('.nav-link.active');
+        if (!activeLink) {
+          return;
+        }
+
+        const scrollWrapper = container.querySelector('.simplebar-content-wrapper') || container;
+        const linkTop = activeLink.getBoundingClientRect().top;
+        const wrapperTop = scrollWrapper.getBoundingClientRect().top;
+        const targetTop = Math.max(0, scrollWrapper.scrollTop + linkTop - wrapperTop - 120);
+
+        scrollWrapper.scrollTo({ top: targetTop, behavior: 'auto' });
+      });
+    });
+  </script>
 
   @yield('scripts')
 

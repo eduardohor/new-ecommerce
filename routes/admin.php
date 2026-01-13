@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\AdvancedReportController;
 use App\Http\Controllers\Admin\FreeShippingZipRangeController;
 use App\Http\Controllers\Admin\PriceAdjustmentController;
 use App\Http\Controllers\Admin\SalesReportController;
@@ -96,6 +97,10 @@ Route::prefix('admin')->middleware('auth')->group(function () {
       Route::get('/vendas', [SalesReportController::class, 'index'])->name('sales.index');
       Route::get('/vendas/exportar/excel', [SalesReportController::class, 'exportExcel'])->name('sales.export.excel');
       Route::get('/vendas/exportar/pdf', [SalesReportController::class, 'exportPdf'])->name('sales.export.pdf');
+    });
+
+    Route::prefix('/relatorios/avancados')->name('admin.reports.advanced.')->group(function () {
+      Route::get('/', [AdvancedReportController::class, 'index'])->name('index');
     });
 
   });
